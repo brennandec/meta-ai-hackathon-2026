@@ -229,7 +229,7 @@ export function buildLlamaPhysicsPrompt({ instruction = 'Plan safe stopping dece
  * Rejects unknown properties (additionalProperties: false) and missing/empty required id or title.
  * Preserves structured model refusal payloads (status === 'refused' or non-empty refusal string).
  */
-export function extractPhysicsProposal(content) {
+export function extractPhysicsProposal(content, options = {}) {
   if (!content) {
     return {
       status: 'refused',
@@ -237,6 +237,10 @@ export function extractPhysicsProposal(content) {
       reason: 'Empty response content'
     };
   }
+
+  const knownSecret = typeof options?.knownSecret === 'string' && options.knownSecret.length > 0
+    ? options.knownSecret
+    : null;
 
   let raw = content;
   if (typeof raw === 'string') {
@@ -274,13 +278,29 @@ export function extractPhysicsProposal(content) {
     };
   }
 
-  // G2: Preserve refusal reason when given a refusal-shaped object
-  if (raw.status === 'refused' || (typeof raw.refusal === 'string' && raw.refusal.trim())) {
-    const refusalReason = typeof raw.reason === 'string' && raw.reason.trim()
-      ? raw.reason.trim()
-      : (typeof raw.refusal === 'string' && raw.refusal.trim()
-        ? raw.refusal.trim()
-        : 'Model refused to generate physics proposal');
+  // G2 & F3: Preserve refusal reason when given a refusal-shaped object; fail closed on malformed non-null/non-string refusal
+  const hasStringRefusal = typeof raw.refusal === 'string' && raw.refusal.trim().length > 0;
+  const hasMalformedNonStringRefusal = raw.refusal !== undefined && raw.refusal !== null && typeof raw.refusal !== 'string';
+  if (raw.status === 'refused' || hasStringRefusal || hasMalformedNonStringRefusal) {
+    let refusalReason = 'Model refused to generate physics proposal';
+    if (typeof raw.reason === 'string' && raw.reason.trim()) {
+      refusalReason = raw.reason.trim();
+    } else if (hasStringRefusal) {
+      refusalReason = raw.refusal.trim();
+    } else if (
+      hasMalformedNonStringRefusal &&
+      typeof raw.refusal === 'object' &&
+      !Array.isArray(raw.refusal) &&
+      typeof raw.refusal.message === 'string' &&
+      raw.refusal.message.trim()
+    ) {
+      refusalReason = raw.refusal.message.trim();
+    }
+    if (knownSecret && refusalReason.includes(knownSecret)) {
+      refusalReason = 'Model refused request (refusal text redacted)';
+    } else {
+      refusalReason = refusalReason.slice(0, 256);
+    }
     return {
       status: 'refused',
       code: typeof raw.code === 'string' && raw.code.trim() ? raw.code.trim() : 'MODEL_REFUSAL',
@@ -337,6 +357,19 @@ export function extractPhysicsProposal(content) {
       code: 'INVALID_PROPOSAL_SHAPE',
       field: 'title',
       reason: 'Required string field title is missing or empty'
+    };
+  }
+
+  // F4: Check raw decoded id and title BEFORE trimming/truncation so a credential suffix
+  // crossing the 64/128-character boundary cannot leak a partial credential prefix.
+  if (
+    knownSecret &&
+    (raw.id.includes(knownSecret) || raw.title.includes(knownSecret))
+  ) {
+    return {
+      status: 'refused',
+      code: 'INVALID_PROPOSAL_SHAPE',
+      reason: 'Proposal metadata contains forbidden credential echo'
     };
   }
 
@@ -1995,26 +2028,62 @@ export async function requestLlamaPhysicsProposal({
 
     const messageObj = data?.choices?.[0]?.message;
 
-    if (typeof messageObj?.refusal === 'string' && messageObj.refusal.trim()) {
-      const rawRefusal = messageObj.refusal.trim();
-      const safeRefusal = (typeof gate.apiKey === 'string' && gate.apiKey.length > 0 && rawRefusal.includes(gate.apiKey))
-        ? 'Model refused request (refusal text redacted)'
-        : rawRefusal.slice(0, 256);
-      return {
-        status: 'refused',
-        code: 'MODEL_REFUSAL',
-        model,
-        requestedModel: model,
-        actualModel,
-        actualModelStatus,
-        modelIdentityConfirmed,
-        reason: safeRefusal,
-        callProof
-      };
+    if (messageObj && messageObj.refusal !== undefined && messageObj.refusal !== null) {
+      if (typeof messageObj.refusal === 'string') {
+        if (messageObj.refusal.trim()) {
+          const rawRefusal = messageObj.refusal.trim();
+          const safeRefusal = (typeof gate.apiKey === 'string' && gate.apiKey.length > 0 && rawRefusal.includes(gate.apiKey))
+            ? 'Model refused request (refusal text redacted)'
+            : rawRefusal.slice(0, 256);
+          return {
+            status: 'refused',
+            code: 'MODEL_REFUSAL',
+            model,
+            requestedModel: model,
+            actualModel,
+            actualModelStatus,
+            modelIdentityConfirmed,
+            reason: safeRefusal,
+            callProof
+          };
+        }
+      } else {
+        const rawObjRefusalMsg = (
+          typeof messageObj.refusal === 'object' &&
+          !Array.isArray(messageObj.refusal) &&
+          typeof messageObj.refusal.message === 'string' &&
+          messageObj.refusal.message.trim()
+        )
+          ? messageObj.refusal.message.trim()
+          : (
+            typeof messageObj.refusal === 'object' &&
+            !Array.isArray(messageObj.refusal) &&
+            typeof messageObj.refusal.reason === 'string' &&
+            messageObj.refusal.reason.trim()
+              ? messageObj.refusal.reason.trim()
+              : null
+          );
+        const safeMalformedRefusal = rawObjRefusalMsg
+          ? ((typeof gate.apiKey === 'string' && gate.apiKey.length > 0 && rawObjRefusalMsg.includes(gate.apiKey))
+              ? 'Model refused request (refusal text redacted)'
+              : rawObjRefusalMsg.slice(0, 256))
+          : 'Model refused request (malformed non-string refusal payload)';
+        return {
+          status: 'refused',
+          code: 'MODEL_REFUSAL',
+          model,
+          requestedModel: model,
+          actualModel,
+          actualModelStatus,
+          modelIdentityConfirmed,
+          reason: safeMalformedRefusal,
+          callProof
+        };
+      }
     }
 
     const content = messageObj?.content;
-    const proposal = extractPhysicsProposal(content);
+    const proposal = extractPhysicsProposal(content, { knownSecret: gate.apiKey });
 
     if (proposal.status === 'refused') {
       const hasSecretInRefusal = Boolean(
