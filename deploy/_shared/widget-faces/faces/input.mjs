@@ -49,6 +49,11 @@ export function installInputFaceStyles() {
     /* Dropdown trigger (kit: .wf-field-control.wf-dropdown-trigger). Two classes so the older
        ink-block .wf-dropdown-trigger rule in faces.css can never repaint it. */
     .wf-field-control.wf-dropdown-trigger{justify-self:stretch;min-height:calc(var(--os-space-unit)*14);padding:calc(var(--os-space-unit)*6) calc(var(--os-space-unit)*13) calc(var(--os-space-unit)*2) calc(var(--os-space-unit)*3);border:0;border-radius:inherit;background:transparent;color:var(--os-fam-text);font-size:var(--os-type-body-size);text-align:left;cursor:pointer}
+    /* A native Safari select keeps its compact system height/padding. Give its
+       visible label a separate grid row instead of floating over the native value.
+       Keep appearance and the system picker/keyboard untouched. */
+    .wf-native-select-field{padding:calc(var(--os-space-unit)*3);gap:calc(var(--os-space-unit)*2)}
+    .wf-field.wf-native-select-field[data-filled] > .wf-field-label{position:static;max-width:none;transform:none}
     .wf-native-select{cursor:pointer}.wf-native-select:disabled{cursor:var(--os-press-disabled-cursor)}
     /* input/stepper (kit §22): a real number input between two .bb buttons (button.css), 44px targets */
     .wf-stepper-block{display:grid;gap:calc(var(--os-space-unit)*2)}
@@ -247,7 +252,7 @@ function renderNativeSelect(root, item) {
     if (String(o.value ?? o.label) === String(item.value)) opt.selected = true;
     return opt;
   }));
-  const field = el("div", { class: "wf-field", "data-filled": true, "data-disabled": item.disabled ? "" : null }, [
+  const field = el("div", { class: "wf-field wf-native-select-field", "data-filled": true, "data-disabled": item.disabled ? "" : null }, [
     el("label", { class: "wf-field-label", for: id, text: item.label }),
     select,
   ]);
