@@ -253,14 +253,14 @@ export function extractPhysicsProposal(content) {
           return {
             status: 'refused',
             code: 'INVALID_PROPOSAL_SHAPE',
-            reason: 'Failed to parse JSON proposal from response text: ' + err.message
+            reason: 'Failed to parse JSON proposal from response text (JSON_PARSE_ERROR)'
           };
         }
       } else {
         return {
           status: 'refused',
           code: 'INVALID_PROPOSAL_SHAPE',
-          reason: 'Failed to parse JSON proposal from response text: ' + err.message
+          reason: 'Failed to parse JSON proposal from response text (JSON_PARSE_ERROR)'
         };
       }
     }
@@ -1467,6 +1467,116 @@ export function evaluateAndGateLlamaProposal({
   };
 }
 
+export const ALLOWED_PROVIDER_USAGE_COUNTERS = Object.freeze([
+  'prompt_tokens',
+  'completion_tokens',
+  'total_tokens'
+]);
+
+/**
+ * Sanitizes provider token usage to an allowlist of documented finite non-negative
+ * safe-integer counters (prompt_tokens, completion_tokens, total_tokens).
+ * Rejects/omits unknown fields, nested objects/strings, negative/non-integer values,
+ * and any credential echo.
+ */
+export function sanitizeProviderUsage(rawUsage, knownSecret = null) {
+  if (!rawUsage || typeof rawUsage !== 'object' || Array.isArray(rawUsage)) {
+    return null;
+  }
+  const proto = Object.getPrototypeOf(rawUsage);
+  if (proto !== Object.prototype && proto !== null) {
+    return null;
+  }
+  if (typeof knownSecret === 'string' && knownSecret.length > 0) {
+    for (const [k, v] of Object.entries(rawUsage)) {
+      if (k.includes(knownSecret) || (typeof v === 'string' && v.includes(knownSecret))) {
+        if (!ALLOWED_PROVIDER_USAGE_COUNTERS.includes(k)) {
+          continue;
+        }
+        return null;
+      }
+    }
+  }
+  const clean = {};
+  let count = 0;
+  for (const key of ALLOWED_PROVIDER_USAGE_COUNTERS) {
+    if (Object.hasOwn(rawUsage, key) && rawUsage[key] !== undefined) {
+      const val = rawUsage[key];
+      if (
+        typeof val !== 'number' ||
+        !Number.isFinite(val) ||
+        !Number.isSafeInteger(val) ||
+        val < 0
+      ) {
+        return null;
+      }
+      clean[key] = val;
+      count += 1;
+    }
+  }
+  if (count === 0) {
+    return null;
+  }
+  return Object.freeze(clean);
+}
+
+/**
+ * Sanitizes a bounded provider trace identifier (request ID, response ID, model ID)
+ * and strips any value containing the known credential or unsafe characters.
+ */
+export function sanitizeProviderTraceString(rawValue, knownSecret = null, maxLen = 128) {
+  if (typeof rawValue !== 'string') {
+    return null;
+  }
+  const trimmed = rawValue.trim();
+  if (!trimmed || trimmed.length > maxLen) {
+    return null;
+  }
+  if (typeof knownSecret === 'string' && knownSecret.length > 0 && trimmed.includes(knownSecret)) {
+    return null;
+  }
+  if (!/^[A-Za-z0-9._:/-]+$/.test(trimmed)) {
+    return null;
+  }
+  return trimmed;
+}
+
+/**
+ * Classifies transport/dispatch exceptions into safe typed error classifications
+ * without echoing raw err.message or arbitrary exception strings.
+ */
+export function classifySafeTransportError(err, effectiveTimeoutMs = DEFAULT_REQUEST_TIMEOUT_MS) {
+  const isTimeout = Boolean(
+    err && (
+      err.code === 'REQUEST_TIMEOUT' ||
+      err.name === 'AbortError' ||
+      String(err?.message || '').toLowerCase().includes('timed out')
+    )
+  );
+  if (isTimeout) {
+    return Object.freeze({
+      isTimeout: true,
+      errorType: 'REQUEST_TIMEOUT',
+      timeoutCode: 'REQUEST_TIMEOUT',
+      reason: `Meta Model API request aborted after ${effectiveTimeoutMs}ms deadline (REQUEST_TIMEOUT)`
+    });
+  }
+  if (err && err.code === 'EXTERNAL_CALLS_BLOCKED_BY_DEFAULT') {
+    return Object.freeze({
+      isTimeout: false,
+      errorType: 'EXTERNAL_CALLS_BLOCKED_BY_DEFAULT',
+      timeoutCode: null,
+      reason: 'Failed to communicate with Meta Model API endpoint: external calls blocked by default (EXTERNAL_CALLS_BLOCKED_BY_DEFAULT)'
+    });
+  }
+  return Object.freeze({
+    isTimeout: false,
+    errorType: 'TRANSPORT_DISPATCH_ERROR',
+    timeoutCode: null,
+    reason: 'Failed to communicate with Meta Model API endpoint (TRANSPORT_DISPATCH_ERROR)'
+  });
+}
+
 function extractProviderRequestIdHeader(headers) {
   if (!headers) {
     return null;
@@ -1501,9 +1611,10 @@ function extractProviderRequestIdHeader(headers) {
  *   (never filled with requestedModel as proof). When requireConfirmedModelIdentity is true, missing
  *   actualModel is refused with UNCONFIRMED_ACTUAL_MODEL.
  * - When provider data.model is unknown (not in CONFIGURABLE_LLAMA_MODELS) or differs from requestedModel,
- *   marks actualModelStatus 'UNCONFIRMED' and refuses with UNCONFIRMED_ACTUAL_MODEL / ACTUAL_MODEL_MISMATCH.
- * - Preserves providerRequestId, providerResponseId, actual UTC timestamps, and request/response hashes
- *   on both acceptances and refusals/errors where available.
+ *   marks actualModelStatus 'UNCONFIRMED_UNKNOWN_MODEL' / 'UNCONFIRMED_MODEL_MISMATCH' and refuses with
+ *   UNCONFIRMED_ACTUAL_MODEL / ACTUAL_MODEL_MISMATCH.
+ * - Sanitizes provider usage to documented finite non-negative safe-integer counters and replaces raw
+ *   transport/parse exception text with safe typed classifications.
  */
 export async function requestLlamaPhysicsProposal({
   instruction = 'Plan deceleration maneuver',
@@ -1694,7 +1805,11 @@ export async function requestLlamaPhysicsProposal({
       };
     }
 
-    const headerRequestId = extractProviderRequestIdHeader(response.headers);
+    const headerRequestId = sanitizeProviderTraceString(
+      extractProviderRequestIdHeader(response.headers),
+      gate.apiKey,
+      128
+    );
 
     if (!response.ok) {
       let errData = null;
@@ -1705,12 +1820,9 @@ export async function requestLlamaPhysicsProposal({
           errData = null;
         }
       }
-      const errResponseId = typeof errData?.id === 'string' && errData.id.trim().length > 0
-        ? errData.id.trim()
-        : null;
-      const errActualModel = typeof errData?.model === 'string' && errData.model.trim().length > 0
-        ? errData.model.trim()
-        : null;
+      const errResponseId = sanitizeProviderTraceString(errData?.id, gate.apiKey, 128);
+      const errActualModel = sanitizeProviderTraceString(errData?.model, gate.apiKey, 64);
+      const errUsage = sanitizeProviderUsage(errData?.usage, gate.apiKey);
       const completedAt = new Date().toISOString();
       const httpErrorCallProof = {
         fixtureMode: 'LIVE_META_API',
@@ -1730,8 +1842,8 @@ export async function requestLlamaPhysicsProposal({
         providerResponseIdStatus: errResponseId ? 'CONFIRMED' : 'UNCONFIRMED',
         requestSha256,
         responseSha256: errData && typeof errData === 'object' ? sha256Sync(canonicalStringify(errData)) : null,
-        usage: errData?.usage && typeof errData.usage === 'object' ? errData.usage : null,
-        usageStatus: errData?.usage && typeof errData.usage === 'object' ? 'PROVIDER_REPORTED' : 'UNAVAILABLE',
+        usage: errUsage,
+        usageStatus: errUsage ? 'PROVIDER_REPORTED' : 'UNAVAILABLE',
         attemptStartedAt,
         timestamp: completedAt
       };
@@ -1776,32 +1888,33 @@ export async function requestLlamaPhysicsProposal({
         responseSha256: null,
         usage: null,
         usageStatus: 'UNAVAILABLE',
+        errorType: 'JSON_PARSE_ERROR',
         attemptStartedAt,
         timestamp: completedAt
       };
       return {
         status: 'refused',
         code: 'INVALID_PROPOSAL_SHAPE',
+        errorType: 'JSON_PARSE_ERROR',
         requestedModel: model,
         actualModel: null,
         actualModelStatus: 'UNCONFIRMED',
         modelIdentityConfirmed: false,
-        reason: 'Malformed JSON body in HTTP 200 response from Meta Model API: ' + (jsonErr?.message || String(jsonErr)),
+        reason: 'Malformed JSON body in HTTP 200 response from Meta Model API (JSON_PARSE_ERROR)',
         callProof: parseErrorCallProof
       };
     }
 
     const responseSha256 = sha256Sync(canonicalStringify(data || {}));
-    const providerResponseId = typeof data?.id === 'string' && data.id.trim().length > 0
-      ? data.id.trim()
-      : null;
+    const providerResponseId = sanitizeProviderTraceString(data?.id, gate.apiKey, 128);
     const providerRequestId = headerRequestId || providerResponseId || null;
-    const rawReportedModel = typeof data?.model === 'string' && data.model.trim().length > 0
-      ? data.model.trim()
-      : null;
+    const hasRawModelString = typeof data?.model === 'string' && data.model.trim().length > 0;
+    const sanitizedReportedModel = sanitizeProviderTraceString(data?.model, gate.apiKey, 64);
 
-    // Never fall back actualModel to requestedModel when data.model is missing
-    const actualModel = rawReportedModel;
+    // Never fall back actualModel to requestedModel when data.model is missing, and never echo credentials in actualModel
+    const actualModel = hasRawModelString
+      ? (sanitizedReportedModel || '[REDACTED_UNCONFIRMED_MODEL]')
+      : null;
     const isKnownAllowedActual = actualModel !== null && CONFIGURABLE_LLAMA_MODELS.includes(actualModel);
     const isMatchingActual = isKnownAllowedActual && actualModel === model;
     const actualModelStatus = actualModel === null
@@ -1810,7 +1923,7 @@ export async function requestLlamaPhysicsProposal({
         ? 'UNCONFIRMED_UNKNOWN_MODEL'
         : (!isMatchingActual ? 'UNCONFIRMED_MODEL_MISMATCH' : 'CONFIRMED'));
     const modelIdentityConfirmed = isMatchingActual;
-    const usage = data?.usage && typeof data.usage === 'object' ? data.usage : null;
+    const usage = sanitizeProviderUsage(data?.usage, gate.apiKey);
     const usageStatus = usage ? 'PROVIDER_REPORTED' : 'UNAVAILABLE';
     const completedAt = new Date().toISOString();
 
@@ -1883,6 +1996,10 @@ export async function requestLlamaPhysicsProposal({
     const messageObj = data?.choices?.[0]?.message;
 
     if (typeof messageObj?.refusal === 'string' && messageObj.refusal.trim()) {
+      const rawRefusal = messageObj.refusal.trim();
+      const safeRefusal = (typeof gate.apiKey === 'string' && gate.apiKey.length > 0 && rawRefusal.includes(gate.apiKey))
+        ? 'Model refused request (refusal text redacted)'
+        : rawRefusal.slice(0, 256);
       return {
         status: 'refused',
         code: 'MODEL_REFUSAL',
@@ -1891,7 +2008,7 @@ export async function requestLlamaPhysicsProposal({
         actualModel,
         actualModelStatus,
         modelIdentityConfirmed,
-        reason: messageObj.refusal.trim(),
+        reason: safeRefusal,
         callProof
       };
     }
@@ -1900,8 +2017,38 @@ export async function requestLlamaPhysicsProposal({
     const proposal = extractPhysicsProposal(content);
 
     if (proposal.status === 'refused') {
+      const hasSecretInRefusal = Boolean(
+        typeof gate.apiKey === 'string' &&
+        gate.apiKey.length > 0 &&
+        (
+          (typeof proposal.reason === 'string' && proposal.reason.includes(gate.apiKey)) ||
+          (typeof proposal.code === 'string' && proposal.code.includes(gate.apiKey)) ||
+          (typeof proposal.field === 'string' && proposal.field.includes(gate.apiKey))
+        )
+      );
       return {
-        ...proposal,
+        status: 'refused',
+        code: hasSecretInRefusal ? 'INVALID_PROPOSAL_SHAPE' : proposal.code,
+        reason: hasSecretInRefusal ? 'Proposal rejected by schema validation (redacted credential echo)' : proposal.reason,
+        ...(!hasSecretInRefusal && typeof proposal.field === 'string' && proposal.field ? { field: proposal.field } : {}),
+        model,
+        requestedModel: model,
+        actualModel,
+        actualModelStatus,
+        modelIdentityConfirmed,
+        callProof
+      };
+    }
+
+    if (
+      typeof gate.apiKey === 'string' &&
+      gate.apiKey.length > 0 &&
+      (proposal.id.includes(gate.apiKey) || proposal.title.includes(gate.apiKey))
+    ) {
+      return {
+        status: 'refused',
+        code: 'INVALID_PROPOSAL_SHAPE',
+        reason: 'Proposal metadata contains forbidden credential echo',
         model,
         requestedModel: model,
         actualModel,
@@ -1924,9 +2071,8 @@ export async function requestLlamaPhysicsProposal({
       callProof
     };
   } catch (err) {
-    const isTimeout = Boolean(
-      err && (err.code === 'REQUEST_TIMEOUT' || err.name === 'AbortError' || String(err.message).includes('timed out'))
-    );
+    const classified = classifySafeTransportError(err, effectiveTimeoutMs);
+    const safeErrRequestId = sanitizeProviderTraceString(err?.providerRequestId, gate.apiKey, 128);
     const completedAt = new Date().toISOString();
     const errorCallProof = {
       fixtureMode: 'LIVE_META_API',
@@ -1941,29 +2087,29 @@ export async function requestLlamaPhysicsProposal({
       actualModel: null,
       actualModelStatus: 'UNCONFIRMED',
       modelIdentityConfirmed: false,
-      providerRequestId: typeof err?.providerRequestId === 'string' ? err.providerRequestId : null,
+      providerRequestId: safeErrRequestId,
       providerResponseId: null,
       providerResponseIdStatus: 'UNCONFIRMED',
       requestSha256,
       responseSha256: null,
       usage: null,
       usageStatus: 'UNAVAILABLE',
+      errorType: classified.errorType,
       attemptStartedAt,
       timestamp: completedAt,
-      ...(isTimeout ? { timeoutCode: 'REQUEST_TIMEOUT', timedOut: true } : {})
+      ...(classified.isTimeout ? { timeoutCode: 'REQUEST_TIMEOUT', timedOut: true } : {})
     };
     return {
       status: 'refused',
       code: 'NETWORK_ERROR',
+      errorType: classified.errorType,
       model,
       requestedModel: model,
       actualModel: null,
       actualModelStatus: 'UNCONFIRMED',
       modelIdentityConfirmed: false,
-      ...(isTimeout ? { timeoutCode: 'REQUEST_TIMEOUT', timedOut: true } : {}),
-      reason: isTimeout
-        ? `Meta Model API request aborted after ${effectiveTimeoutMs}ms deadline: ${err.message}`
-        : 'Failed to communicate with Meta Model API endpoint: ' + (err?.message || String(err)),
+      ...(classified.isTimeout ? { timeoutCode: 'REQUEST_TIMEOUT', timedOut: true } : {}),
+      reason: classified.reason,
       callProof: errorCallProof
     };
   } finally {
