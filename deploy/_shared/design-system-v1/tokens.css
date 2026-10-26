@@ -1,0 +1,140 @@
+/* design-system-v1/tokens.css — runnable spine. Code wins. Single source for tokens v1.
+ * WOPD: DESIGN — BUILD FROM: deploy/_shared/os-tokens.css + DESIGN.md GOLD 1.4 + DESIGN-BIBLE-5.1
+ * DTCG JSON → this file (generated, but this v1 is hand-minted as the seed: receipted).
+ * Survivors: syntax blue #1D4AFF, grepthat green #0d7a3e, neutrals N0..N12. Six families dead 2026-09-01.
+ * Law: no hex/font/spacing outside this file + os-tokens.css + ss-motion.css — CHECK-10 fails it.
+ */
+@import "../os-tokens.css";
+@import "../ss-motion.css";
+
+:root {
+  /* ── primitive: neutral ramp (cold neutrals, warm paper banned) ── */
+  --ds-n0: #FFFFFF;
+  --ds-n1: #FAFBFC;
+  --ds-n2: #F2F4F7;
+  --ds-n3: #E7EAEF;
+  --ds-n4: #D6DAE2;
+  --ds-n5: #B9BFC9;
+  --ds-n6: #8F97A3;
+  --ds-n7: #6B7280;
+  --ds-n8: #4B5159;
+  --ds-n9: #33383F;
+  --ds-n10: #23272D;
+  --ds-n11: #14171B;
+  --ds-n12: #0A0C10;
+  /* ── primitive: survivors ── */
+  --ds-blue: #1D4AFF;
+  --ds-green: #0d7a3e;
+  /* ── primitive: spacing (six only) ── */
+  --ds-s4: 4px; --ds-s8: 8px; --ds-s12: 12px; --ds-s16: 16px; --ds-s24: 24px; --ds-s32: 32px;
+  /* ── primitive: type scale (Inter ss03 + JetBrains Mono) ── */
+  --ds-t12: 12px; --ds-t14: 14px; --ds-t16: 16px; --ds-t20: 20px; --ds-t24: 24px; --ds-t32: 32px; --ds-t44: 44px; --ds-t60: 60px;
+  --ds-font-voice: "Inter", system-ui, -apple-system, sans-serif;
+  --ds-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* ── primitive: radius, depth, motion, measure ── */
+  --ds-r8: 8px; --ds-r12: 12px; --ds-r16: 16px; --ds-r24: 24px;
+  --ds-light-x: -1; --ds-light-y: -1;
+  --ds-shadow-near: 0 2px 12px rgba(10,12,16,0.08);
+  --ds-shadow-mid: 0 8px 32px rgba(10,12,16,0.12);
+  --ds-dur-120: 120ms; --ds-dur-200: 200ms; --ds-dur-320: 320ms;
+  --ds-ease: cubic-bezier(.2,0,.2,1);
+  --ds-ease-out: cubic-bezier(0,0,.2,1);
+  --ds-measure-prose: 68ch; --ds-measure-offer: 48ch; --ds-measure-statement: 20ch;
+  /* ── semantic (voice — never dressable except --accent) ── */
+  --paper: var(--ds-n0);
+  --surface: var(--ds-n1);
+  --surface-raised: var(--ds-n2);
+  --ink: var(--ds-n12);
+  --ink-body: var(--ds-n9);
+  --ink-muted: var(--ds-n8); /* was n6 #8F97A3 = 2.68:1 on ground; n8 #4B5159 = 7.28:1 — muted text holds the 4.5:1 floor */
+  --line: var(--ds-n3);
+  --line-strong: var(--ds-n4);
+  --accent: var(--ds-blue);
+  --accent-proof: var(--ds-green);
+  --accent-ink: var(--ds-n0);
+  --focus: var(--ds-blue);
+  --selection: rgba(29,74,255,0.12);
+}
+/* single voice lock — no third family */
+* { font-variant-ligatures: common-ligatures; }
+html { font-family: var(--ds-font-voice); font-feature-settings: "ss03" 1; color: var(--ink); background: var(--paper); }
+code, pre, .mono, [data-kind="Kicker"], [data-kind="Receipt"] { font-family: var(--ds-font-mono); }
+/* focus + selection are semantic law */
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::selection { background: var(--selection); }
+/* ── closed modifiers — the ONLY dressable layer (81 combos, no new values) ── */
+[data-accent="grepthat"] { --accent: var(--ds-green); --accent-proof: var(--ds-blue); }
+[data-accent="neutral"] { --accent: var(--ds-n9); --accent-proof: var(--ds-n8); } /* proof is link text — n6 failed at 2.68:1 */
+[data-weight="quiet"] { --surface: var(--ds-n0); --ink-body: var(--ds-n8); --line: var(--ds-n2); }
+[data-weight="loud"] { --surface: var(--ds-n2); --ink: var(--ds-n12); --line: var(--ds-n4); }
+[data-plane="mid"] { box-shadow: var(--ds-shadow-mid); }
+[data-plane="near"] { box-shadow: var(--ds-shadow-near); }
+[data-plane="far"] { pointer-events: none; box-shadow: none; }
+[data-density="airy"] { --ds-rhythm: var(--ds-s24); }
+[data-density="dense"] { --ds-rhythm: var(--ds-s12); }
+/* ── Still-First + responsive gutters (inside scale only) ── */
+.frame { max-width: var(--ds-measure-prose); margin-inline: auto; padding-inline: var(--ds-s16); }
+@media (min-width: 744px) { .frame { padding-inline: var(--ds-s24); } }
+@media (min-width: 1440px) { .frame { padding-inline: var(--ds-s32); } }
+/* ultra-wide: center-hold */
+@media (min-width: 1920px) { .frame { max-width: 1200px; } }
+/* reduced-motion: still is complete */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; transform: none !important; }
+}
+
+/* ══ LIBRARY-BRIDGE — cycle 0, 2026-09-10 — the full kind vocabulary, all eight kinds ══
+ * Purpose: the studio library kind vocabulary (--t-*) rides this layer. References only —
+ * no new values, no hex, no font, no spacing literal appears in this block.
+ * Source vocabulary: library/<kind>/style.css var() usage (all eight kinds) + page consumers
+ * (render-page base); type ramp targets: os-tokens GENERATED type write-back.
+ * Pass 1: hero sweep. Pass 2: full laundry — space-page/unit, type meta/title/body-size,
+ * body-family.
+ */
+:root {
+  --t-color-ground: var(--paper);
+  --t-color-ink: var(--ink);
+  --t-color-body: var(--ink-body);
+  --t-color-muted: var(--ink-muted);
+  --t-color-rule: var(--line);
+  --t-color-accent: var(--accent);
+  --t-color-accentTint: var(--surface-raised); /* nearest token — accent tint has no layer token (named gap) */
+  --t-space-xs: var(--ds-s4);
+  --t-space-sm: var(--ds-s8);
+  --t-space-md: var(--ds-s16);
+  --t-space-lg: var(--ds-s24);
+  --t-space-xl: var(--ds-s32);
+  --t-space-page: var(--ds-s24);
+  --t-space-unit: var(--ds-s4);
+  --t-type-display: var(--ds-font-voice);
+  --t-type-body: var(--ds-font-voice);
+  --t-type-display-size: var(--os-type-display-size);
+  --t-type-display-leading: var(--os-type-display-leading);
+  --t-type-display-tracking: var(--os-type-display-tracking);
+  --t-type-display-2-size: var(--os-type-display-2-size);
+  --t-type-display-2-leading: var(--os-type-display-2-leading);
+  --t-type-display-2-tracking: var(--os-type-display-2-tracking);
+  --t-type-display-3-size: var(--os-type-display-3-size);
+  --t-type-display-3-leading: var(--os-type-display-3-leading);
+  --t-type-display-3-tracking: var(--os-type-display-3-tracking);
+  --t-type-lede-size: var(--os-type-lede-size);
+  --t-type-lede-leading: var(--os-type-lede-leading);
+  --t-type-label-size: var(--os-type-label-size);
+  --t-type-label-tracking: var(--os-type-label-tracking);
+  --t-type-meta-size: var(--os-type-meta-size);
+  --t-type-title-size: var(--os-type-title-size);
+  --t-type-headline-size: var(--os-type-headline-size);
+  --t-type-body-size: var(--os-type-body-size);
+  --t-type-body-family: var(--ds-font-voice);
+  --t-focus-width: var(--os-focus-ring-width);
+  --t-focus-offset: var(--os-focus-ring-offset);
+  --t-focus-color: var(--os-focus-ring-color);
+  --t-radius-sm: var(--os-radius-sm);
+  --t-radius-md: var(--os-radius-md);
+  --t-radius-lg: var(--os-radius-lg);
+  --t-radius-pill: var(--os-radius-pill);
+  --t-motion-fast: var(--ds-dur-120);
+  --t-motion-base: var(--ds-dur-200);
+  --t-motion-slow: var(--ds-dur-320);
+}
+/* ══ END LIBRARY-BRIDGE ══ */

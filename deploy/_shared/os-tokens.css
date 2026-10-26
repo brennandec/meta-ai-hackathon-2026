@@ -1,0 +1,322 @@
+/* (note removed for export)
+ * (note removed for export)
+ * (note removed for export)
+ * (note removed for export)
+ * (note removed for export)
+ * (note removed for export)
+ * (note removed for export)
+ */
+/* Door-chrome faces (Inter + JetBrains Mono) live in the fonts owner sheet.
+ * (note removed for export)
+ * real @font-face instead of system/Courier fallbacks. Faces download only
+ * (note removed for export) */
+@import "./fonts/fonts.css";
+
+:root {
+  /* (note removed for export) */
+  --os-ground: #F4F4F2; /* neutral ground — paper dead 2026-08-31 */
+  --os-ground-void: #ffffff; /* daylight light-field: elevated canvas/specimen ground */
+  --os-ground-absorptive: #f7f7f9;
+  --os-ink: #0a0a0f;
+  --os-muted: #5b6270; /* 5.57:1 on --os-ground, 6.13:1 on white — small text passes 4.5:1 */
+  --os-muted-subtle: var(--os-muted); /* subtle still carries text at 11px — same floor, never lighter */
+  --os-ink-muted: var(--os-muted); /* alias consumed by slash surfaces */
+  --os-placeholder: var(--os-muted); /* placeholder text — same 4.5:1 floor (browser default #757575 = 4.41:1 on #FAFAFA) */
+  --os-rule: #e8e8ed;
+  --os-gold: #c9a86a;           /* reserved for 5D material — never a flat font color (A2) */
+  --os-gold-night: #debc69;     /* night rendering of gold provenance bead */
+  --os-blue: #1D4AFF;           /* syntax blue — locked survivor; caret active presence */
+  --os-blue-night: #abbcff;     /* night rendering of syntax blue; day mark untouched (it9/it56) */
+  --os-blue-on-ink: var(--os-blue-night); /* syntax blue as TEXT on --os-ink grounds: 10.69:1 (day blue on ink = 3.27:1, fails) */
+  --os-blue-pressed: #1638C4;   /* pressed syntax blue */
+  --os-green: #0d7a3e;
+
+  /* ── typography ── */
+  --os-font-display: "Inter", system-ui, -apple-system, sans-serif;
+  --os-font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --os-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --os-font-feature-chrome: "ss03" 1;               /* door chrome Inter ss03 — many-htmx-rcs-type packet */
+
+  /* ── spacing / radius ── */
+  --os-space-unit: 4px;
+  --os-radius-sm: 8px;
+  --os-radius-md: 12px;
+  --os-radius-lg: 16px;
+  --os-radius-pill: 999px;
+
+  /* ══════════════════════════════════════════════════
+   * TACTILE SIGNATURE TOKENS — gated
+   * (note removed for export)
+   * consume via var(--os-*) only — no raw hex/duration outside
+   * ══════════════════════════════════════════════════ */
+
+  /* (note removed for export) */
+  --os-caret-color: var(--os-blue);                 /* #2665fd syntax-blue */
+  --os-caret-width: 2px;                            /* fixed language — no per-input improvisation */
+  --os-caret-height: 1.15em;                        /* tied to line-height, not jittered */
+  --os-caret-blink-duration: 530ms;                 /* 530ms on / 530ms off = 1060ms cycle — calm, precise */
+  --os-caret-blink-easing: steps(1, end);
+  --os-caret-blink-off-opacity: 0;
+  --os-caret-width-thin: 1.5px;                     /* 320 compact */
+  --os-caret-width-thick: 2.5px;                   /* high-dpi emphasis — only via token, not per-input */
+
+  /* G-SELECT-02 · selection family — must feel related to caret */
+  --os-selection-bg: rgba(29, 74, 255, 0.16);      /* 16% syntax-blue wash */
+  --os-selection-bg-strong: rgba(29, 74, 255, 0.24); /* focused/expanded */
+  --os-selection-fg: var(--os-ink);                 /* preserve ink legibility — not forced white */
+  --os-selection-object-bg: rgba(29, 74, 255, 0.14); /* object selection — syntax wash, distinct from text */
+  --os-selection-object-ring: rgba(29, 74, 255, 0.40);
+
+  /* G-FOCUS-03 · one focus geometry + motion — never removed for aesthetics */
+  --os-focus-ring-color: var(--os-blue);
+  --os-focus-ring-width: 2px;
+  --os-focus-ring-offset: 2px;
+  --os-focus-ring-radius: var(--os-radius-sm);
+  --os-focus-motion-duration: 180ms;                /* snap seed 140-220 bound */
+  --os-focus-motion-easing: cubic-bezier(0.2, 0, 0, 1);
+  --os-focus-inner-shadow: 0 0 0 4px rgba(29, 74, 255, 0.12);
+
+  /* G-PRESS-04 · press physics — same timing constants everywhere */
+  --os-press-duration-in: 90ms;
+  --os-press-duration-out: 210ms;
+  --os-press-easing-in: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --os-press-easing-out: cubic-bezier(0.2, 0, 0, 1);
+  --os-press-scale: 0.985;                          /* machined control — not marketing chip */
+  --os-press-y: 1px;                                /* 1-2px mass language */
+  --os-press-shadow-in: inset 0 1px 2px rgba(0,0,0,0.12);
+  --os-press-shadow-out: 0 1px 3px rgba(0,0,0,0.08);
+  /* destructive variant */
+  --os-press-destructive-bg: var(--os-status-danger);
+  --os-press-destructive-fg: #fffaf9;
+  --os-press-disabled-opacity: 0.44;
+  --os-press-disabled-cursor: not-allowed;
+
+  /* G-RESOLVE-05 · completion settle — shared resolve language */
+  --os-resolve-duration: 560ms;                     /* silk 520-680 bound */
+  --os-resolve-easing: cubic-bezier(0.16, 1, 0.3, 1); /* silk — calm confidence, not bounce */
+  --os-resolve-opacity-duration: 220ms;
+  --os-resolve-translate: 4px;                      /* settle distance — must change understanding */
+
+  /* (note removed for export) */
+  --os-combo-gap: 8px;
+}
+
+/* dark / void */
+
+
+/* ── caret application — single source ── */
+::selection {
+  background: var(--os-selection-bg);
+  color: var(--os-selection-fg);
+}
+::-moz-selection {
+  background: var(--os-selection-bg);
+  color: var(--os-selection-fg);
+}
+:focus-visible {
+  outline: var(--os-focus-ring-width) solid var(--os-focus-ring-color);
+  outline-offset: var(--os-focus-ring-offset);
+  border-radius: var(--os-focus-ring-radius);
+  transition: outline-offset var(--os-focus-motion-duration) var(--os-focus-motion-easing),
+              box-shadow var(--os-focus-motion-duration) var(--os-focus-motion-easing);
+  box-shadow: var(--os-focus-inner-shadow);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* caret in authoring surfaces — caret-color is the brand-active presence */
+input, textarea, [contenteditable="true"], [data-caret="syntax"] {
+  caret-color: var(--os-caret-color);
+}
+
+/* placeholder text — owner rule so no property inherits the browser default
+   (#757575 at reduced opacity = 4.41:1 on #FAFAFA, below the 4.5:1 floor) */
+::placeholder {
+  color: var(--os-placeholder);
+  opacity: 1;
+}
+
+/* width is not directly settable via CSS beyond caret-color — document as gate token;
+   custom editor surfaces (monaco/codemirror) must read --os-caret-width via JS and apply */
+
+/* ── press — machined control ── */
+[data-press] {
+  transition: transform var(--os-press-duration-out) var(--os-press-easing-out),
+              box-shadow var(--os-press-duration-out) var(--os-press-easing-out),
+              opacity var(--os-press-duration-out) var(--os-press-easing-out);
+}
+[data-press]:active {
+  transform: scale(var(--os-press-scale)) translateY(var(--os-press-y));
+  transition-duration: var(--os-press-duration-in);
+  transition-timing-function: var(--os-press-easing-in);
+  box-shadow: var(--os-press-shadow-in);
+}
+[data-press][data-variant="destructive"]:active {
+  background: var(--os-press-destructive-bg);
+  color: var(--os-press-destructive-fg);
+}
+[data-press][aria-disabled="true"],
+[data-press]:disabled {
+  opacity: var(--os-press-disabled-opacity);
+  cursor: var(--os-press-disabled-cursor);
+  pointer-events: none; /* disabled terminal — ledger must explain, not silently trap */
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── resolve — settle not evaporate ── */
+[data-resolve] {
+  transition: transform var(--os-resolve-duration) var(--os-resolve-easing),
+              opacity var(--os-resolve-opacity-duration) var(--os-resolve-easing);
+}
+[data-resolve][data-state="settled"] {
+  transform: translateY(0);
+  opacity: 1;
+}
+[data-resolve][data-state="resolving"] {
+  transform: translateY(var(--os-resolve-translate));
+  opacity: 0.96;
+}
+
+/* reduced-motion - preserve meaning, not different aesthetic */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --os-caret-blink-duration: 0ms; /* caret solid — settled projection */
+    --os-focus-motion-duration: 0ms;
+    --os-press-duration-in: 0ms;
+    --os-press-duration-out: 0ms;
+    --os-resolve-duration: 0ms;
+  }
+  [data-resolve][data-state="resolving"] { transform: none; }
+}
+
+/* >>> GEN-COLOR WRITE-BACK (auto) — edit gen-color.mjs, never this block <<< */
+/* (note removed for export) */
+:root {
+  --os-status-danger: #b02c36;
+  --os-status-danger-night: #ffaba7;
+  --os-status-warning: #7a5f0a;
+  --os-status-warning-night: #debc69;
+  --os-status-success: #2b6b31;
+  --os-status-success-night: #84d286;
+  --os-status-info: #006795;
+  --os-status-info-night: #76c8ff;
+}
+
+/* dead families (indigo/cyan/rose/coral) deleted 2026-08-31 — doors carrying them fall
+   to neutral + syntax until re-locked. Survivor: blue = syntax (locked); green = grepthat (explicitly non-locked). */
+:root {
+  --os-fam-ground: #F4F4F2; --os-fam-surface: #FAFAFA; --os-fam-border: #86868e; --os-fam-text: #0a0a0f; --os-fam-muted: #5b6270; --os-fam-accent: #1D4AFF; --os-fam-mark: #1D4AFF; /* muted was #6b7280 = 4.39:1 on ground; now matches --os-muted at 5.57:1 */
+  --os-night-fam-ground: #18181a; --os-night-fam-surface: #26272d; --os-night-fam-border: #696a72; --os-night-fam-text: #e6e7f0; --os-night-fam-muted: #cccdd5; --os-night-fam-accent: #9db8ff; --os-night-fam-mark: #1D4AFF;
+}
+[data-family="blue"] {
+  --os-blue-0: #ffffff;
+  --os-blue-1: #d5ddff;
+  --os-blue-2: #abbcff;
+  --os-blue-3: #819aff;
+  --os-blue-4: #5778ff;
+  --os-blue-5: #1d49fd;
+  --os-blue-6: #193fdc;
+  --os-blue-7: #1534ba;
+  --os-blue-8: #112a98;
+  --os-blue-9: #0d1f76;
+  --os-blue-10: #091555;
+  --os-blue-11: #050a33;
+  --os-fam-ground: #F4F4F2; --os-fam-surface: #FAFAFA; --os-fam-border: #83878e; --os-fam-text: #0f141d; --os-fam-muted: #575e69; --os-fam-accent: #1D4AFF; --os-fam-mark: #1D4AFF;
+  --os-night-fam-ground: #18181a; --os-night-fam-surface: #24282e; --os-night-fam-border: #676b72; --os-night-fam-text: #e4e8f0; --os-night-fam-muted: #c9ced6; --os-night-fam-accent: #9db8ff; --os-night-fam-mark: #1D4AFF;
+}
+[data-family="green"] { /* grepthat green — explicitly non-locked (DESIGN.md design standard: only syntax blue is the locked mark) */
+  --os-green-0: #dfffe6;
+  --os-green-1: #68fe9c;
+  --os-green-2: #23e77b;
+  --os-green-3: #1dca6b;
+  --os-green-4: #17ae5b;
+  --os-green-5: #12934c;
+  --os-green-6: #0d793d;
+  --os-green-7: #08602f;
+  --os-green-8: #044822;
+  --os-green-9: #023115;
+  --os-green-10: #011c09;
+  --os-green-11: #000802;
+  --os-fam-ground: #F4F4F2; --os-fam-surface: #ecf9ef; --os-fam-border: #818883; --os-fam-text: #0d160f; --os-fam-muted: #556058; --os-fam-accent: #0d7a3e; --os-fam-mark: #0d7a3e; /* non-locked — demoted per DESIGN.md design standard (only syntax blue locked) */
+  --os-night-fam-ground: #18181a; --os-night-fam-surface: #232925; --os-night-fam-border: #666d68; --os-night-fam-text: #e2eae4; --os-night-fam-muted: #c8cfc9; --os-night-fam-accent: #4ba969; --os-night-fam-mark: #0d7a3e; /* non-locked — demoted per DESIGN.md design standard (only syntax blue locked) */
+}
+
+/* >>> END GEN-COLOR WRITE-BACK <<< */
+
+/* >>> GEN-TYPE WRITE-BACK (auto) — edit gen-type.mjs, never this block <<< */
+:root {
+  --os-type-caption-size: 9.259px;
+  --os-type-caption-leading: 1.5;
+  --os-type-caption-tracking: 0.08em;
+  --os-type-caption-measure: 48ch;
+  --os-type-label-size: 11.111px;
+  --os-type-label-leading: 1.475;
+  --os-type-label-tracking: 0.08em;
+  --os-type-label-measure: 40ch;
+  --os-type-meta-size: 13.333px;
+  --os-type-meta-leading: 1.445;
+  --os-type-meta-tracking: 0.04em;
+  --os-type-meta-measure: 56ch;
+  --os-type-body-size: 16px;
+  --os-type-body-leading: 1.5;
+  --os-type-body-tracking: 0em;
+  --os-type-body-measure: 72ch;
+  --os-type-lede-size: 20px;
+  --os-type-lede-leading: 1.356;
+  --os-type-lede-tracking: -0.01em;
+  --os-type-lede-measure: 60ch;
+  --os-type-title-size: 25px;
+  --os-type-title-leading: 1.289;
+  --os-type-title-tracking: -0.02em;
+  --os-type-title-measure: 48ch;
+  --os-type-headline-size: 31.25px;
+  --os-type-headline-leading: 1.205;
+  --os-type-headline-tracking: -0.03em;
+  --os-type-headline-measure: 36ch;
+  --os-type-display-size: 39.063px;
+  --os-type-display-leading: 1.1;
+  --os-type-display-tracking: -0.04em;
+  --os-type-display-measure: 24ch;
+  --os-type-display-2-size: 48.828px;
+  --os-type-display-2-leading: 1.1;
+  --os-type-display-2-tracking: -0.04em;
+  --os-type-display-2-measure: 24ch;
+  --os-type-display-3-size: 61.035px;
+  --os-type-display-3-leading: 1.1;
+  --os-type-display-3-tracking: -0.04em;
+  --os-type-display-3-measure: 24ch;
+  --os-type-mono-size: 14px;
+}
+/* >>> END GEN-TYPE WRITE-BACK <<< */
+
+/* Product night latch — ANSWERS.md 2026-08-22.
+   Product truth is [data-night="1"] / [data-theme="night"], not prefers-color-scheme.
+   Hex below already live on :root / indigo night-fam. Do not invent a fifth. */
+[data-night="1"],
+[data-theme="night"] {
+  --os-ground-void: #18181a;
+  --os-ground-absorptive: #07080a;
+  --os-ground: var(--os-ground-void);
+  --os-ink: #F4F4F2;
+  --os-muted: #cccdd5;
+  --os-rule: #696a72;
+  --os-gold: var(--os-gold-night);
+  --os-blue: var(--os-blue-night);
+  --os-status-danger: var(--os-status-danger-night);
+  --os-status-warning: var(--os-status-warning-night);
+  --os-status-success: var(--os-status-success-night);
+  --os-status-info: var(--os-status-info-night);
+}
+[data-night="1"][data-family],
+[data-theme="night"][data-family],
+[data-night="1"] [data-family],
+[data-theme="night"] [data-family] {
+  --os-fam-ground: var(--os-night-fam-ground);
+  --os-fam-surface: var(--os-night-fam-surface);
+  --os-fam-border: var(--os-night-fam-border);
+  --os-fam-text: var(--os-night-fam-text);
+  --os-fam-muted: var(--os-night-fam-muted);
+  --os-fam-accent: var(--os-night-fam-accent);
+  --os-fam-mark: var(--os-night-fam-mark);
+}
+

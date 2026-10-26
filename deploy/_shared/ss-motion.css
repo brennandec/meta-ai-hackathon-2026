@@ -1,0 +1,52 @@
+/* ss-motion.css — Styleseed Motion Seeds · 5 seeds + loading law 3.8
+ * Engine: engines/styleseed-motion:1.1.0 — code wins over DESIGN.md prose
+ * Consumes deploy/_shared/os-tokens.css — never re-encodes hex/duration/easing outside seed
+ * Seeds: silk 520-680 / snap 140-220 / spring 280-420 / pulse 900-1400 / float 2400-4800
+ * Law: one seed per property locked in §V (silk 7 / snap 6 / spring 3 / pulse 2 / float 0), never mixed
+ */
+@import "./os-tokens.css";
+
+:root {
+  /* ── named seed tokens — consume via var(--ss-*) only ── */
+  --ss-silk-duration: 560ms; --ss-silk-easing: cubic-bezier(0.16,1,0.3,1); --ss-silk-stagger: 40ms;
+  --ss-snap-duration: 180ms; --ss-snap-easing: cubic-bezier(0.32,0,0.09,1); --ss-snap-catch: 14ms;
+  --ss-spring-duration: 340ms; --ss-spring-stiffness: 285; --ss-spring-damping: 20;
+  --ss-pulse-duration: 1200ms; --ss-float-duration: 3600ms;
+  /* loading law 3.8 */
+  --ss-modal-max: 280ms; --ss-press-z: -0.02; --ss-delete-travel: 12px;
+}
+
+/* ── seed application — one attribute, no per-element freelancing ── */
+[data-ss-seed="silk"] { --ss-duration: var(--ss-silk-duration); --ss-easing: var(--ss-silk-easing); }
+[data-ss-seed="snap"] { --ss-duration: var(--ss-snap-duration); --ss-easing: var(--ss-snap-easing); }
+[data-ss-seed="spring"] { --ss-duration: var(--ss-spring-duration); --ss-easing: cubic-bezier(0.2,0,0,1); }
+[data-ss-seed="pulse"] { --ss-duration: var(--ss-pulse-duration); --ss-easing: ease-in-out; }
+[data-ss-seed="float"] { --ss-duration: var(--ss-float-duration); --ss-easing: ease-in-out; }
+
+/* ── choreography — Z travel over scale-in-place (SPATIAL-GRAMMAR) ── */
+[data-ss-seed] [data-choreo] {
+  transition: transform var(--ss-duration) var(--ss-easing), opacity var(--ss-duration) var(--ss-easing);
+}
+[data-ss-seed="silk"] [data-choreo] { transition-delay: var(--ss-silk-stagger, 0ms); }
+[data-ss-seed="snap"] [data-choreo] { transition-delay: 0ms; } /* snap has no stagger — immediate */
+[data-ss-seed="spring"] [data-choreo] { transition-timing-function: cubic-bezier(0.16,1,0.3,1); }
+
+/* ── loading law 3.8 — progress lives inside subject ── */
+[data-loading="determinate"] [data-progress] { /* progress lives inside object being acted on — geometry/tendril fill */
+  transition: transform var(--ss-silk-duration) var(--ss-silk-easing);
+}
+[data-loading="indeterminate"] [data-progress] { /* skeleton > spinner — spatial breathing 0.06-0.11Hz 2-4% drift */
+  animation: ss-breathe 3.2s ease-in-out infinite;
+}
+@keyframes ss-breathe { 0%,100%{ opacity:0.92; transform: scale(1); } 50%{ opacity:1; transform: scale(1.012); } }
+[data-state="success"] { transform: translateZ(var(--ss-press-z)) scale(1.015); transition: transform 220ms cubic-bezier(0.16,1,0.3,1); }
+[data-state="error"] { animation: ss-shake 180ms cubic-bezier(0.32,0,0.09,1); }
+@keyframes ss-shake { 0%,100%{ transform: translateX(0); } 25%{ transform: translateX(-3px); } 75%{ transform: translateX(3px); } }
+
+/* ── reduced-motion — beautiful static projection at t≈0.15, not paused frame (Law 6) ── */
+@media (prefers-reduced-motion: reduce) {
+  :root { --ss-silk-duration: 0ms; --ss-snap-duration: 0ms; --ss-spring-duration: 0ms; --ss-pulse-duration: 0ms; --ss-float-duration: 0ms; }
+  [data-ss-seed] [data-choreo] { transition-duration: 0ms; transition-delay: 0ms; transform: none !important; }
+  [data-loading="indeterminate"] [data-progress] { animation: none; }
+  [data-state="error"] { animation: none; }
+}

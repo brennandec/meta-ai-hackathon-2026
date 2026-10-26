@@ -1,0 +1,58 @@
+/* design-system-v1/components.css — the 11 kinds. Tokens only via var(--*). Zero raw literals.
+ * Each kind: Still-First poster at TIME=0, no JS needed. Motion additive only.
+ */
+@import "./tokens.css";
+
+/* C1 Frame — the still */
+.frame { display: block; border: 1px solid var(--line); border-radius: var(--ds-r12); background: var(--surface); padding: var(--ds-s24); gap: var(--ds-s24); }
+.frame[data-plane="near"] { background: var(--paper); }
+/* C2 Statement — the claim */
+.statement { font-size: clamp(var(--ds-t32), 4vw + 1rem, var(--ds-t44)); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; color: var(--ink); max-width: var(--ds-measure-statement); overflow-wrap: anywhere; }
+.statement[data-variant="display"] { font-size: clamp(var(--ds-t44), 6vw + 1rem, var(--ds-t60)); }
+/* C3 Prose — reading vessel */
+.prose { font-size: var(--ds-t16); line-height: 1.6; color: var(--ink-body); max-width: var(--ds-measure-prose); }
+.prose p + p { margin-top: var(--ds-s16); }
+/* C4 Kicker — honest label */
+.kicker { font-family: var(--ds-font-mono); font-size: var(--ds-t12); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+/* C5 CodeBlock — runnable proof */
+.codeblock { font-family: var(--ds-font-mono); font-size: 13px; line-height: 1.55; background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--ds-r8); padding: var(--ds-s16); overflow-x: auto; max-width: 80ch; }
+@media (min-width: 744px) { .codeblock { font-size: var(--ds-t14); } }
+.codeblock pre { margin: 0; }
+/* C6 Figure — matted thing, one-light shading baked */
+.figure { border: 1px solid var(--line); border-radius: var(--ds-r12); overflow: hidden; background: var(--surface); }
+.figure img { display: block; width: 100%; height: auto; object-fit: cover; }
+.figure[data-plane="far"] { opacity: 0.92; }
+.figure figcaption { font-family: var(--ds-font-mono); font-size: var(--ds-t12); color: var(--ink-muted); padding: var(--ds-s12) var(--ds-s16); border-top: 1px solid var(--line); }
+/* C7 OfferUnit — offering with receipts */
+.offer { border: 1px solid var(--line-strong); border-radius: var(--ds-r12); padding: var(--ds-s24); background: var(--paper); display: flex; flex-direction: column; gap: var(--ds-s12); max-width: var(--ds-measure-offer); }
+.offer[data-featured="true"] { box-shadow: var(--ds-shadow-mid); }
+.offer .offer-price { font-family: var(--ds-font-mono); font-size: var(--ds-t14); color: var(--ink-body); }
+.offer .offer-negation { font-size: var(--ds-t14); color: var(--ink-muted); font-style: italic; }
+/* C8 Receipt — V/D/C chip */
+.receipt { display: inline-flex; flex-wrap: wrap; gap: var(--ds-s8); font-family: var(--ds-font-mono); font-size: var(--ds-t12); border: 1px solid var(--line); border-radius: var(--ds-r8); padding: var(--ds-s8) var(--ds-s12); background: var(--surface); }
+.receipt a { color: var(--accent-proof); text-decoration: underline; text-underline-offset: 2px; }
+.receipt .receipt-cost { color: var(--ink-body); font-weight: 600; }
+/* C9 Action — honest verb */
+.action { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 var(--ds-s24); border-radius: var(--ds-r8); background: var(--accent); color: var(--accent-ink); font-size: 14px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; }
+.action[data-variant="quiet"] { background: transparent; color: var(--accent); border: 1px solid var(--line-strong); }
+/* C10 Ledger — comparison */
+.ledger { width: 100%; border-collapse: collapse; font-size: var(--ds-t14); }
+.ledger th { font-family: var(--ds-font-mono); font-size: var(--ds-t12); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted); text-align: left; padding: var(--ds-s12) var(--ds-s12); border-bottom: 2px solid var(--line-strong); }
+.ledger td { padding: var(--ds-s12) var(--ds-s12); border-bottom: 1px solid var(--line); color: var(--ink-body); }
+.ledger td:first-child { font-family: var(--ds-font-mono); }
+/* ledger at 320 stacks — via data-label switch (no horizontal scroll) */
+@media (max-width: 743px) {
+  .ledger thead { display: none; }
+  .ledger, .ledger tbody, .ledger tr, .ledger td { display: block; width: 100%; }
+  .ledger tr { border: 1px solid var(--line); border-radius: var(--ds-r8); margin-bottom: var(--ds-s12); padding: var(--ds-s12); }
+  .ledger td::before { content: attr(data-label); font-family: var(--ds-font-mono); font-size: var(--ds-t12); color: var(--ink-muted); display: block; margin-bottom: var(--ds-s4); }
+}
+/* C11 Rail — index */
+.rail { display: flex; flex-direction: column; gap: var(--ds-s16); padding: var(--ds-s16); border: 1px solid var(--line); border-radius: var(--ds-r12); background: var(--surface); }
+.rail a { font-family: var(--ds-font-mono); font-size: var(--ds-t14); color: var(--ink-body); text-decoration: none; padding: var(--ds-s8) 0; border-bottom: 1px solid var(--line); }
+.rail a:last-child { border-bottom: none; }
+/* offering grid — layout contract */
+.offer-grid { display: grid; gap: var(--ds-s24); grid-template-columns: 1fr; }
+@media (min-width: 744px) { .offer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .offer-grid { grid-template-columns: repeat(3, 1fr); } }
+/* ledger + frame spacing law: gaps only via scale — CHECK-03 probes this file and must pass */
