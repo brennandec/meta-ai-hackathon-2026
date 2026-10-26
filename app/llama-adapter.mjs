@@ -44,9 +44,15 @@ export const PLANT_LIMIT_FIELDS = Object.freeze([
 export const STATE_SNAPSHOT_FIELDS = Object.freeze([
   'massKg',
   'velocityMps',
-  'stopDistanceM',
+  'stopDistanceM'
+]);
+
+export const MUTABLE_CONTROL_FIELDS = Object.freeze([
+  'id',
+  'title',
   'thrustN'
 ]);
+
 
 /**
  * Strict JSON Schema for Meta Model API response_format (json_schema protocol).
@@ -416,10 +422,27 @@ export function validateAuthoritativeCurrentState(currentState) {
 }
 
 /**
+ * Extracts the distinctly typed mutable control proposal from a 9-parameter kinematic proposal.
+ * Only control parameters (id, title, thrustN) are mutable; observed state (massKg, velocityMps, stopDistanceM)
+ * and plant limits (frictionMu, maxSafeBrakeForceN, structuralLimitN) are immutable server-owned inputs.
+ */
+export function extractMutableControlProposal(proposal) {
+  if (!proposal || typeof proposal !== 'object' || Array.isArray(proposal)) {
+    return null;
+  }
+  return Object.freeze({
+    type: 'mutable_control_proposal',
+    id: typeof proposal.id === 'string' && proposal.id ? proposal.id.slice(0, 64) : 'llama-proposal',
+    title: typeof proposal.title === 'string' && proposal.title ? proposal.title.slice(0, 128) : 'Physical Deceleration Proposal',
+    thrustN: proposal.thrustN
+  });
+}
+
+/**
  * Enforces immutable server-owned plant limits AND authoritative currentState snapshot
  * on an untrusted proposal (G3).
  * Detects any attempt to alter or inflate frictionMu, maxSafeBrakeForceN, or structuralLimitN,
- * or to falsify currentState's massKg, velocityMps, stopDistanceM, or thrustN.
+ * or to falsify currentState's immutable observed massKg, velocityMps, or stopDistanceM.
  */
 export function enforceImmutablePlantLimits(
   proposal,
@@ -430,6 +453,7 @@ export function enforceImmutablePlantLimits(
   if (!proposal || typeof proposal !== 'object' || Array.isArray(proposal)) {
     return {
       enforcedProposal: null,
+      controlProposal: null,
       limitTamper: null,
       limitsInflated: false,
       invalidLimitField: null,
@@ -494,7 +518,13 @@ export function enforceImmutablePlantLimits(
       ) {
         const authoritativeVal = currentState[field];
         const proposedVal = proposal[field];
-        if (typeof proposedVal === 'number' && Number.isFinite(proposedVal) && !Object.is(proposedVal, authoritativeVal)) {
+        if (
+          Object.hasOwn(proposal, field) &&
+          proposedVal !== undefined &&
+          typeof proposedVal === 'number' &&
+          Number.isFinite(proposedVal) &&
+          !Object.is(proposedVal, authoritativeVal)
+        ) {
           stateMismatches.push({
             field,
             proposed: proposedVal,
@@ -531,20 +561,23 @@ export function enforceImmutablePlantLimits(
     return proposedVal;
   };
 
+  const controlProposal = extractMutableControlProposal(proposal);
+
   const enforcedProposal = {
-    id: typeof proposal.id === 'string' && proposal.id ? proposal.id.slice(0, 64) : 'llama-proposal',
-    title: typeof proposal.title === 'string' && proposal.title ? proposal.title.slice(0, 128) : 'Physical Deceleration Proposal',
+    id: controlProposal.id,
+    title: controlProposal.title,
     massKg: resolveStateField('massKg'),
     velocityMps: resolveStateField('velocityMps'),
     stopDistanceM: resolveStateField('stopDistanceM'),
     frictionMu: invalidLimitField?.field === 'frictionMu' ? proposal.frictionMu : pinned.frictionMu,
     maxSafeBrakeForceN: invalidLimitField?.field === 'maxSafeBrakeForceN' ? proposal.maxSafeBrakeForceN : pinned.maxSafeBrakeForceN,
-    thrustN: resolveStateField('thrustN'),
+    thrustN: controlProposal.thrustN,
     structuralLimitN: invalidLimitField?.field === 'structuralLimitN' ? proposal.structuralLimitN : pinned.structuralLimitN
   };
 
   return {
     enforcedProposal,
+    controlProposal,
     limitTamper,
     limitsInflated: inflatedFields.length > 0,
     invalidLimitField,
@@ -553,20 +586,26 @@ export function enforceImmutablePlantLimits(
 }
 
 /**
- * Deterministic 1-step bounded safe correction (G2).
- * Given a refused proposal and its refusal evaluation, synthesizes at most ONE bounded correction
- * clamped strictly inside server-owned plant limits.
+ * Deterministic 1-step bounded safe control correction (G2).
+ * Given a refused proposal and the authoritative currentState snapshot, synthesizes at most ONE
+ * bounded control correction that adjusts ONLY mutable control actuation (thrustN = 0.0)
+ * while keeping observed massKg, velocityMps, and stopDistanceM strictly equal to the authoritative snapshot.
+ * Never solves an impossible stop by altering observed massKg, velocityMps, or stopDistanceM.
  */
 export function applyBoundedStepCorrection(
   proposal,
   refusalEvaluation,
   plantLimits = IMMUTABLE_PLANT_LIMITS,
-  correctionOverride = null
+  correctionOverride = null,
+  currentState = null
 ) {
   const pinned = plantLimits && typeof plantLimits === 'object' ? plantLimits : IMMUTABLE_PLANT_LIMITS;
+  const snapshot = currentState && typeof currentState === 'object' && !Array.isArray(currentState)
+    ? currentState
+    : proposal;
 
   if (correctionOverride && typeof correctionOverride === 'object') {
-    const { enforcedProposal } = enforceImmutablePlantLimits(correctionOverride, pinned);
+    const { enforcedProposal } = enforceImmutablePlantLimits(correctionOverride, pinned, snapshot);
     return enforcedProposal;
   }
 
@@ -574,57 +613,22 @@ export function applyBoundedStepCorrection(
     return null;
   }
 
-  const massKg = proposal.massKg;
-  const rawStopDistance = proposal.stopDistanceM;
-  const rawVelocity = proposal.velocityMps;
-
-  // Cannot deterministically repair non-finite or non-positive plant mass
-  if (typeof massKg !== 'number' || !Number.isFinite(massKg) || massKg <= 0) {
-    return {
-      ...proposal,
-      frictionMu: pinned.frictionMu,
-      maxSafeBrakeForceN: pinned.maxSafeBrakeForceN,
-      structuralLimitN: pinned.structuralLimitN
-    };
-  }
-
-  if (typeof rawVelocity !== 'number' || !Number.isFinite(rawVelocity) || rawVelocity < 0 ||
-      typeof rawStopDistance !== 'number' || !Number.isFinite(rawStopDistance) || rawStopDistance <= 0) {
-    return {
-      ...proposal,
-      frictionMu: pinned.frictionMu,
-      maxSafeBrakeForceN: pinned.maxSafeBrakeForceN,
-      structuralLimitN: pinned.structuralLimitN
-    };
-  }
-
-  // Cannot synthesize a valid 1-step correction when stopDistanceM is already inside collision horizon (< 1.0m) at high velocity
-  if (rawStopDistance < 1.0 && rawVelocity > 5.0) {
-    return {
-      ...proposal,
-      frictionMu: pinned.frictionMu,
-      maxSafeBrakeForceN: pinned.maxSafeBrakeForceN,
-      structuralLimitN: pinned.structuralLimitN
-    };
-  }
-
-  const safeStopDistanceM = Math.max(rawStopDistance, 2.0);
-  const maxFrictionForceN = pinned.frictionMu * massKg * 9.80665;
-  const maxEnvelopeForceN = Math.min(
-    maxFrictionForceN,
-    pinned.maxSafeBrakeForceN,
-    pinned.structuralLimitN
-  ) * 0.85;
-
-  const maxSafeVelocityMps = Math.sqrt((2.0 * maxEnvelopeForceN * safeStopDistanceM) / massKg);
-  const correctedVelocityMps = Math.floor(Math.min(rawVelocity, maxSafeVelocityMps) * 1000) / 1000;
+  const observedMassKg = snapshot && typeof snapshot.massKg === 'number' && Number.isFinite(snapshot.massKg)
+    ? snapshot.massKg
+    : proposal.massKg;
+  const observedVelocityMps = snapshot && typeof snapshot.velocityMps === 'number' && Number.isFinite(snapshot.velocityMps)
+    ? snapshot.velocityMps
+    : proposal.velocityMps;
+  const observedStopDistanceM = snapshot && typeof snapshot.stopDistanceM === 'number' && Number.isFinite(snapshot.stopDistanceM)
+    ? snapshot.stopDistanceM
+    : proposal.stopDistanceM;
 
   return {
     id: `${proposal.id || 'llama-proposal'}-bounded-correction-1`.slice(0, 64),
-    title: `${proposal.title || 'Proposal'} (Bounded 1-Step Safe Correction)`.slice(0, 128),
-    massKg,
-    velocityMps: correctedVelocityMps,
-    stopDistanceM: safeStopDistanceM,
+    title: `${proposal.title || 'Proposal'} (Bounded 1-Step Safe Control Correction)`.slice(0, 128),
+    massKg: observedMassKg,
+    velocityMps: observedVelocityMps,
+    stopDistanceM: observedStopDistanceM,
     frictionMu: pinned.frictionMu,
     maxSafeBrakeForceN: pinned.maxSafeBrakeForceN,
     thrustN: 0.0,
@@ -970,6 +974,7 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({
 /**
  * Derives the server-owned authoritative kinematic state snapshot for an offline fixture
  * when a caller selects a fixture without specifying an explicit currentState override.
+ * Includes only immutable observed physical state fields (massKg, velocityMps, stopDistanceM).
  */
 export function deriveAuthoritativeStateSnapshot(offlineFixture) {
   let src = null;
@@ -984,8 +989,7 @@ export function deriveAuthoritativeStateSnapshot(offlineFixture) {
   return {
     massKg: typeof src?.massKg === 'number' && Number.isFinite(src.massKg) && src.massKg > 0 ? src.massKg : 500.0,
     velocityMps: typeof src?.velocityMps === 'number' && Number.isFinite(src.velocityMps) && src.velocityMps >= 0 ? src.velocityMps : 3.0,
-    stopDistanceM: typeof src?.stopDistanceM === 'number' && Number.isFinite(src.stopDistanceM) && src.stopDistanceM > 0 ? src.stopDistanceM : 2.0,
-    ...(typeof src?.thrustN === 'number' && Number.isFinite(src.thrustN) && src.thrustN >= 0 ? { thrustN: src.thrustN } : {})
+    stopDistanceM: typeof src?.stopDistanceM === 'number' && Number.isFinite(src.stopDistanceM) && src.stopDistanceM > 0 ? src.stopDistanceM : 2.0
   };
 }
 
@@ -1041,6 +1045,7 @@ export function evaluateAndGateLlamaProposal({
       stateTamper: null,
       limitsInflated: false,
       proposal: null,
+      controlProposal: null,
       evaluation: invalidStateEval,
       initialEvaluation: invalidStateEval,
       finalEvaluation: invalidStateEval,
@@ -1058,6 +1063,7 @@ export function evaluateAndGateLlamaProposal({
   const authoritativeState = stateCheck.state;
   const {
     enforcedProposal,
+    controlProposal,
     limitTamper,
     limitsInflated,
     invalidLimitField,
@@ -1091,6 +1097,7 @@ export function evaluateAndGateLlamaProposal({
       stateTamper: null,
       limitsInflated: false,
       proposal: null,
+      controlProposal: null,
       evaluation: invalidEval,
       initialEvaluation: invalidEval,
       finalEvaluation: invalidEval,
@@ -1105,7 +1112,20 @@ export function evaluateAndGateLlamaProposal({
     };
   }
 
-  const physicsOnAuthoritative = evaluatePhysicsProposal(enforcedProposal);
+  const effectiveSnapshot = {
+    ...authoritativeState,
+    ...(typeof authoritativeState.massKg === 'number' && Number.isFinite(authoritativeState.massKg)
+      ? {}
+      : (typeof enforcedProposal.massKg === 'number' && Number.isFinite(enforcedProposal.massKg) ? { massKg: enforcedProposal.massKg } : {})),
+    ...(typeof authoritativeState.velocityMps === 'number' && Number.isFinite(authoritativeState.velocityMps)
+      ? {}
+      : (typeof enforcedProposal.velocityMps === 'number' && Number.isFinite(enforcedProposal.velocityMps) ? { velocityMps: enforcedProposal.velocityMps } : {})),
+    ...(typeof authoritativeState.stopDistanceM === 'number' && Number.isFinite(authoritativeState.stopDistanceM)
+      ? {}
+      : (typeof enforcedProposal.stopDistanceM === 'number' && Number.isFinite(enforcedProposal.stopDistanceM) ? { stopDistanceM: enforcedProposal.stopDistanceM } : {}))
+  };
+
+  const physicsOnAuthoritative = evaluatePhysicsProposal(effectiveSnapshot, enforcedProposal);
   let initialEvaluation;
   if (invalidLimitField) {
     initialEvaluation = {
@@ -1219,6 +1239,7 @@ export function evaluateAndGateLlamaProposal({
       stateTamper,
       limitsInflated,
       proposal: enforcedProposal,
+      controlProposal,
       rawProposal: proposal,
       evaluation: initialEvaluation,
       initialEvaluation,
@@ -1251,6 +1272,7 @@ export function evaluateAndGateLlamaProposal({
       stateTamper,
       limitsInflated,
       proposal: enforcedProposal,
+      controlProposal,
       rawProposal: proposal,
       evaluation: initialEvaluation,
       initialEvaluation,
@@ -1270,15 +1292,59 @@ export function evaluateAndGateLlamaProposal({
   }
 
   // Execute at most ONE bounded correction step (MAX_BOUNDED_CORRECTIONS = 1)
-  const correctedProposal = applyBoundedStepCorrection(
-    enforcedProposal,
-    initialEvaluation,
-    pinnedLimits,
-    correctionOverride
-  );
-  const correctedEvaluation = evaluatePhysicsProposal(correctedProposal);
+  // Both automatic bounded control correction and caller correctionOverride are evaluated
+  // against the SAME immutable observed effectiveSnapshot (massKg, velocityMps, stopDistanceM).
+  const rawCorrectionCandidate = correctionOverride && typeof correctionOverride === 'object'
+    ? correctionOverride
+    : applyBoundedStepCorrection(
+        enforcedProposal,
+        initialEvaluation,
+        pinnedLimits,
+        null,
+        effectiveSnapshot
+      );
 
-  const correctedCriticVote = typeof criticEvaluator === 'function'
+  const correctionEnforcement = enforceImmutablePlantLimits(
+    rawCorrectionCandidate,
+    pinnedLimits,
+    effectiveSnapshot
+  );
+  const correctedProposal = correctionEnforcement.enforcedProposal;
+  const correctedControlProposal = correctionEnforcement.controlProposal;
+  const correctionStateTamper = correctionEnforcement.stateTamper;
+  const correctionLimitTamper = correctionEnforcement.limitTamper;
+  const correctionInvalidLimit = correctionEnforcement.invalidLimitField;
+
+  const correctedPhysicsEval = evaluatePhysicsProposal(effectiveSnapshot, correctedProposal);
+  let correctedEvaluation;
+  if (correctionInvalidLimit) {
+    correctedEvaluation = {
+      status: 'refused',
+      code: correctionInvalidLimit.code,
+      field: correctionInvalidLimit.field,
+      reason: correctionInvalidLimit.reason
+    };
+  } else if (correctionStateTamper) {
+    correctedEvaluation = {
+      status: 'refused',
+      code: 'STATE_SNAPSHOT_MISMATCH',
+      field: correctionStateTamper.field,
+      stateTamper: correctionStateTamper,
+      state: correctedPhysicsEval.state || null,
+      reason: `Bounded correction attempted to alter authoritative currentState.${correctionStateTamper.field} (${correctionStateTamper.proposed} !== ${correctionStateTamper.authoritative})`
+    };
+  } else if ((strictLimitTamper || rawCorrectionCandidate?.forgedLimits === true) && correctionLimitTamper) {
+    correctedEvaluation = {
+      status: 'refused',
+      code: 'LIMIT_TAMPER',
+      field: correctionLimitTamper.field,
+      reason: `Bounded correction attempted to override immutable plant limit ${correctionLimitTamper.field} (${correctionLimitTamper.proposed} !== ${correctionLimitTamper.pinned})`
+    };
+  } else {
+    correctedEvaluation = correctedPhysicsEval;
+  }
+
+  const rawCorrectedCriticVote = typeof criticEvaluator === 'function'
     ? criticEvaluator(correctedProposal, { strictManifest: true }, pinnedLimits)
     : {
         role: 'kinematic_critic',
@@ -1289,7 +1355,16 @@ export function evaluateAndGateLlamaProposal({
         limitsSource: 'manifest'
       };
 
-  const correctedInterlockVote = typeof interlockEvaluator === 'function'
+  const correctedCriticVote = correctedEvaluation.status !== 'accepted' && rawCorrectedCriticVote.vote === 'APPROVE'
+    ? {
+        ...rawCorrectedCriticVote,
+        vote: 'OBJECT',
+        code: correctedEvaluation.code,
+        reason: correctedEvaluation.reason
+      }
+    : rawCorrectedCriticVote;
+
+  const rawCorrectedInterlockVote = typeof interlockEvaluator === 'function'
     ? interlockEvaluator(correctedProposal, { strictManifest: true }, pinnedLimits)
     : {
         role: 'safety_interlock',
@@ -1299,6 +1374,16 @@ export function evaluateAndGateLlamaProposal({
         reason: correctedEvaluation.reason || 'Safety interlock evaluation on bounded correction',
         state: correctedEvaluation.state || null
       };
+
+  const correctedInterlockVote = correctedEvaluation.status !== 'accepted' && rawCorrectedInterlockVote.vote === 'APPROVE'
+    ? {
+        ...rawCorrectedInterlockVote,
+        vote: 'INTERLOCK_HALT',
+        contractStatus: 'refused',
+        code: correctedEvaluation.code,
+        reason: correctedEvaluation.reason
+      }
+    : rawCorrectedInterlockVote;
 
   const correctedQuorum = typeof quorumResolver === 'function'
     ? quorumResolver({
@@ -1341,6 +1426,8 @@ export function evaluateAndGateLlamaProposal({
     parentRefusalCode: initialReceipt.code,
     parentRefusalReason: initialReceipt.reason,
     correctedProposal,
+    controlProposal: correctedControlProposal,
+    stateTamper: correctionStateTamper,
     evaluation: correctedEvaluation,
     criticVote: correctedCriticVote,
     interlockVote: correctedInterlockVote,
@@ -1351,16 +1438,18 @@ export function evaluateAndGateLlamaProposal({
   return {
     status: recovered ? 'ok' : 'refused',
     verdict: recovered ? 'corrected_after_refusal' : 'refused',
-    code: initialReceipt.code,
-    reason: initialReceipt.reason,
+    code: recovered ? initialReceipt.code : (correctedEvaluation.code || initialReceipt.code),
+    reason: recovered ? initialReceipt.reason : (correctedEvaluation.reason || initialReceipt.reason),
     currentState: authoritativeState,
     plantLimits: pinnedLimits,
     limitTamper,
-    stateTamper,
+    stateTamper: stateTamper || correctionStateTamper,
     limitsInflated,
     proposal: enforcedProposal,
+    controlProposal,
     rawProposal: proposal,
     correctedProposal: recovered ? correctedProposal : null,
+    correctedControlProposal: recovered ? correctedControlProposal : null,
     evaluation: initialEvaluation,
     initialEvaluation,
     finalEvaluation: correctedEvaluation,
