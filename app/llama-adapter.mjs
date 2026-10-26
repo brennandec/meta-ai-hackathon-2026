@@ -1467,11 +1467,43 @@ export function evaluateAndGateLlamaProposal({
   };
 }
 
+function extractProviderRequestIdHeader(headers) {
+  if (!headers) {
+    return null;
+  }
+  const headerKeys = ['x-request-id', 'x-meta-request-id', 'request-id'];
+  if (typeof headers.get === 'function') {
+    for (const key of headerKeys) {
+      const value = headers.get(key);
+      if (typeof value === 'string' && value.trim().length > 0) {
+        return value.trim();
+      }
+    }
+  } else if (typeof headers === 'object') {
+    for (const [k, v] of Object.entries(headers)) {
+      if (headerKeys.includes(String(k).toLowerCase()) && typeof v === 'string' && v.trim().length > 0) {
+        return v.trim();
+      }
+    }
+  }
+  return null;
+}
+
 /**
  * Requests a physical parameter proposal from Meta Model API (Muse Spark 1.3 / Muse Wonder 1.0).
  * If offlineFixture is specified, replays offline without network access.
  * Otherwise, enforces Pre-Rules Release Gate and a bounded AbortController deadline (timeoutMs)
  * before issuing a single-attempt outbound request.
+ *
+ * Model identity & trace invariants:
+ * - Preserves requestedModel separately from provider-reported actualModel.
+ * - When provider data.model is missing/absent, actualModel is null and actualModelStatus is 'UNCONFIRMED'
+ *   (never filled with requestedModel as proof). When requireConfirmedModelIdentity is true, missing
+ *   actualModel is refused with UNCONFIRMED_ACTUAL_MODEL.
+ * - When provider data.model is unknown (not in CONFIGURABLE_LLAMA_MODELS) or differs from requestedModel,
+ *   marks actualModelStatus 'UNCONFIRMED' and refuses with UNCONFIRMED_ACTUAL_MODEL / ACTUAL_MODEL_MISMATCH.
+ * - Preserves providerRequestId, providerResponseId, actual UTC timestamps, and request/response hashes
+ *   on both acceptances and refusals/errors where available.
  */
 export async function requestLlamaPhysicsProposal({
   instruction = 'Plan deceleration maneuver',
@@ -1482,7 +1514,8 @@ export async function requestLlamaPhysicsProposal({
   keyLoader = null,
   fetchImpl = globalThis.fetch,
   offlineFixture = null,
-  timeoutMs = DEFAULT_REQUEST_TIMEOUT_MS
+  timeoutMs = DEFAULT_REQUEST_TIMEOUT_MS,
+  requireConfirmedModelIdentity = false
 } = {}) {
   // 0. Validate model against official Meta Model API allowlist
   if (typeof model !== 'string' || !CONFIGURABLE_LLAMA_MODELS.includes(model)) {
@@ -1490,6 +1523,10 @@ export async function requestLlamaPhysicsProposal({
       status: 'refused',
       code: 'UNSUPPORTED_META_MODEL',
       model,
+      requestedModel: model,
+      actualModel: null,
+      actualModelStatus: 'UNCONFIRMED',
+      modelIdentityConfirmed: false,
       reason: `Model ${String(model)} is not in CONFIGURABLE_LLAMA_MODELS (${CONFIGURABLE_LLAMA_MODELS.join(', ')})`
     };
   }
@@ -1503,6 +1540,10 @@ export async function requestLlamaPhysicsProposal({
         source: `offline_fixture:${offlineFixture}`,
         fixtureMode: 'MOCK_OFFLINE_FIXTURE',
         model,
+        requestedModel: model,
+        actualModel: null,
+        actualModelStatus: 'NOT_APPLICABLE_OFFLINE_FIXTURE',
+        modelIdentityConfirmed: false,
         proposal: fixtureProposal
       };
     }
@@ -1516,6 +1557,10 @@ export async function requestLlamaPhysicsProposal({
         source: 'offline_fixture',
         fixtureMode: 'MOCK_OFFLINE_FIXTURE',
         model,
+        requestedModel: model,
+        actualModel: null,
+        actualModelStatus: 'NOT_APPLICABLE_OFFLINE_FIXTURE',
+        modelIdentityConfirmed: false,
         proposal: extracted
       };
     }
@@ -1528,6 +1573,10 @@ export async function requestLlamaPhysicsProposal({
       source: 'offline_fixture',
       fixtureMode: 'MOCK_OFFLINE_FIXTURE',
       model,
+      requestedModel: model,
+      actualModel: null,
+      actualModelStatus: 'NOT_APPLICABLE_OFFLINE_FIXTURE',
+      modelIdentityConfirmed: false,
       proposal: extracted
     };
   }
@@ -1535,13 +1584,23 @@ export async function requestLlamaPhysicsProposal({
   // 2. Pre-Rules Release Gate & Dedicated Keyfile Loader Enforcement
   const gate = checkMetaRulesGate(env, { rulesVerified, keyLoader });
   if (!gate.allowed) {
-    return gate.refusal;
+    return {
+      ...gate.refusal,
+      requestedModel: model,
+      actualModel: null,
+      actualModelStatus: 'UNCONFIRMED',
+      modelIdentityConfirmed: false
+    };
   }
 
   if (typeof fetchImpl !== 'function') {
     return {
       status: 'refused',
       code: 'NETWORK_ERROR',
+      requestedModel: model,
+      actualModel: null,
+      actualModelStatus: 'UNCONFIRMED',
+      modelIdentityConfirmed: false,
       reason: 'No valid fetch implementation available for Meta Model API dispatch'
     };
   }
@@ -1565,6 +1624,7 @@ export async function requestLlamaPhysicsProposal({
 
   const requestBodyStr = JSON.stringify(payload);
   const requestSha256 = sha256Sync(canonicalStringify(payload));
+  const attemptStartedAt = new Date().toISOString();
   const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
   let timerId = null;
 
@@ -1598,19 +1658,93 @@ export async function requestLlamaPhysicsProposal({
     ]);
 
     if (!response || typeof response.ok !== 'boolean') {
+      const completedAt = new Date().toISOString();
+      const invalidResponseCallProof = {
+        fixtureMode: 'LIVE_META_API',
+        authSource: 'dedicated_keyfile_loader',
+        keyState: 'ready',
+        endpoint: META_LLAMA_ENDPOINT,
+        singleAttempt: true,
+        attemptCount: 1,
+        retriesPerformed: 0,
+        httpStatus: null,
+        requestedModel: model,
+        actualModel: null,
+        actualModelStatus: 'UNCONFIRMED',
+        modelIdentityConfirmed: false,
+        providerRequestId: null,
+        providerResponseId: null,
+        providerResponseIdStatus: 'UNCONFIRMED',
+        requestSha256,
+        responseSha256: null,
+        usage: null,
+        usageStatus: 'UNAVAILABLE',
+        attemptStartedAt,
+        timestamp: completedAt
+      };
       return {
         status: 'refused',
         code: 'NETWORK_ERROR',
-        reason: 'Meta Model API returned an invalid HTTP response object'
+        requestedModel: model,
+        actualModel: null,
+        actualModelStatus: 'UNCONFIRMED',
+        modelIdentityConfirmed: false,
+        reason: 'Meta Model API returned an invalid HTTP response object',
+        callProof: invalidResponseCallProof
       };
     }
 
+    const headerRequestId = extractProviderRequestIdHeader(response.headers);
+
     if (!response.ok) {
+      let errData = null;
+      if (typeof response.json === 'function') {
+        try {
+          errData = await Promise.race([response.json(), timeoutPromise]);
+        } catch {
+          errData = null;
+        }
+      }
+      const errResponseId = typeof errData?.id === 'string' && errData.id.trim().length > 0
+        ? errData.id.trim()
+        : null;
+      const errActualModel = typeof errData?.model === 'string' && errData.model.trim().length > 0
+        ? errData.model.trim()
+        : null;
+      const completedAt = new Date().toISOString();
+      const httpErrorCallProof = {
+        fixtureMode: 'LIVE_META_API',
+        authSource: 'dedicated_keyfile_loader',
+        keyState: 'ready',
+        endpoint: META_LLAMA_ENDPOINT,
+        singleAttempt: true,
+        attemptCount: 1,
+        retriesPerformed: 0,
+        httpStatus: response.status,
+        requestedModel: model,
+        actualModel: errActualModel,
+        actualModelStatus: 'UNCONFIRMED',
+        modelIdentityConfirmed: false,
+        providerRequestId: headerRequestId || errResponseId || null,
+        providerResponseId: errResponseId,
+        providerResponseIdStatus: errResponseId ? 'CONFIRMED' : 'UNCONFIRMED',
+        requestSha256,
+        responseSha256: errData && typeof errData === 'object' ? sha256Sync(canonicalStringify(errData)) : null,
+        usage: errData?.usage && typeof errData.usage === 'object' ? errData.usage : null,
+        usageStatus: errData?.usage && typeof errData.usage === 'object' ? 'PROVIDER_REPORTED' : 'UNAVAILABLE',
+        attemptStartedAt,
+        timestamp: completedAt
+      };
       return {
         status: 'refused',
         code: 'META_API_ERROR',
         httpStatus: response.status,
-        reason: `Meta Model API responded with HTTP ${response.status}`
+        requestedModel: model,
+        actualModel: errActualModel,
+        actualModelStatus: 'UNCONFIRMED',
+        modelIdentityConfirmed: false,
+        reason: `Meta Model API responded with HTTP ${response.status}`,
+        callProof: httpErrorCallProof
       };
     }
 
@@ -1621,27 +1755,130 @@ export async function requestLlamaPhysicsProposal({
       if (jsonErr && (jsonErr.code === 'REQUEST_TIMEOUT' || jsonErr.name === 'AbortError')) {
         throw jsonErr;
       }
+      const completedAt = new Date().toISOString();
+      const parseErrorCallProof = {
+        fixtureMode: 'LIVE_META_API',
+        authSource: 'dedicated_keyfile_loader',
+        keyState: 'ready',
+        endpoint: META_LLAMA_ENDPOINT,
+        singleAttempt: true,
+        attemptCount: 1,
+        retriesPerformed: 0,
+        httpStatus: response.status,
+        requestedModel: model,
+        actualModel: null,
+        actualModelStatus: 'UNCONFIRMED',
+        modelIdentityConfirmed: false,
+        providerRequestId: headerRequestId,
+        providerResponseId: null,
+        providerResponseIdStatus: 'UNCONFIRMED',
+        requestSha256,
+        responseSha256: null,
+        usage: null,
+        usageStatus: 'UNAVAILABLE',
+        attemptStartedAt,
+        timestamp: completedAt
+      };
       return {
         status: 'refused',
         code: 'INVALID_PROPOSAL_SHAPE',
-        reason: 'Malformed JSON body in HTTP 200 response from Meta Model API: ' + (jsonErr?.message || String(jsonErr))
+        requestedModel: model,
+        actualModel: null,
+        actualModelStatus: 'UNCONFIRMED',
+        modelIdentityConfirmed: false,
+        reason: 'Malformed JSON body in HTTP 200 response from Meta Model API: ' + (jsonErr?.message || String(jsonErr)),
+        callProof: parseErrorCallProof
       };
     }
 
     const responseSha256 = sha256Sync(canonicalStringify(data || {}));
+    const providerResponseId = typeof data?.id === 'string' && data.id.trim().length > 0
+      ? data.id.trim()
+      : null;
+    const providerRequestId = headerRequestId || providerResponseId || null;
+    const rawReportedModel = typeof data?.model === 'string' && data.model.trim().length > 0
+      ? data.model.trim()
+      : null;
+
+    // Never fall back actualModel to requestedModel when data.model is missing
+    const actualModel = rawReportedModel;
+    const isKnownAllowedActual = actualModel !== null && CONFIGURABLE_LLAMA_MODELS.includes(actualModel);
+    const isMatchingActual = isKnownAllowedActual && actualModel === model;
+    const actualModelStatus = actualModel === null
+      ? 'UNCONFIRMED'
+      : (!isKnownAllowedActual
+        ? 'UNCONFIRMED_UNKNOWN_MODEL'
+        : (!isMatchingActual ? 'UNCONFIRMED_MODEL_MISMATCH' : 'CONFIRMED'));
+    const modelIdentityConfirmed = isMatchingActual;
+    const usage = data?.usage && typeof data.usage === 'object' ? data.usage : null;
+    const usageStatus = usage ? 'PROVIDER_REPORTED' : 'UNAVAILABLE';
+    const completedAt = new Date().toISOString();
+
     const callProof = {
       fixtureMode: 'LIVE_META_API',
       authSource: 'dedicated_keyfile_loader',
       keyState: 'ready',
       endpoint: META_LLAMA_ENDPOINT,
+      singleAttempt: true,
+      attemptCount: 1,
+      retriesPerformed: 0,
+      httpStatus: response.status,
       requestedModel: model,
-      actualModel: typeof data?.model === 'string' ? data.model : model,
-      providerResponseId: typeof data?.id === 'string' ? data.id : null,
+      actualModel,
+      actualModelStatus,
+      modelIdentityConfirmed,
+      providerRequestId,
+      providerResponseId,
+      providerResponseIdStatus: providerResponseId ? 'CONFIRMED' : 'UNCONFIRMED',
       requestSha256,
       responseSha256,
-      usage: data?.usage || null,
-      timestamp: new Date().toISOString()
+      usage,
+      usageStatus,
+      attemptStartedAt,
+      timestamp: completedAt
     };
+
+    if (actualModel !== null && !isKnownAllowedActual) {
+      return {
+        status: 'refused',
+        code: 'UNCONFIRMED_ACTUAL_MODEL',
+        model,
+        requestedModel: model,
+        actualModel,
+        actualModelStatus,
+        modelIdentityConfirmed: false,
+        reason: `Provider reported unknown or unsupported actual model "${actualModel}" (requested "${model}")`,
+        callProof
+      };
+    }
+
+    if (actualModel !== null && !isMatchingActual) {
+      return {
+        status: 'refused',
+        code: 'ACTUAL_MODEL_MISMATCH',
+        model,
+        requestedModel: model,
+        actualModel,
+        actualModelStatus,
+        modelIdentityConfirmed: false,
+        reason: `Provider reported actual model "${actualModel}" which differs from requested model "${model}"`,
+        callProof
+      };
+    }
+
+    if (actualModel === null && requireConfirmedModelIdentity === true) {
+      return {
+        status: 'refused',
+        code: 'UNCONFIRMED_ACTUAL_MODEL',
+        model,
+        requestedModel: model,
+        actualModel: null,
+        actualModelStatus: 'UNCONFIRMED',
+        modelIdentityConfirmed: false,
+        reason: `Provider response omitted actual model identifier for requested model "${model}" (UNCONFIRMED)`,
+        callProof
+      };
+    }
 
     const messageObj = data?.choices?.[0]?.message;
 
@@ -1649,6 +1886,11 @@ export async function requestLlamaPhysicsProposal({
       return {
         status: 'refused',
         code: 'MODEL_REFUSAL',
+        model,
+        requestedModel: model,
+        actualModel,
+        actualModelStatus,
+        modelIdentityConfirmed,
         reason: messageObj.refusal.trim(),
         callProof
       };
@@ -1660,6 +1902,11 @@ export async function requestLlamaPhysicsProposal({
     if (proposal.status === 'refused') {
       return {
         ...proposal,
+        model,
+        requestedModel: model,
+        actualModel,
+        actualModelStatus,
+        modelIdentityConfirmed,
         callProof
       };
     }
@@ -1669,6 +1916,10 @@ export async function requestLlamaPhysicsProposal({
       source: `remote_llama:${model}`,
       fixtureMode: 'LIVE_META_API',
       model,
+      requestedModel: model,
+      actualModel,
+      actualModelStatus,
+      modelIdentityConfirmed,
       proposal,
       callProof
     };
@@ -1676,13 +1927,44 @@ export async function requestLlamaPhysicsProposal({
     const isTimeout = Boolean(
       err && (err.code === 'REQUEST_TIMEOUT' || err.name === 'AbortError' || String(err.message).includes('timed out'))
     );
+    const completedAt = new Date().toISOString();
+    const errorCallProof = {
+      fixtureMode: 'LIVE_META_API',
+      authSource: 'dedicated_keyfile_loader',
+      keyState: 'ready',
+      endpoint: META_LLAMA_ENDPOINT,
+      singleAttempt: true,
+      attemptCount: 1,
+      retriesPerformed: 0,
+      httpStatus: null,
+      requestedModel: model,
+      actualModel: null,
+      actualModelStatus: 'UNCONFIRMED',
+      modelIdentityConfirmed: false,
+      providerRequestId: typeof err?.providerRequestId === 'string' ? err.providerRequestId : null,
+      providerResponseId: null,
+      providerResponseIdStatus: 'UNCONFIRMED',
+      requestSha256,
+      responseSha256: null,
+      usage: null,
+      usageStatus: 'UNAVAILABLE',
+      attemptStartedAt,
+      timestamp: completedAt,
+      ...(isTimeout ? { timeoutCode: 'REQUEST_TIMEOUT', timedOut: true } : {})
+    };
     return {
       status: 'refused',
       code: 'NETWORK_ERROR',
+      model,
+      requestedModel: model,
+      actualModel: null,
+      actualModelStatus: 'UNCONFIRMED',
+      modelIdentityConfirmed: false,
       ...(isTimeout ? { timeoutCode: 'REQUEST_TIMEOUT', timedOut: true } : {}),
       reason: isTimeout
         ? `Meta Model API request aborted after ${effectiveTimeoutMs}ms deadline: ${err.message}`
-        : 'Failed to communicate with Meta Model API endpoint: ' + (err?.message || String(err))
+        : 'Failed to communicate with Meta Model API endpoint: ' + (err?.message || String(err)),
+      callProof: errorCallProof
     };
   } finally {
     if (timerId !== null) {
@@ -1690,5 +1972,3 @@ export async function requestLlamaPhysicsProposal({
     }
   }
 }
-
-
