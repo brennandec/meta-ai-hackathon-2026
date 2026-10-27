@@ -1,0 +1,642 @@
+{
+  "rehearsal": "REHEARSAL-REPORT",
+  "plateId": "M-NEXT-25",
+  "wo": "muse-rehearsal-runner-01",
+  "author": "muse",
+  "startedAtUtc": "2026-10-27T05:15:26.987Z",
+  "endedAtUtc": "2026-10-27T05:15:30.481Z",
+  "candidateDir": ".",
+  "repoRoot": "house-only/manymoats-demo",
+  "isolation": {
+    "home": "house-only/home-asgxXG",
+    "homeIsTemp": true,
+    "tmpdir": "house-only/home-asgxXG",
+    "nodePath": "",
+    "nodeVersion": "v22.23.2",
+    "network": "external refused via NODE_OPTIONS --import no-network preload",
+    "preloadSha256": "31c4bc214929edc9579d92555e90d5cfe6850a5ef426b25d73695ea652b551d4",
+    "loopback": "127.0.0.1/::1/localhost allowed for the candidate self-check server only"
+  },
+  "rows": [
+    {
+      "id": "launcher-check",
+      "command": [
+        "node",
+        "house-only/launcher.mjs",
+        "--check"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 156,
+      "inputHashes": {
+        "launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "CANDIDATE_LAUNCHER_CHECK_PASS {\"ok\":true,\"schema\":\"meta-portable-demo-candidate-backend/1\",\"portabilityStatus\":\"PRIVATE_LOCAL_CANDIDATE_NOT_STANDALONE_PORTABLE\",\"boundOwnerModulesVerified\":4,\"exactOwnerRowsVerified\":18}"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:accepted-engineering-metric.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/accepted-engineering-metric.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 85,
+      "inputHashes": {
+        "tools/accepted-engineering-metric.test.mjs": "6c6d5d50fa94ddcc2565602c71a6120690dbde00c283eb3676034d811a37673e",
+        "tools/accepted-engineering-metric.mjs": "1c9af20677f0a5ba0aca0238129ad3dc69588ef286199bf6cf1a824103548de0"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 3",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 53.455042"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:beat-map.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/beat-map.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 91,
+      "inputHashes": {
+        "tools/beat-map.test.mjs": "9eb586f565c0b153ead3cb6eed6ff94046ba148570457298f2014b8db90946b8",
+        "tools/beat-map.mjs": "68bf75a854d75a32584fe03f6147f6a3a5ef573dedcbd8da2b03b2ea1c1ad637"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 60.376375"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:capture-slate.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/capture-slate.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 92,
+      "inputHashes": {
+        "tools/capture-slate.test.mjs": "78ed068a368d1de062b86f705ffdd1b7e1eda4acc1672d28d8b8c78f44ece2ef",
+        "tools/capture-slate.mjs": "7ddf085d706ebd959d7d4fbbf300c54cfe7fd037f55c3794b57b4e3d5fe17944"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 59.978584"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:event-new-manifest.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/event-new-manifest.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 86,
+      "inputHashes": {
+        "tools/event-new-manifest.test.mjs": "1e315b705a0b4cfb3c33b4debc9f430b9b32136c942120a80d1bd3f09ac1a561",
+        "tools/event-new-manifest.mjs": "d40e6c4f02b7ca68333ac79d2dde6eb057c0836634444e533c1206e1aef427ec"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 7",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 54.947583"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:fault-injector.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/fault-injector.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 106,
+      "inputHashes": {
+        "tools/fault-injector.test.mjs": "38c2661fc1529724f2621d3480e10efde944145e4a750d7c4149de965cb8f8b5",
+        "tools/fault-injector.mjs": "da8d1374b6397cdbab10fd55efcf2f4a341ee398c121df268d24be97c529ee43"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 74.444959"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:fixture-ledger.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/fixture-ledger.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 106,
+      "inputHashes": {
+        "tools/fixture-ledger.test.mjs": "6579c1125121682f1c4fd15b5e2de75d52e7bc8b39609542c92fbbd90ee9c43e",
+        "tools/fixture-ledger.mjs": "8aecf785b1c91a00b7ef0e7c49a907e94f076dd1e97a69dd01a972010010c5c7"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 4",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 75.104125"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:frame-test.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/frame-test.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 97,
+      "inputHashes": {
+        "tools/frame-test.test.mjs": "291046fa3dcf8ae8245a9f3ee03cd6dccfa2c529255c793cbef05262129da47b",
+        "tools/frame-test.mjs": "63c08107acbef449b94502f462f4f7e6824027b69740fa61678d45d011fba51b"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 4",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 61.839625"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:honesty-validator.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/honesty-validator.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 86,
+      "inputHashes": {
+        "tools/honesty-validator.test.mjs": "2188208266eecae25a2c936482f1b0419aba1ffe534edda02adbeaed9642f918",
+        "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 52.084583"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:rehearse.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/rehearse.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 1559,
+      "inputHashes": {
+        "tools/rehearse.test.mjs": "1c3ece9fe5ea01362cbffc2de898d536d3bee77f1bbcda3dcc23736d2c9342c5",
+        "tools/rehearse.mjs": "49f53fdc4feed293f54f8816c49375ae25a57ec5abd055aed4fb1b7f29437223"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 1526.141"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "honesty:fixtures/faults/fault-case-1-0000.json",
+      "command": [
+        "node",
+        "house-only/honesty-validator.mjs",
+        "house-only/fault-case-1-0000.json"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 42,
+      "inputHashes": {
+        "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
+        "fixtures/faults/fault-case-1-0000.json": "ba3cd95bbd8c8b4a56890b4847c0da044660abd8d350ffe8c1a8dd4640b3ece2"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "HONESTY PASS"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "honesty:fixtures/faults/fault-case-1-0001.json",
+      "command": [
+        "node",
+        "house-only/honesty-validator.mjs",
+        "house-only/fault-case-1-0001.json"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 40,
+      "inputHashes": {
+        "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
+        "fixtures/faults/fault-case-1-0001.json": "159ff7cbfde454e650fdb757c81e4a30cf2be3941f252236887e1606e1ce49b8"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "HONESTY PASS"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "honesty:fixtures/faults/fault-case-1-0002.json",
+      "command": [
+        "node",
+        "house-only/honesty-validator.mjs",
+        "house-only/fault-case-1-0002.json"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 44,
+      "inputHashes": {
+        "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
+        "fixtures/faults/fault-case-1-0002.json": "e544d17083be9b4a2068b04e405f26259219ef9c7135e7e2fa5dc38c1a5d1634"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "HONESTY PASS"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "honesty:fixtures/faults/fault-case-1-0003.json",
+      "command": [
+        "node",
+        "house-only/honesty-validator.mjs",
+        "house-only/fault-case-1-0003.json"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 38,
+      "inputHashes": {
+        "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
+        "fixtures/faults/fault-case-1-0003.json": "0a7bf0ff4184ff8bc19f187607bc6c179eb1ab4e4a90bbeefdbe776953ce2988"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "HONESTY PASS"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "honesty:fixtures/faults/index.json",
+      "command": [
+        "node",
+        "house-only/honesty-validator.mjs",
+        "house-only/index.json"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 43,
+      "inputHashes": {
+        "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
+        "fixtures/faults/index.json": "4692989ba4443720244a9e7e2c0d31d2bdbd051c776c81221ded4173d1537b87"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "HONESTY PASS"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "honesty:fixtures/synthetic-transport-run-record.json",
+      "command": [
+        "node",
+        "house-only/honesty-validator.mjs",
+        "house-only/synthetic-transport-run-record.json"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 47,
+      "inputHashes": {
+        "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
+        "fixtures/synthetic-transport-run-record.json": "a51f2b37d8653e1cbcd5156e8127f329ff19be8b7c53362f25e5226cb01c4df0"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "HONESTY PASS"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "beat-map",
+      "command": [
+        "node",
+        "house-only/beat-map.mjs",
+        "--script",
+        "house-only/MUSE-FILM-SCRIPT-V3-01.md",
+        "--manifest",
+        "house-only/EVENT-NEW-MANIFEST.json",
+        "--out",
+        "house-only/BEAT-MAP.regen.json"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 49,
+      "inputHashes": {
+        "tools/beat-map.mjs": "68bf75a854d75a32584fe03f6147f6a3a5ef573dedcbd8da2b03b2ea1c1ad637",
+        "../../hackathon-command-desk/MUSE-FILM-SCRIPT-V3-01.md": "6c0c9617654f2e6cf0ea5d51c00233479562c69e1c1b3a6203ed32dd1b483846",
+        "EVENT-NEW-MANIFEST.json": "0ee4a122fad5b266e1dccf39b58fc1b19e46bf1a789310a9474df5efc54e9105"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0; regenerated map differs from landed BEAT-MAP.json (inputs moved on)",
+      "detail": {
+        "stdoutTail": [
+          "BEAT-MAP WROTE house-only/BEAT-MAP.regen.json pass=0 baseline-only=2 no-capture=6"
+        ],
+        "stderrTail": [],
+        "outputMatchesLanded": false,
+        "regenBytes": 16823,
+        "landedBytes": 21016
+      }
+    },
+    {
+      "id": "fixture-ledger",
+      "command": [
+        "node",
+        "house-only/fixture-ledger.mjs",
+        "--fixtures",
+        "house-only/fixtures",
+        "--beatmap",
+        "house-only/BEAT-MAP.json",
+        "--out",
+        "house-only/FIXTURE-LEDGER.regen.json"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 56,
+      "inputHashes": {
+        "tools/fixture-ledger.mjs": "8aecf785b1c91a00b7ef0e7c49a907e94f076dd1e97a69dd01a972010010c5c7",
+        "BEAT-MAP.json": "b2ca5f0a16cb905528b83beb0c78c0696554dc901360bbc6cb226f4358f52853"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0; regenerated ledger differs from landed FIXTURE-LEDGER.json (inputs moved on)",
+      "detail": {
+        "stdoutTail": [
+          "LEDGER WROTE house-only/FIXTURE-LEDGER.regen.json records=6 honest=6 violating=0 metricComputed=1 metricNull=5"
+        ],
+        "stderrTail": [],
+        "outputMatchesLanded": false
+      }
+    },
+    {
+      "id": "frame-test",
+      "command": [
+        "node",
+        "house-only/frame-test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": null,
+      "durationMs": 0,
+      "inputHashes": {},
+      "verdict": "SKIPPED",
+      "reason": "NO-STILLS: no stills folder and take slate passed",
+      "detail": {}
+    },
+    {
+      "id": "plant-control",
+      "command": [
+        "node",
+        "house-only/launcher.mjs",
+        "--check"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 198,
+      "inputHashes": {
+        "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "CANDIDATE_LAUNCHER_CHECK_PASS {\"ok\":true,\"schema\":\"meta-portable-demo-candidate-backend/1\",\"portabilityStatus\":\"PRIVATE_LOCAL_CANDIDATE_NOT_STANDALONE_PORTABLE\",\"boundOwnerModulesVerified\":4,\"exactOwnerRowsVerified\":18}"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "plant-home-path",
+      "command": [
+        "node",
+        "house-only/launcher.mjs",
+        "--check"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 1,
+      "durationMs": 57,
+      "inputHashes": {
+        "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
+        "stage:ui owner uid.mjs": "36e8f78ce9bf9ba8a237a2ddefc03890cc6f6d83d3ce01ffde76e807d5f5ba0c",
+        "plantValueSha": "bc78491296767683b035be3b7ba44b9b2c5658965c4eb3eb3b9bf3b9dafe973f"
+      },
+      "verdict": "PASS",
+      "reason": "planted home-path flipped the staged check summary to FAIL (exit 1)",
+      "detail": {
+        "plantClass": "home-path",
+        "instrumentVerdict": "FAIL",
+        "stdoutTail": [],
+        "stderrTail": [
+          "CANDIDATE_LAUNCHER_CHECK_FAIL: Allowlisted UI owner hash mismatch on ui owner uid.mjs: expected 930a7785154dae9a380ed889bc55d662a5971fe49f5769163e004aee4f0a98f8 (60B), got 36e8f78ce9bf9ba8a237a2ddefc03890cc6f6d83d3ce01ffde76e807d5f5ba0c (203B)"
+        ]
+      }
+    },
+    {
+      "id": "plant-token-24plus",
+      "command": [
+        "node",
+        "house-only/launcher.mjs",
+        "--check"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 1,
+      "durationMs": 76,
+      "inputHashes": {
+        "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
+        "stage:ui owner uid.mjs": "9f76fb359e8c4606b3dd4fa782739752fc0895cb233833f6345863daa8b879f4",
+        "plantValueSha": "9fb0a8054809d1ec02b298b4d4ec2548c5e3c3df2513ac8143cd0eda19dd16ec"
+      },
+      "verdict": "PASS",
+      "reason": "planted token-24plus flipped the staged check summary to FAIL (exit 1)",
+      "detail": {
+        "plantClass": "token-24plus",
+        "instrumentVerdict": "FAIL",
+        "stdoutTail": [],
+        "stderrTail": [
+          "CANDIDATE_LAUNCHER_CHECK_FAIL: Allowlisted UI owner hash mismatch on ui owner uid.mjs: expected 930a7785154dae9a380ed889bc55d662a5971fe49f5769163e004aee4f0a98f8 (60B), got 9f76fb359e8c4606b3dd4fa782739752fc0895cb233833f6345863daa8b879f4 (187B)"
+        ]
+      }
+    },
+    {
+      "id": "plant-sealed-name",
+      "command": [
+        "node",
+        "house-only/launcher.mjs",
+        "--check"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 1,
+      "durationMs": 86,
+      "inputHashes": {
+        "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
+        "stage:ui owner uid.mjs": "aa51c7e4f072ff11eb472238ab6f3fe0cd851661e3240f7e9f3d2a4fa211ce78",
+        "plantValueSha": "f4a2ea84983cc75cd28d3758abdc22c8814e4cc64f62ec8e072775a60ed58932"
+      },
+      "verdict": "PASS",
+      "reason": "planted sealed-name flipped the staged check summary to FAIL (exit 1)",
+      "detail": {
+        "plantClass": "sealed-name",
+        "instrumentVerdict": "FAIL",
+        "stdoutTail": [],
+        "stderrTail": [
+          "CANDIDATE_LAUNCHER_CHECK_FAIL: Allowlisted UI owner hash mismatch on ui owner uid.mjs: expected 930a7785154dae9a380ed889bc55d662a5971fe49f5769163e004aee4f0a98f8 (60B), got aa51c7e4f072ff11eb472238ab6f3fe0cd851661e3240f7e9f3d2a4fa211ce78 (170B)"
+        ]
+      }
+    },
+    {
+      "id": "plant-foreign-competition-token",
+      "command": [
+        "node",
+        "house-only/launcher.mjs",
+        "--check"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 1,
+      "durationMs": 70,
+      "inputHashes": {
+        "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
+        "stage:ui owner uid.mjs": "681b78b75a441ed04fa5ea0e55c3b0e6d29f7d2f0a45556217da6ff733450b6c",
+        "plantValueSha": "825c23f7b3283549b5278ae02b8023f9aafa722f20995f762fde8a3614068cbe"
+      },
+      "verdict": "PASS",
+      "reason": "planted foreign-competition-token flipped the staged check summary to FAIL (exit 1)",
+      "detail": {
+        "plantClass": "foreign-competition-token",
+        "instrumentVerdict": "FAIL",
+        "stdoutTail": [],
+        "stderrTail": [
+          "CANDIDATE_LAUNCHER_CHECK_FAIL: Allowlisted UI owner hash mismatch on ui owner uid.mjs: expected 930a7785154dae9a380ed889bc55d662a5971fe49f5769163e004aee4f0a98f8 (60B), got 681b78b75a441ed04fa5ea0e55c3b0e6d29f7d2f0a45556217da6ff733450b6c (193B)"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "verdict": "PASS",
+    "total": 24,
+    "pass": 23,
+    "fail": 0,
+    "skipped": 1
+  }
+}
