@@ -1,0 +1,626 @@
+{
+ "schema": "muse-beat-map/1",
+ "generator": "beat-map.mjs (muse-beat-map-01, M-NEXT-19, author muse)",
+ "inputs": {
+  "script": {
+   "bytes": 9529,
+   "sha256": "1cd53a3a07f636b4b55ecc5a6d4ef8ad61b21db2c065cf18239135fb507dc621"
+  },
+  "manifest": {
+   "bytes": 230535,
+   "sha256": "0ee4a122fad5b266e1dccf39b58fc1b19e46bf1a789310a9474df5efc54e9105"
+  }
+ },
+ "rules": "names by keyword match on Visual cell; flag from manifest hunkCount>0 only; PASS=flag+all cited files exist, NO-CAPTURE=flag+missing file, BASELINE-ONLY=no flag",
+ "summary": {
+  "pass": 7,
+  "baselineOnly": 0,
+  "noCapture": 1
+ },
+ "rows": [
+  {
+   "beat": "S1",
+   "tc": "00:00-00:15",
+   "label": "EVENT-NEW",
+   "visual": "Candidate self-check: 18 owner rows + bound modules verified. Baseline hook card shown first, labeled.",
+   "functionsNamed": [
+    {
+     "id": "self-check",
+     "matchedVia": [
+      "self-check",
+      "owner rows"
+     ],
+     "inManifest": true,
+     "file": "launcher.mjs",
+     "manifestSegments": [
+      "S1"
+     ],
+     "commitIds": [
+      "d77735993853fbf25e3cdb5358c548792ca64d94",
+      "5245478af0e8f88cdca8a9d469f70aaade3120eb",
+      "864246dd9a6b15564b68f054f5caab8e81e62578",
+      "6fe459329a46bd232b228c875478205b45424a51",
+      "f401b8b4f8e1a3dbdb36d9590fb37c65971476b6",
+      "eb53ece068effa46310bc1b84e377417a08dfd69",
+      "a9103c6dc89e3a2ae91b3fdfea26486c8aeafa0a",
+      "1da5c030476d2e43a2ab29dd3b763a117ef4c19f"
+     ],
+     "hunkCount": 52,
+     "directHunks": 13,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T21:16:45.000Z",
+      "lastChangeCommit": "d77735993853fbf25e3cdb5358c548792ca64d94",
+      "pinSyncCommit": null
+     }
+    }
+   ],
+   "runsPostKickoffFunction": true,
+   "captureCommand": "node ../meta-portable-demo-candidate/launcher.mjs --check",
+   "captureFiles": [
+    {
+     "cited": "../meta-portable-demo-candidate/launcher.mjs",
+     "resolved": "house-only/launcher.mjs",
+     "exists": true
+    }
+   ],
+   "captureMissing": [],
+   "verdict": "PASS"
+  },
+  {
+   "beat": "S2",
+   "tc": "00:15-00:40",
+   "label": "BASELINE CONTEXT + EVENT-NEW",
+   "visual": "Baseline: friction refusal and critic vote (meta-physics-agent + swarm-verifier, unchanged since b020edc3; baseline index.html already refused drift). Event-new: the 2-receipt chain, server UTC timestamp, correctionAttempts 1.",
+   "functionsNamed": [
+    {
+     "id": "propose-critic-receipt",
+     "matchedVia": [
+      "critic",
+      "receipt chain",
+      "2-receipt"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 13,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    },
+    {
+     "id": "attempt-budget",
+     "matchedVia": [
+      "correction"
+     ],
+     "inManifest": true,
+     "file": "launcher.mjs",
+     "manifestSegments": [
+      "S5"
+     ],
+     "commitIds": [
+      "d77735993853fbf25e3cdb5358c548792ca64d94",
+      "5245478af0e8f88cdca8a9d469f70aaade3120eb",
+      "864246dd9a6b15564b68f054f5caab8e81e62578",
+      "6fe459329a46bd232b228c875478205b45424a51",
+      "f401b8b4f8e1a3dbdb36d9590fb37c65971476b6",
+      "eb53ece068effa46310bc1b84e377417a08dfd69",
+      "a9103c6dc89e3a2ae91b3fdfea26486c8aeafa0a",
+      "1da5c030476d2e43a2ab29dd3b763a117ef4c19f"
+     ],
+     "hunkCount": 52,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T21:16:45.000Z",
+      "lastChangeCommit": "d77735993853fbf25e3cdb5358c548792ca64d94",
+      "pinSyncCommit": null
+     }
+    },
+    {
+     "id": "chain-summary",
+     "matchedVia": [
+      "receipt chain"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S8"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    }
+   ],
+   "runsPostKickoffFunction": true,
+   "captureCommand": "node --test --test-name-pattern=\"^8.\" ../meta-portable-demo-candidate/candidate-backend.test.mjs",
+   "captureFiles": [
+    {
+     "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
+     "resolved": "house-only/candidate-backend.test.mjs",
+     "exists": true
+    }
+   ],
+   "captureMissing": [],
+   "verdict": "PASS"
+  },
+  {
+   "beat": "S3",
+   "tc": "00:40-01:05",
+   "label": "MIXED (see caption)",
+   "visual": "Route table from disk. Only /api/candidate/status (candidate-backend.mjs:667) is event-new; /api/llama/fixtures (:710) and /api/llama/propose (:742) are baseline routes re-implemented. Served listing is PENDING-UNFREEZE; today the route table is captured from source.",
+   "functionsNamed": [
+    {
+     "id": "propose-route",
+     "matchedVia": [
+      "/api/llama/propose"
+     ],
+     "inManifest": true,
+     "file": "candidate-backend.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "9f56904eeb039df6b125cd6caa606430abe3dc5e",
+      "dd86c3a869529984df5fd16c306b961cebfd3ea1",
+      "abe117d21bbcf6b5c9f0fe7a358086974629d4a5",
+      "f7bf142b7b3a8e915933b88712361897c576a4bb",
+      "85ef3fa3fab08f4e639497e38f6e3a3f43bcfb6f",
+      "70a9201455b7e21fa64fef0d75b8e4b13aa443d0",
+      "2911e31be5ce7816c6bf57e6a56febe5dbb2a94a"
+     ],
+     "hunkCount": 46,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-27T02:24:48.000Z",
+      "lastChangeCommit": "9f56904eeb039df6b125cd6caa606430abe3dc5e",
+      "pinSyncCommit": "9f56904eeb039df6b125cd6caa606430abe3dc5e"
+     }
+    },
+    {
+     "id": "status-fixture-routes",
+     "matchedVia": [
+      "/api/candidate/status",
+      "/api/llama/fixtures",
+      "route table"
+     ],
+     "inManifest": true,
+     "file": "candidate-backend.mjs",
+     "manifestSegments": [
+      "S3"
+     ],
+     "commitIds": [
+      "9f56904eeb039df6b125cd6caa606430abe3dc5e",
+      "dd86c3a869529984df5fd16c306b961cebfd3ea1",
+      "abe117d21bbcf6b5c9f0fe7a358086974629d4a5",
+      "f7bf142b7b3a8e915933b88712361897c576a4bb",
+      "85ef3fa3fab08f4e639497e38f6e3a3f43bcfb6f",
+      "70a9201455b7e21fa64fef0d75b8e4b13aa443d0",
+      "2911e31be5ce7816c6bf57e6a56febe5dbb2a94a"
+     ],
+     "hunkCount": 46,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-27T02:24:48.000Z",
+      "lastChangeCommit": "9f56904eeb039df6b125cd6caa606430abe3dc5e",
+      "pinSyncCommit": "9f56904eeb039df6b125cd6caa606430abe3dc5e"
+     }
+    },
+    {
+     "id": "offline-fixtures",
+     "matchedVia": [
+      "fixture"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 7,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    }
+   ],
+   "runsPostKickoffFunction": true,
+   "captureCommand": "grep -n \"/api/\" ../meta-portable-demo-candidate/candidate-backend.mjs",
+   "captureFiles": [
+    {
+     "cited": "../meta-portable-demo-candidate/candidate-backend.mjs",
+     "resolved": "house-only/candidate-backend.mjs",
+     "exists": true
+    }
+   ],
+   "captureMissing": [],
+   "verdict": "PASS"
+  },
+  {
+   "beat": "S4",
+   "tc": "01:05-01:30",
+   "label": "EVENT-NEW",
+   "visual": "Accepted path on synthetic transport: proposal confirmed, actualModel bound, runRecord + server UTC enforced.",
+   "functionsNamed": [
+    {
+     "id": "propose-route",
+     "matchedVia": [
+      "proposal confirmed",
+      "accepted path"
+     ],
+     "inManifest": true,
+     "file": "candidate-backend.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "9f56904eeb039df6b125cd6caa606430abe3dc5e",
+      "dd86c3a869529984df5fd16c306b961cebfd3ea1",
+      "abe117d21bbcf6b5c9f0fe7a358086974629d4a5",
+      "f7bf142b7b3a8e915933b88712361897c576a4bb",
+      "85ef3fa3fab08f4e639497e38f6e3a3f43bcfb6f",
+      "70a9201455b7e21fa64fef0d75b8e4b13aa443d0",
+      "2911e31be5ce7816c6bf57e6a56febe5dbb2a94a"
+     ],
+     "hunkCount": 46,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-27T02:24:48.000Z",
+      "lastChangeCommit": "9f56904eeb039df6b125cd6caa606430abe3dc5e",
+      "pinSyncCommit": "9f56904eeb039df6b125cd6caa606430abe3dc5e"
+     }
+    },
+    {
+     "id": "chain-summary",
+     "matchedVia": [
+      "runrecord"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S8"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    }
+   ],
+   "runsPostKickoffFunction": true,
+   "captureCommand": "node --test --test-name-pattern=\"^7.\" ../meta-portable-demo-candidate/candidate-backend.test.mjs",
+   "captureFiles": [
+    {
+     "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
+     "resolved": "house-only/candidate-backend.test.mjs",
+     "exists": true
+    }
+   ],
+   "captureMissing": [],
+   "verdict": "PASS"
+  },
+  {
+   "beat": "S5",
+   "tc": "01:30-01:50",
+   "label": "EVENT-NEW",
+   "visual": "One bounded correction on synthetic transport; the structural case is corrected, then the budget closes. Offline fixtures skip the budget (candidate-backend.mjs:833), so this beat runs on synthetic transport, not a fixture (fix 3).",
+   "functionsNamed": [
+    {
+     "id": "attempt-budget",
+     "matchedVia": [
+      "correction",
+      "budget closes"
+     ],
+     "inManifest": true,
+     "file": "launcher.mjs",
+     "manifestSegments": [
+      "S5"
+     ],
+     "commitIds": [
+      "d77735993853fbf25e3cdb5358c548792ca64d94",
+      "5245478af0e8f88cdca8a9d469f70aaade3120eb",
+      "864246dd9a6b15564b68f054f5caab8e81e62578",
+      "6fe459329a46bd232b228c875478205b45424a51",
+      "f401b8b4f8e1a3dbdb36d9590fb37c65971476b6",
+      "eb53ece068effa46310bc1b84e377417a08dfd69",
+      "a9103c6dc89e3a2ae91b3fdfea26486c8aeafa0a",
+      "1da5c030476d2e43a2ab29dd3b763a117ef4c19f"
+     ],
+     "hunkCount": 52,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T21:16:45.000Z",
+      "lastChangeCommit": "d77735993853fbf25e3cdb5358c548792ca64d94",
+      "pinSyncCommit": null
+     }
+    },
+    {
+     "id": "offline-fixtures",
+     "matchedVia": [
+      "fixture"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 7,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    }
+   ],
+   "runsPostKickoffFunction": true,
+   "captureCommand": "node --test --test-name-pattern=\"^14.\" ../meta-portable-demo-candidate/candidate-backend.test.mjs",
+   "captureFiles": [
+    {
+     "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
+     "resolved": "house-only/candidate-backend.test.mjs",
+     "exists": true
+    }
+   ],
+   "captureMissing": [],
+   "verdict": "PASS"
+  },
+  {
+   "beat": "S6",
+   "tc": "01:50-02:15",
+   "label": "EVENT-NEW",
+   "visual": "The structural case ends corrected_after_refusal, not refused (fix 4); the receipt chain is re-verified (verifyProposalReceiptChain). No brake-force claim is made.",
+   "functionsNamed": [
+    {
+     "id": "propose-critic-receipt",
+     "matchedVia": [
+      "verifyproposalreceiptchain",
+      "receipt chain"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 13,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    },
+    {
+     "id": "chain-summary",
+     "matchedVia": [
+      "receipt chain"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S8"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    }
+   ],
+   "runsPostKickoffFunction": true,
+   "captureCommand": "node --test --test-name-pattern=\"^14.\" ../meta-portable-demo-candidate/candidate-backend.test.mjs",
+   "captureFiles": [
+    {
+     "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
+     "resolved": "house-only/candidate-backend.test.mjs",
+     "exists": true
+    }
+   ],
+   "captureMissing": [],
+   "verdict": "PASS"
+  },
+  {
+   "beat": "S7",
+   "tc": "02:15-02:40",
+   "label": "PENDING-UNFREEZE",
+   "visual": "Candidate UI. A file:// capture cannot resolve house-only/path, /ui/preview.mjs or /api/*, so the served UI shot waits for --serve under the launcher unfreeze (fix 5). Interim capture: pinned UI bytes + still of ui/index.html source render only, labeled as such.",
+   "functionsNamed": [
+    {
+     "id": "candidate-ui",
+     "matchedVia": [
+      "ui/index.html",
+      "candidate ui"
+     ],
+     "inManifest": true,
+     "file": "ui/index.html",
+     "manifestSegments": [
+      "S7"
+     ],
+     "commitIds": [
+      "69e266084aa9d1ebd42ee3625c6a015167364bab",
+      "cdbf94106c45943a3feb4686b3f36a513a997f55",
+      "21b055656743b6a52bca1eda7fe717f46d29c502"
+     ],
+     "hunkCount": 4,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:22:13.000Z",
+      "lastChangeCommit": "69e266084aa9d1ebd42ee3625c6a015167364bab",
+      "pinSyncCommit": null
+     }
+    }
+   ],
+   "runsPostKickoffFunction": true,
+   "captureCommand": "BROWSER_TILES_PATH=./tiles.json BROWSER_SHOTS_DIR=./tiles/shots BROWSER_LEDGER_PATH=./browser-ledger.jsonl node ../../scripts/browser/drive.mjs --profile main --do shot --url \"file://$PWD/../meta-portable-demo-candidate/ui/index.html\" --out ./tiles/shots/film-v3-ui.png (interim; served shot PENDING-UNFREEZE)",
+   "captureFiles": [
+    {
+     "cited": "../../scripts/browser/drive.mjs",
+     "resolved": "house-only/drive.mjs",
+     "exists": false
+    },
+    {
+     "cited": "house-only/index.html",
+     "resolved": "house-only/index.html",
+     "exists": true
+    }
+   ],
+   "captureMissing": [
+    "../../scripts/browser/drive.mjs"
+   ],
+   "verdict": "NO-CAPTURE"
+  },
+  {
+   "beat": "S8",
+   "tc": "02:40-03:00",
+   "label": "EVENT-NEW (function named)",
+   "visual": "Close on the receipt-chain verifier that exists on disk: verifyProposalReceiptChain (candidate-backend.mjs, bound in launcher) + the runRecord summary. Baseline end-card slots labeled BASELINE CONTEXT.",
+   "functionsNamed": [
+    {
+     "id": "propose-critic-receipt",
+     "matchedVia": [
+      "verifyproposalreceiptchain",
+      "receipt chain"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 13,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    },
+    {
+     "id": "chain-summary",
+     "matchedVia": [
+      "receipt chain",
+      "runrecord"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S8"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 0,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    }
+   ],
+   "runsPostKickoffFunction": true,
+   "captureCommand": "node --test --test-name-pattern=\"^7.\" ../meta-portable-demo-candidate/candidate-backend.test.mjs (chain + runRecord assertions)",
+   "captureFiles": [
+    {
+     "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
+     "resolved": "house-only/candidate-backend.test.mjs",
+     "exists": true
+    }
+   ],
+   "captureMissing": [],
+   "verdict": "PASS"
+  }
+ ]
+}
