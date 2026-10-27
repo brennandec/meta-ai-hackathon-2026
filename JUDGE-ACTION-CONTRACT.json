@@ -1,0 +1,895 @@
+{
+  "contract": "JUDGE-ACTION-CONTRACT",
+  "version": 1,
+  "plateId": "M-NEXT-27",
+  "wo": "muse-judge-action-contract-01",
+  "author": "muse",
+  "parties": {
+    "builder": "a build seat (E4 --serve)",
+    "consumer": "tools/judge-clock.mjs",
+    "verifier": "a build seat K-NEXT-29"
+  },
+  "flow": [
+    {
+      "step": "fault",
+      "endpoint": "POST /api/judge/fault",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 584,
+          "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 599,
+          "quote": "| fault → request | candidate-backend route + guard | OFFLINE_LLAMA_FIXTURES |"
+        }
+      ]
+    },
+    {
+      "step": "proposal",
+      "endpoint": "POST /api/judge/proposal",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 584,
+          "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 600,
+          "quote": "| proposal checked | PROPOSAL_SCHEMA · extractMutableControlProposal · enforceImmutablePlantLimits | buildLlamaPhysicsPrompt |"
+        }
+      ]
+    },
+    {
+      "step": "verdict",
+      "endpoint": "POST /api/judge/proposal (response)",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 584,
+          "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 601,
+          "quote": "| verdict | evaluateAndGateLlamaProposal · deriveAuthoritativeStateSnapshot | evaluatePhysicsProposal · swarm-verifier critics, interlock, quorum |"
+        }
+      ]
+    },
+    {
+      "step": "correction",
+      "endpoint": "POST /api/judge/correction (at most one)",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 584,
+          "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 602,
+          "quote": "| correction | applyBoundedStepCorrection · MAX_BOUNDED_CORRECTIONS | — |"
+        }
+      ]
+    },
+    {
+      "step": "receipts",
+      "endpoint": "GET /api/judge/receipts (two linked)",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 584,
+          "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 603,
+          "quote": "| receipts, tamper | generateKinematicProposalReceipt · verifyProposalReceiptChain | sha256Sync |"
+        }
+      ]
+    },
+    {
+      "step": "byte-flip check",
+      "endpoint": "POST /api/judge/verify",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 584,
+          "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 603,
+          "quote": "| receipts, tamper | generateKinematicProposalReceipt · verifyProposalReceiptChain | sha256Sync |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 589,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        }
+      ]
+    }
+  ],
+  "endpoints": [
+    {
+      "id": "fault",
+      "method": "POST",
+      "path": "/api/judge/fault",
+      "operation": "warehouse-stop fault intake; returns the authoritative state snapshot",
+      "request": {
+        "scenario": "warehouse-stop",
+        "massKg": "number (finite)",
+        "velocityMps": "number (finite)",
+        "stopDistanceM": "number (finite)"
+      },
+      "responses": {
+        "200": "{ currentState: { massKg, velocityMps, stopDistanceM } }",
+        "422": "{ status: refused, code: INVALID_CURRENT_STATE }"
+      },
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 599,
+          "quote": "| fault → request | candidate-backend route + guard | OFFLINE_LLAMA_FIXTURES |"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1012,
+          "quote": "export function deriveAuthoritativeStateSnapshot(offlineFixture) {"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 393,
+          "quote": "export function validateAuthoritativeCurrentState(currentState) {"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 398,
+          "quote": "      code: 'INVALID_CURRENT_STATE',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 44,
+          "quote": "export const STATE_SNAPSHOT_FIELDS = Object.freeze(["
+        }
+      ]
+    },
+    {
+      "id": "proposal",
+      "method": "POST",
+      "path": "/api/judge/proposal",
+      "operation": "strict schema, server-owned limits, gate; returns verdict plus first receipt",
+      "request": {
+        "currentState": "{ massKg, velocityMps, stopDistanceM }",
+        "proposal": "9 PROPOSAL_SCHEMA fields"
+      },
+      "responses": {
+        "200": "{ status: ok|refused, verdict: accepted|refused, code, reason, currentState, plantLimits, evaluation, receipts: [r1] }",
+        "422": "{ status: refused, code: STATE_SNAPSHOT_MISMATCH } on caller limit/state override"
+      },
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 600,
+          "quote": "| proposal checked | PROPOSAL_SCHEMA · extractMutableControlProposal · enforceImmutablePlantLimits | buildLlamaPhysicsPrompt |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 601,
+          "quote": "| verdict | evaluateAndGateLlamaProposal · deriveAuthoritativeStateSnapshot | evaluatePhysicsProposal · swarm-verifier critics, interlock, quorum |"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1034,
+          "quote": "export function evaluateAndGateLlamaProposal({"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 60,
+          "quote": "export const PROPOSAL_SCHEMA = Object.freeze({"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 65,
+          "quote": "    additionalProperties: false,"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1266,
+          "quote": "      verdict: 'accepted',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1299,
+          "quote": "      verdict: 'refused',"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 589,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        }
+      ]
+    },
+    {
+      "id": "correction",
+      "method": "POST",
+      "path": "/api/judge/correction",
+      "operation": "one bounded correction step on a refused verdict; returns the linked receipt pair",
+      "request": {
+        "currentState": "{...}",
+        "proposal": "{...}",
+        "correctionOverride": "object|null (optional)"
+      },
+      "responses": {
+        "200": "{ verdict: corrected_after_refusal|refused, receipts: [r1, r2] }",
+        "422": "{ status: refused, code: BOUNDED_CORRECTION_LIMIT_EXCEEDED } on a second correction"
+      },
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 602,
+          "quote": "| correction | applyBoundedStepCorrection · MAX_BOUNDED_CORRECTIONS | — |"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 628,
+          "quote": "export function applyBoundedStepCorrection("
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 24,
+          "quote": "export const MAX_BOUNDED_CORRECTIONS = 1;"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1448,
+          "quote": "    correctionAttempt: 1,"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1473,
+          "quote": "    verdict: recovered ? 'corrected_after_refusal' : 'refused',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1499,
+          "quote": "    receipts: [initialReceipt, correctionReceipt]"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 789,
+          "quote": "      code: 'BOUNDED_CORRECTION_LIMIT_EXCEEDED',"
+        }
+      ]
+    },
+    {
+      "id": "receipts",
+      "method": "GET",
+      "path": "/api/judge/receipts",
+      "operation": "returns the last evaluated linked receipt pair",
+      "request": {},
+      "responses": {
+        "200": "{ receipts: [r1, r2?], count }",
+        "404": "{ code: NO_RECEIPTS_YET }"
+      },
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 603,
+          "quote": "| receipts, tamper | generateKinematicProposalReceipt · verifyProposalReceiptChain | sha256Sync |"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 676,
+          "quote": "export function generateKinematicProposalReceipt({"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1499,
+          "quote": "    receipts: [initialReceipt, correctionReceipt]"
+        }
+      ]
+    },
+    {
+      "id": "verify",
+      "method": "POST",
+      "path": "/api/judge/verify",
+      "operation": "byte-flip check: previousHash linkage, outer-field fidelity, canonical hash recompute",
+      "request": {
+        "receipts": "[r1, r2?]"
+      },
+      "responses": {
+        "200": "{ valid, verified, code?, step?, reason? }"
+      },
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 603,
+          "quote": "| receipts, tamper | generateKinematicProposalReceipt · verifyProposalReceiptChain | sha256Sync |"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 589,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 774,
+          "quote": "export function verifyProposalReceiptChain(receipts, initialPreviousHash = GENESIS_RECEIPT_HASH) {"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 823,
+          "quote": "        code: 'TAMPER_CHAIN_BROKEN',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 846,
+          "quote": "        code: 'TAMPER_PAYLOAD_MISMATCH',"
+        }
+      ]
+    },
+    {
+      "id": "status",
+      "method": "GET",
+      "path": "/api/judge/status",
+      "operation": "readiness probe; the served launcher also prints READY <port> on stdout when listening",
+      "request": {},
+      "responses": {
+        "200": "{ ok, fixtureMode, maxLiveAttempts, liveAttemptsRemaining, correctionsRemaining }"
+      },
+      "sources": [
+        {
+          "file": "candidate-backend.mjs",
+          "line": 667,
+          "quote": "      if (pathname === '/api/candidate/status') {"
+        }
+      ]
+    }
+  ],
+  "shapes": {
+    "proposalFields": [
+      "id",
+      "title",
+      "massKg",
+      "velocityMps",
+      "stopDistanceM",
+      "frictionMu",
+      "maxSafeBrakeForceN",
+      "thrustN",
+      "structuralLimitN"
+    ],
+    "proposalFieldsSources": [
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 60,
+        "quote": "export const PROPOSAL_SCHEMA = Object.freeze({"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 61,
+        "quote": "  name: 'kinematic_physics_proposal',"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 62,
+        "quote": "  strict: true,"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 64,
+        "quote": "    type: 'object',"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 66,
+        "quote": "    required: Object.freeze(["
+      }
+    ],
+    "snapshotFields": [
+      "massKg",
+      "velocityMps",
+      "stopDistanceM"
+    ],
+    "snapshotFieldsSources": [
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 44,
+        "quote": "export const STATE_SNAPSHOT_FIELDS = Object.freeze(["
+      }
+    ],
+    "mutableFields": [
+      "id",
+      "title",
+      "thrustN"
+    ],
+    "mutableFieldsSources": [
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 50,
+        "quote": "export const MUTABLE_CONTROL_FIELDS = Object.freeze(["
+      }
+    ],
+    "verdictValues": [
+      "accepted",
+      "refused",
+      "corrected_after_refusal"
+    ],
+    "verdictValuesSources": [
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 1266,
+        "quote": "      verdict: 'accepted',"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 1299,
+        "quote": "      verdict: 'refused',"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 1473,
+        "quote": "    verdict: recovered ? 'corrected_after_refusal' : 'refused',"
+      }
+    ],
+    "receiptFields": [
+      "step",
+      "status",
+      "code",
+      "reason",
+      "correctionAttempt",
+      "parentRefusalCode",
+      "parentRefusalReason",
+      "currentState",
+      "previousHash",
+      "canonicalObj",
+      "canonicalJson",
+      "receiptHash",
+      "timestamp"
+    ],
+    "receiptFieldsSources": [
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 751,
+        "quote": "  return {"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 760,
+        "quote": "    previousHash,"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 761,
+        "quote": "    canonicalObj,"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 762,
+        "quote": "    canonicalJson,"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 763,
+        "quote": "    receiptHash,"
+      }
+    ],
+    "correctionIdShape": "'<proposal-id>-bounded-correction-1' (64 chars max), thrustN 0.0, pinned limits",
+    "correctionIdSources": [
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 660,
+        "quote": "    id: `${proposal.id || 'llama-proposal'}-bounded-correction-1`.slice(0, 64),"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 667,
+        "quote": "    thrustN: 0.0,"
+      }
+    ]
+  },
+  "limits": {
+    "frictionMu": 0.8,
+    "maxSafeBrakeForceN": 5000,
+    "structuralLimitN": 10000
+  },
+  "limitsSources": [
+    {
+      "file": "app/llama-adapter.mjs",
+      "line": 32,
+      "quote": "export const IMMUTABLE_PLANT_LIMITS = Object.freeze({"
+    },
+    {
+      "file": "app/llama-adapter.mjs",
+      "line": 33,
+      "quote": "  frictionMu: 0.8,"
+    },
+    {
+      "file": "app/llama-adapter.mjs",
+      "line": 34,
+      "quote": "  maxSafeBrakeForceN: 5000.0,"
+    },
+    {
+      "file": "app/llama-adapter.mjs",
+      "line": 35,
+      "quote": "  structuralLimitN: 10000.0"
+    },
+    {
+      "file": "house-only/meta-hackathon-product-v1.md",
+      "line": 584,
+      "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
+    },
+    {
+      "file": "house-only/EVENT-NEW-ACCEPTANCE-CONTRACT.json",
+      "line": 13,
+      "quote": "    \"Untrustedproposal strictschema validates finitebounds; planner cannot inflateimmutableplantlimits\","
+    }
+  ],
+  "replayMark": {
+    "field": "fixtureMode",
+    "replay": "MOCK_OFFLINE_FIXTURE",
+    "live": "LIVE_META_API",
+    "rule": "fixture and replay visibly distinct from live, 0 words; a record without a real provider response id (absent or synthetic-*) cannot carry the live mark"
+  },
+  "replayMarkSources": [
+    {
+      "file": "candidate-backend.mjs",
+      "line": 419,
+      "quote": "    fixtureMode: callProof.fixtureMode === 'MOCK_OFFLINE_FIXTURE' ? 'MOCK_OFFLINE_FIXTURE' : 'LIVE_META_API',"
+    },
+    {
+      "file": "candidate-backend.mjs",
+      "line": 929,
+      "quote": "        const fixtureMode = result.fixtureMode || (offlineFixture ? 'MOCK_OFFLINE_FIXTURE' : 'LIVE_META_API');"
+    },
+    {
+      "file": "house-only/meta-hackathon-product-v1.md",
+      "line": 587,
+      "quote": "| live/replay mark | fixture and replay visibly distinct from live, 0 words (LEGAL/EVENT-NEW-ACCEPTANCE-CONTRACT.json:16-17); no success fixture stands in for remote proof; widgets badge or component-request · test: a record without a real provider response id (absent, or synthetic-*) cannot carry the live/P1 mark |"
+    },
+    {
+      "file": "house-only/EVENT-NEW-ACCEPTANCE-CONTRACT.json",
+      "line": 16,
+      "quote": "    \"Transportauthfailure/429/timeout/malformedjson/modelrefusal failclosed; no successfixture substituted for remoteproof\","
+    },
+    {
+      "file": "house-only/EVENT-NEW-ACCEPTANCE-CONTRACT.json",
+      "line": 17,
+      "quote": "    \"Realcall proof records actualmodel/endpoint/requestresponsehash/usage/time without secrets; fixturemode visiblydistinct\","
+    }
+  ],
+  "latches": {
+    "liveAttempt": {
+      "max": 1,
+      "counter": "liveAttemptsRemaining = maxLiveAttempts - liveAttemptsUsed",
+      "secondAttempt": "refused"
+    },
+    "liveAttemptSources": [
+      {
+        "file": "candidate-backend.mjs",
+        "line": 14,
+        "quote": " * 4. Single-attempt live-entry enforcement (`maxLiveAttempts: 1` by default, no retries or fallback)."
+      },
+      {
+        "file": "candidate-backend.mjs",
+        "line": 545,
+        "quote": "  const maxLiveAttempts = Number.isInteger(serverAuth?.maxLiveAttempts) && serverAuth.maxLiveAttempts > 0"
+      },
+      {
+        "file": "candidate-backend.mjs",
+        "line": 546,
+        "quote": "    ? serverAuth.maxLiveAttempts"
+      },
+      {
+        "file": "candidate-backend.mjs",
+        "line": 691,
+        "quote": "            maxLiveAttempts,"
+      },
+      {
+        "file": "candidate-backend.mjs",
+        "line": 693,
+        "quote": "            liveAttemptsRemaining: Math.max(0, maxLiveAttempts - liveAttemptsUsed)"
+      },
+      {
+        "file": "candidate-backend.mjs",
+        "line": 835,
+        "quote": "          if (liveAttemptsUsed >= maxLiveAttempts) {"
+      },
+      {
+        "file": "launcher.mjs",
+        "line": 672,
+        "quote": "  maxLiveAttempts = 1,"
+      },
+      {
+        "file": "house-only/meta-hackathon-product-v1.md",
+        "line": 604,
+        "quote": "| one attempt | backend single-attempt + E4 latch | — |"
+      }
+    ],
+    "correction": {
+      "max": 1,
+      "counter": "correctionAttempt 0 then 1",
+      "secondCorrection": "422 BOUNDED_CORRECTION_LIMIT_EXCEEDED"
+    },
+    "correctionSources": [
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 24,
+        "quote": "export const MAX_BOUNDED_CORRECTIONS = 1;"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 1457,
+        "quote": "    attempt: 1,"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 1458,
+        "quote": "    maxAttempts: MAX_BOUNDED_CORRECTIONS,"
+      },
+      {
+        "file": "app/llama-adapter.mjs",
+        "line": 789,
+        "quote": "      code: 'BOUNDED_CORRECTION_LIMIT_EXCEEDED',"
+      },
+      {
+        "file": "house-only/meta-hackathon-product-v1.md",
+        "line": 584,
+        "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
+      },
+      {
+        "file": "house-only/EVENT-NEW-ACCEPTANCE-CONTRACT.json",
+        "line": 15,
+        "quote": "    \"AtmostONE boundedcorrection attempt; originalrefusal+correction+verdict link through receipts\","
+      }
+    ]
+  },
+  "errors": [
+    {
+      "code": "STATE_SNAPSHOT_MISMATCH",
+      "http": 422,
+      "when": "caller overrides limits or state (or ignores the override)",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 589,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 573,
+          "quote": "        code: 'STATE_SNAPSHOT_MISMATCH',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1180,
+          "quote": "      code: physicsOnAuthoritative.status === 'refused' ? physicsOnAuthoritative.code : 'STATE_SNAPSHOT_MISMATCH',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1363,
+          "quote": "      code: 'STATE_SNAPSHOT_MISMATCH',"
+        }
+      ]
+    },
+    {
+      "code": "LIMIT_TAMPER",
+      "http": 422,
+      "when": "internal evaluation code; surfaces at HTTP as 422 STATE_SNAPSHOT_MISMATCH, or ignored with enforced limits (both P4-legal; conformance accepts either)",
+      "sources": [
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 534,
+          "quote": "        code: 'LIMIT_TAMPER',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 1173,
+          "quote": "      code: 'LIMIT_TAMPER',"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 589,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        }
+      ]
+    },
+    {
+      "code": "INVALID_PROPOSAL_SHAPE",
+      "http": 200,
+      "when": "schema-invalid proposal; coded refusal in the verdict body",
+      "sources": [
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 236,
+          "quote": "      code: 'INVALID_PROPOSAL_SHAPE',"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 589,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        }
+      ]
+    },
+    {
+      "code": "INVALID_CURRENT_STATE",
+      "http": 422,
+      "when": "non-finite or missing snapshot fields at fault intake",
+      "sources": [
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 398,
+          "quote": "      code: 'INVALID_CURRENT_STATE',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 393,
+          "quote": "export function validateAuthoritativeCurrentState(currentState) {"
+        }
+      ]
+    },
+    {
+      "code": "BOUNDED_CORRECTION_LIMIT_EXCEEDED",
+      "http": 422,
+      "when": "second correction for the same proposal id, or chain longer than MAX+1",
+      "sources": [
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 789,
+          "quote": "      code: 'BOUNDED_CORRECTION_LIMIT_EXCEEDED',"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 785,
+          "quote": "  if (receipts.length > MAX_BOUNDED_CORRECTIONS + 1) {"
+        },
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 24,
+          "quote": "export const MAX_BOUNDED_CORRECTIONS = 1;"
+        }
+      ]
+    },
+    {
+      "code": "TAMPER_CHAIN_BROKEN",
+      "http": 200,
+      "when": "verify finds a broken previousHash link; reported in the verify body",
+      "sources": [
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 823,
+          "quote": "        code: 'TAMPER_CHAIN_BROKEN',"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 589,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        }
+      ]
+    },
+    {
+      "code": "TAMPER_PAYLOAD_MISMATCH",
+      "http": 200,
+      "when": "verify finds outer-field or hash mismatch (the byte flip); reported in the verify body",
+      "sources": [
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 846,
+          "quote": "        code: 'TAMPER_PAYLOAD_MISMATCH',"
+        },
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 589,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        }
+      ]
+    },
+    {
+      "code": "EMPTY_RECEIPT_CHAIN",
+      "http": 200,
+      "when": "verify called with no receipts",
+      "sources": [
+        {
+          "file": "app/llama-adapter.mjs",
+          "line": 779,
+          "quote": "      code: 'EMPTY_RECEIPT_CHAIN',"
+        }
+      ]
+    },
+    {
+      "code": "STRUCTURAL_LIMIT_EXCEEDED",
+      "http": 200,
+      "when": "physics refusal; coded in the verdict body",
+      "sources": [
+        {
+          "file": "app/meta-physics-agent.mjs",
+          "line": 448,
+          "quote": "export const REFUSAL_CODES = Object.freeze({"
+        },
+        {
+          "file": "app/meta-physics-agent.mjs",
+          "line": 458,
+          "quote": "  STRUCTURAL_LIMIT_EXCEEDED: 'STRUCTURAL_LIMIT_EXCEEDED',"
+        },
+        {
+          "file": "app/meta-physics-agent.mjs",
+          "line": 561,
+          "quote": "      code: 'STRUCTURAL_LIMIT_EXCEEDED',"
+        }
+      ]
+    }
+  ],
+  "timing": {
+    "gateAms": 60000,
+    "measuredRows": [
+      "timeToListeningMs",
+      "timeToVerdictMs",
+      "timeToSecondReceiptMs"
+    ],
+    "passRule": "verdict plus 2 receipts within 60.0 s"
+  },
+  "timingSources": [
+    {
+      "file": "house-only/meta-hackathon-product-v1.md",
+      "line": 591,
+      "quote": "| acceptance | first result ≤60,000 ms (Gate A) · taught sentence gone ≤8,000 ms (Gate B, text-gate :26) · 0 product-authored words · 0 console errors · 0 non-loopback requests · keyboard path · controls ≥44 px · 375 px no overflow · 18/18 + new · 44/44 · 12/12 · --check PASS · every beat runs ≥1 post-kickoff function, baseline calls listed · human first-use without reading |"
+    }
+  ],
+  "standardJudgeRun": {
+    "fault": {
+      "scenario": "warehouse-stop",
+      "massKg": 1500,
+      "velocityMps": 12,
+      "stopDistanceM": 40
+    },
+    "proposal": {
+      "id": "judge-run-proposal",
+      "title": "judge run",
+      "massKg": 1500,
+      "velocityMps": 12,
+      "stopDistanceM": 40,
+      "frictionMu": 0.8,
+      "maxSafeBrakeForceN": 5000,
+      "thrustN": 90000,
+      "structuralLimitN": 10000
+    },
+    "expectVerdict": "corrected_after_refusal",
+    "expectReceipts": 2,
+    "provenance": "measured 2026-10-27 via evaluateAndGateLlamaProposal: over-thrust refuses STRUCTURAL_LIMIT_EXCEEDED, bounded correction recovers"
+  },
+  "responseMarks": {
+    "field": "fixtureMode",
+    "on": "every judge response body",
+    "replay": "MOCK_OFFLINE_FIXTURE",
+    "sources": [
+      {
+        "file": "house-only/EVENT-NEW-ACCEPTANCE-CONTRACT.json",
+        "line": 17,
+        "quote": "    \"Realcall proof records actualmodel/endpoint/requestresponsehash/usage/time without secrets; fixturemode visiblydistinct\","
+      },
+      {
+        "file": "house-only/meta-hackathon-product-v1.md",
+        "line": 587,
+        "quote": "| live/replay mark | fixture and replay visibly distinct from live, 0 words (LEGAL/EVENT-NEW-ACCEPTANCE-CONTRACT.json:16-17); no success fixture stands in for remote proof; widgets badge or component-request · test: a record without a real provider response id (absent, or synthetic-*) cannot carry the live/P1 mark |"
+      }
+    ]
+  },
+  "derivationNotes": [
+    "Endpoint paths under /api/judge/ are assigned by this contract; method+prefix convention from POST /api/llama/propose.",
+    "LIMIT_TAMPER surfaces as 422 STATE_SNAPSHOT_MISMATCH: the failure-test row names one code for limit and state overrides.",
+    "Semantic refusals (schema, physics, tamper-verify) ride HTTP 200 with coded bodies; 422 is reserved for caller-tamper and latch trips.",
+    "The READY <port> stdout line is a clock-interface requirement assigned here; E4 prints it when listening.",
+    "No per-phase sub-bounds are sourced; only Gate A 60,000 ms binds, the clock records the rest.",
+    "The one-correction latch is keyed by proposal id; the clock uses a distinct proposal id per run."
+  ],
+  "conventionSources": [
+    {
+      "file": "candidate-backend.mjs",
+      "line": 742,
+      "quote": "    if (req.method === 'POST' && pathname === '/api/llama/propose') {"
+    }
+  ],
+  "citationCount": 110
+}
