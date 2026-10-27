@@ -6,7 +6,7 @@
  * Reads only landed files and the unfreeze packet. Copies the candidate folder into a fresh mkdtemp
  * (note removed for export)
  * Checks every packet diff at 0 fuzz against base bytes read from git, checks every post-condition file
- * against the packet rev 7 section by sha256, and prints every number from disk or live subprocess output.
+ * against the packet rev 7.1 section by sha256, and prints every number from disk or live subprocess output.
  * Exit code 0 only when every check in the printed table passes.
  */
 
@@ -95,7 +95,11 @@ const TEMP_PREFIXES = Object.freeze([
   'demo-candidate-synth-latch-',
   'demo-rev4-unfrozen-ws-',
   'demo-cond-a-ws-',
-  'demo-measure-rev7-'
+  'demo-o2-ws-',
+  'demo-o2-no-runner-',
+  'demo-live-run-state-',
+  'demo-measure-rev7-',
+  'demo-measure-rev71-'
 ]);
 
 const PATCH_SECTION_KEYS = Object.freeze([
@@ -187,34 +191,43 @@ async function buildWorkspace(prefix) {
   return { root, launcherPath, mod, receiptsPath, eventsPath };
 }
 
+function argValue(flag) {
+  const i = process.argv.indexOf(flag);
+  return i >= 0 && process.argv[i + 1] && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : null;
+}
+
 function resolveBaseGitDir(packetObj) {
-  const candidates = [];
-  if (process.env.KPF_BASE_GIT_DIR) {
-    candidates.push(process.env.KPF_BASE_GIT_DIR);
+  const rule = packetObj?.rev7_1PostCondition?.baseBytesSource?.gitDirResolution;
+  if (!rule || typeof rule.explicitEnv !== 'string' || typeof rule.explicitArgument !== 'string' || typeof rule.derivedFromCandidateFolder !== 'string') {
+    const err = new Error('BASE_GIT_DIR_UNAVAILABLE: packet rev7_1PostCondition.baseBytesSource.gitDirResolution is missing');
+    err.code = 'BASE_GIT_DIR_UNAVAILABLE';
+    throw err;
   }
-  for (let dir = REPO_ROOT; ; dir = path.dirname(dir)) {
-    if (fs.existsSync(path.join(dir, '.git'))) {
-      candidates.push(path.join(dir, '.git'));
-      break;
-    }
-    if (path.dirname(dir) === dir) {
-      break;
-    }
+  const fromArg = argValue(rule.explicitArgument);
+  const fromEnv = process.env[rule.explicitEnv];
+  const derived = path.join(REPO_ROOT, CAND_REL, rule.derivedFromCandidateFolder);
+  let candidate;
+  let source;
+  if (fromArg) {
+    candidate = path.resolve(fromArg);
+    source = `explicit ${rule.explicitArgument}`;
+  } else if (typeof fromEnv === 'string' && fromEnv.length > 0) {
+    candidate = fromEnv;
+    source = `explicit ${rule.explicitEnv}`;
+  } else {
+    candidate = derived;
+    source = `derived ${rule.derivedFromCandidateFolder} from the candidate folder`;
   }
-  const recorded = packetObj?.rev7PostCondition?.baseBytesSource?.gitDir;
-  if (typeof recorded === 'string' && recorded.length > 0) {
-    candidates.push(recorded);
+  const probe = fs.existsSync(candidate)
+    ? spawnSync('git', [`--git-dir=${candidate}`, 'rev-parse', '--git-dir'], {
+        encoding: 'utf8',
+        env: { ...process.env, GIT_OPTIONAL_LOCKS: '0' }
+      })
+    : { status: null, stderr: 'absent' };
+  if (probe.status === 0) {
+    return { gitDir: candidate, source };
   }
-  for (const candidate of candidates) {
-    const probe = spawnSync('git', [`--git-dir=${candidate}`, 'rev-parse', '--git-dir'], {
-      encoding: 'utf8',
-      env: { ...process.env, GIT_OPTIONAL_LOCKS: '0' }
-    });
-    if (probe.status === 0) {
-      return candidate;
-    }
-  }
-  const err = new Error(`No readable git dir for packet base bytes (tried: ${candidates.join(', ') || 'none'}); set KPF_BASE_GIT_DIR`);
+  const err = new Error(`BASE_GIT_DIR_UNAVAILABLE: this copy has no git base (${source}: ${candidate} · ${String(probe.stderr || '').trim()}); pass ${rule.explicitArgument} <git dir> or ${rule.explicitEnv}=<git dir>`);
   err.code = 'BASE_GIT_DIR_UNAVAILABLE';
   throw err;
 }
@@ -342,10 +355,11 @@ function parseTapCounts(tapOutput) {
   return { tests: pick('tests'), pass: pick('pass'), fail: pick('fail'), skipped: pick('skipped') };
 }
 
-function childEnv(gitDir) {
+function childEnv(gitDir, stateDir) {
   const env = {
     ...process.env,
     KPF_BASE_GIT_DIR: gitDir,
+    KPF_LIVE_RUN_STATE_DIR: stateDir,
     PLAYWRIGHT_BROWSERS_PATH:
       process.env.PLAYWRIGHT_BROWSERS_PATH || path.join(os.userInfo().homedir, 'Library', 'Caches', 'ms-playwright')
   };
@@ -362,7 +376,7 @@ function runNode(args, cwd, env, timeout = 600000) {
 }
 
 async function regeneratePngs() {
-  const ws = await buildWorkspace('demo-measure-rev7-');
+  const ws = await buildWorkspace('demo-measure-rev71-');
   try {
     const mountResolver = ws.mod.createCanonicalUiMountResolver();
     const tokensCssText = mountResolver('ui owner design-tokens.css').body.toString('utf8');
@@ -474,7 +488,7 @@ async function regeneratePngs() {
 }
 
 function checkPacketPatches(packetObj, gitDir) {
-  const rev7 = packetObj.rev7PostCondition;
+  const rev7 = packetObj.rev7_1PostCondition;
   const blobByTarget = new Map(rev7.baseBytesSource.blobs.map((row) => [row.targetPath, row]));
   const sections = [
     ...PATCH_SECTION_KEYS.map((key) => [key, packetObj[key]]),
@@ -528,7 +542,7 @@ function checkPacketPatches(packetObj, gitDir) {
 async function runE41OnlyFailCheck(packetObj, gitDir, env) {
   const ws = await buildWorkspace('demo-e4-fail-check-');
   try {
-    const blobRow = packetObj.rev7PostCondition.baseBytesSource.blobs.find((row) => row.targetPath === BACKEND_REL);
+    const blobRow = packetObj.rev7_1PostCondition.baseBytesSource.blobs.find((row) => row.targetPath === BACKEND_REL);
     const frozenBackend = readGitBlob(gitDir, blobRow);
     fs.writeFileSync(path.join(ws.root, BACKEND_REL), frozenBackend);
     fs.writeFileSync(path.join(ws.root, LAUNCHER_REL), packetObj.stagedLauncherPatch.proposedContent, 'utf8');
@@ -551,12 +565,27 @@ async function main() {
   const failures = [];
   const packetStat = statArtifact(PACKET_REL);
   const packetObj = JSON.parse(packetStat.buf.toString('utf8'));
-  const rev7 = packetObj.rev7PostCondition;
-  if (!rev7 || rev7.revision !== 7) {
-    throw new Error('Packet has no rev7PostCondition section with revision 7');
+  const rev7 = packetObj.rev7_1PostCondition;
+  if (!rev7 || rev7.revision !== '7.1' || !packetObj.rev7PostCondition || packetObj.rev7PostCondition.revision !== 7) {
+    throw new Error('Packet has no rev7_1PostCondition section with revision 7.1 beside the rev 7 record');
   }
-  const gitDir = resolveBaseGitDir(packetObj);
-  const env = childEnv(gitDir);
+  let gitBase;
+  try {
+    gitBase = resolveBaseGitDir(packetObj);
+  } catch (err) {
+    console.log(`MEASURE_RESULT REFUSED ${err.code || 'BASE_GIT_DIR_UNAVAILABLE'} · ${err.message}`);
+    process.exitCode = 3;
+    return;
+  }
+  const gitDir = gitBase.gitDir;
+  const stateDir = makeTempDir('demo-live-run-state-');
+  const env = childEnv(gitDir, stateDir);
+  const prior = rev7.priorPacket || {};
+  const priorPrefix = packetStat.buf.subarray(0, prior.prefixBytes || 0);
+  const priorRebuilt = Buffer.concat([priorPrefix, Buffer.from(String(prior.closingText || ''), 'utf8')]);
+  const priorRecordsIdentical =
+    sha256Buf(priorPrefix) === prior.prefixSha256 && priorRebuilt.length === prior.bytes && sha256Buf(priorRebuilt) === prior.sha256;
+  if (!priorRecordsIdentical) failures.push('packet rev 6 and rev 7 records');
 
   const landed = [LAUNCHER_REL, BACKEND_REL, BACKEND_TEST_REL, HARNESS_REL, MEASURE_REL, FIXTURE_REL].map((rel) => statArtifact(rel));
   const rev7ByPath = new Map(rev7.postConditionFiles.map((row) => [row.path, row]));
@@ -603,8 +632,9 @@ async function main() {
     failures.push('gradeFile');
   }
 
-  const ws = await buildWorkspace('demo-measure-rev7-');
+  const ws = await buildWorkspace('demo-measure-rev71-');
   let honesty;
+  let latchFilesInWorkspace = [];
   let harnessRun;
   let backendRun;
   let checkRun;
@@ -617,6 +647,10 @@ async function main() {
     checkRun = runNode([path.join(ws.root, LAUNCHER_REL), '--check'], ws.root, env, 120000);
     const seedAfter = { receipts: sha256Buf(fs.readFileSync(ws.receiptsPath)), events: sha256Buf(fs.readFileSync(ws.eventsPath)) };
     seedsSame = seedAfter.receipts === seedBefore.receipts && seedAfter.events === seedBefore.events;
+    latchFilesInWorkspace = fs
+      .readdirSync(ws.root, { recursive: true })
+      .map(String)
+      .filter((rel) => path.basename(rel) === 'LIVE-RUN-ATTEMPT-LATCH.json');
   } finally {
     ws.mod.cleanupProcessSyntheticLatch?.();
     removeTempDir(ws.root);
@@ -633,12 +667,14 @@ async function main() {
   }
   const honestyLine = honesty.stdout.trim().split('\n').pop() || honesty.stderr.trim();
   if (honesty.status !== 0) failures.push('honesty-validator');
-  if (harnessRun.status !== 0 || harnessCounts.fail !== 0 || harnessCounts.tests !== 13 || harnessCounts.pass !== 13) failures.push('replay-rigs');
+  if (harnessRun.status !== 0 || harnessCounts.fail !== 0 || harnessCounts.tests !== 14 || harnessCounts.pass !== 14) failures.push('replay-rigs');
   if (backendRun.status !== 0 || backendCounts.fail !== 0 || backendCounts.tests !== 18 || backendCounts.pass !== 18) failures.push('candidate-backend.test');
   if (checkRun.status !== 0 || checkToken !== 'CANDIDATE_LAUNCHER_CHECK_PASS') failures.push('launcher --check');
   if (!seedsSame) failures.push('seeded ledger');
+  if (latchFilesInWorkspace.length !== 0) failures.push('attempt latch inside the copy');
 
   const e41 = await runE41OnlyFailCheck(packetObj, gitDir, env);
+  removeTempDir(stateDir);
   if (e41.exitCode === 0 || e41.token !== 'CANDIDATE_LAUNCHER_CHECK_FAIL') failures.push('E4.1-only FAIL check');
 
   const receiptMap = lookupLatestDoorReceiptMap([...landed, packetStat, validatorStat, defaultPngStat, motionOffPngStat]);
@@ -661,12 +697,13 @@ async function main() {
     .filter((l) => /^(ok |not ok |1\.\.|# tests |# pass |# fail |# skipped )/.test(l));
 
   const lines = [
-    `E4 part 1 rev 7 measurement · candidate-launcher-unfreeze-e4-v1 · packet rev7PostCondition generatedAt ${rev7.generatedAt}`,
-    `root: ${REPO_ROOT} (inside os.tmpdir(): ${REPO_ROOT === realTmp || REPO_ROOT.startsWith(realTmp + path.sep)}) · base bytes git dir: ${gitDir}`,
+    `E4 part 1 rev 7.1 measurement · candidate-launcher-unfreeze-e4-v1 · packet rev7_1PostCondition generatedAt ${rev7.generatedAt}`,
+    `root: ${REPO_ROOT} (inside os.tmpdir(): ${REPO_ROOT === realTmp || REPO_ROOT.startsWith(realTmp + path.sep)}) · base bytes git dir: ${gitDir} (${gitBase.source})`,
     '',
-    '1. Post-condition files (disk vs packet rev7PostCondition, by bytes and sha256):',
+    '1. Post-condition files (disk vs packet rev7_1PostCondition, by bytes and sha256):',
     ...postRows.map((p) => `   - ${mark(p.match)} \`${p.stat.relPath}\`: ${p.stat.bytes} B · sha256 \`${p.stat.sha256}\` · packet ${p.row ? `${p.row.bytes} B \`${p.row.sha256}\`` : 'no row'}${fmtRcpt(p.stat.relPath)}`),
-    `   - \`${PACKET_REL}\`: ${packetStat.bytes} B · sha256 \`${packetStat.sha256}\` (schema \`${packetObj.schema}\`, rev ${packetObj.revision}, rev7PostCondition ${rev7.revision})${fmtRcpt(PACKET_REL)}`,
+    `   - \`${PACKET_REL}\`: ${packetStat.bytes} B · sha256 \`${packetStat.sha256}\` (schema \`${packetObj.schema}\`, rev ${packetObj.revision}, rev7PostCondition ${packetObj.rev7PostCondition.revision}, rev7_1PostCondition ${rev7.revision})${fmtRcpt(PACKET_REL)}`,
+    `   - ${mark(priorRecordsIdentical)} rev 6 and rev 7 records byte-identical: first ${prior.prefixBytes} B sha256 \`${sha256Buf(priorPrefix)}\` · rebuilt rev 7 packet ${priorRebuilt.length} B sha256 \`${sha256Buf(priorRebuilt)}\``,
     `   - \`${HONESTY_VALIDATOR_REL}\`: ${validatorStat.bytes} B · sha256 \`${validatorStat.sha256}\`${fmtRcpt(HONESTY_VALIDATOR_REL)}`,
     `   - \`${DEFAULT_PNG_REL}\`: ${defaultPngStat.bytes} B · sha256 \`${defaultPngStat.sha256}\` · IHDR ${defaultIhdr.width}x${defaultIhdr.height}`,
     `   - \`${MOTION_OFF_PNG_REL}\`: ${motionOffPngStat.bytes} B · sha256 \`${motionOffPngStat.sha256}\` · IHDR ${motionOffIhdr.width}x${motionOffIhdr.height}`,
@@ -682,6 +719,7 @@ async function main() {
     `   - ${mark(!failures.includes('launcher --check'))} launcher.mjs --check: exit ${checkRun.status} · \`${checkToken}\` · boundOwnerModulesVerified ${checkDetail.boundOwnerModulesVerified ?? '-'} · exactOwnerRowsVerified ${checkDetail.exactOwnerRowsVerified ?? '-'}`,
     `   - ${mark(!failures.includes('E4.1-only FAIL check'))} step-1 launcher against frozen backend from git (sha256 \`${e41.frozenBackendSha256}\`): exit ${e41.exitCode} · \`${e41.token}\``,
     `   - ${mark(seedsSame)} seeded ledger files in the workspace unchanged byte for byte across the three suites: receipts \`${seedBefore.receipts.slice(0, 16)}\` · events \`${seedBefore.events.slice(0, 16)}\``,
+    `   - ${mark(latchFilesInWorkspace.length === 0)} attempt latch files inside the workspace copy after the suites: ${latchFilesInWorkspace.length} (latch state dir: KPF_LIVE_RUN_STATE_DIR temp)`,
     `   - ${mark(!failures.includes('gradeFile'))} gradeFile array lengths: launcher=${gradeCounts.launcher}, rigs=${gradeCounts.rigs}, measure=${gradeCounts.measure}, plantedRedProbe=${gradeCounts.plantedRed}`,
     ...frozenRows.map((f) => `   - ${mark(f.match)} frozen \`${f.path}\`: ${f.diskBytes} B · sha256 \`${f.diskSha256}\``),
     `   - ${mark(leftovers.length === 0)} leftover temp test directories in os.tmpdir(): ${leftovers.length}`,
