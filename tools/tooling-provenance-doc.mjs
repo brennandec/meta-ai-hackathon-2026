@@ -15,12 +15,14 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 // (note removed for export)
-// for these exact strings). P1 action row pins live inference; the D-E row
-// leaves the key-cutoff fallback to the Oct 29 eligibility ruling.
+// by content for these exact strings). P1 action row pins live inference; the
+// P1 D-E branch row leaves the route unruled; the §3 D-E bullet names the
+// candidates and the Oct 29 eligibility ruling.
 export const LIVE_MODEL = 'muse-spark-1.3';
 export const LIVE_MODEL_CITE = 'meta-hackathon-product-v1.md P1 action row';
 export const FALLBACK_CANDIDATES = ['Muse Glimmer', 'Muse Spark Open'];
-export const FALLBACK_CITE = 'meta-hackathon-product-v1.md P1 D-E row';
+export const FALLBACK_CITE = 'meta-hackathon-product-v1.md §3 D-E bullet (V12, V19, X7)';
+export const UNRULED_CITE = 'meta-hackathon-product-v1.md P1 D-E branch row';
 export const FALLBACK_RULING = 'HO eligibility ruling Thu Oct 29 12:00 PDT';
 
 function at(argv, flag) { const i = argv.indexOf(flag); return i >= 0 && argv[i + 1] ? argv[i + 1] : null; }
@@ -107,13 +109,17 @@ function verifierText(row) {
   return 'HO direct (no independent receipt)';
 }
 
-function museRow(r) {
+function museRow(r, repoRoot) {
   const files = r.files.map((f) => {
     const rel = relReceiptsPath(f.path);
     if (f.state === 'superseded') {
       return `${rel} (superseded by ${f.supersededBy}; rev sha ${f.sha256})`;
     }
-    return `${rel} (sha ${f.sha256})`;
+    const abs = join(repoRoot, f.path);
+    if (!existsSync(abs)) return `${rel} (ledger ${f.sha256}; absent from disk)`;
+    const disk = shaFile(abs);
+    if (disk !== f.sha256) return `${rel} (sha ${disk}; ledger ${f.sha256})`;
+    return `${rel} (sha ${disk})`;
   });
   const wo = r.files.map((f) => f.wo).filter(Boolean);
   return {
@@ -146,8 +152,9 @@ function mdTable(headers, rows) {
 
 export const P2_PIN = { bytes: 26504, sha256: 'dde00683ff0c316238fb06950920a031e8daba677f8293f741e9b79695a68583' };
 
-export function buildDoc({ muse, house, musePath, housePath, museBytes, museSha, houseSha, scanBytes, scanSha }) {
-  const museRows = muse.rows.map(museRow);
+export function buildDoc({ muse, house, musePath, housePath, museBytes, museSha, houseSha, scanBytes, scanSha, repoRoot }) {
+  if (!repoRoot) throw new Error('repoRoot required: file shas are measured from disk');
+  const museRows = muse.rows.map((r) => museRow(r, repoRoot));
   const houseRows = house.provenanceRecords.map(houseRow);
   const L = [];
   L.push('# TOOLING-PROVENANCE');
@@ -158,7 +165,7 @@ export function buildDoc({ muse, house, musePath, housePath, museBytes, museSha,
   L.push('');
   L.push(`Live inference model, as the product WO P1 action row states it: ${LIVE_MODEL}.`);
   L.push('');
-  L.push(`Key-cutoff fallback: unruled. Candidates are ${FALLBACK_CANDIDATES.join(' and ')}; ${FALLBACK_RULING} (product WO P1 D-E row).`);
+  L.push(`Key-cutoff fallback: unruled (product WO P1 D-E branch row). Candidates are ${FALLBACK_CANDIDATES.join(' and ')}; ${FALLBACK_RULING} (product WO §3 D-E bullet).`);
   L.push('');
   L.push('## Muse-built tooling (14 plates, both Muse seats)');
   L.push('');
@@ -186,7 +193,7 @@ export function buildDoc({ muse, house, musePath, housePath, museBytes, museSha,
   L.push('## Sources');
   L.push('');
   L.push(`- Muse ledger ${relReceiptsPath(musePath)} (${muse.rows.length} plates, ${museBytes} B, sha ${museSha}); house ledger ${relReceiptsPath(housePath)} (content version ${house.version}, P2-pinned bytes verified, sha ${houseSha}); scan02 receipt (${scanBytes} B, sha ${scanSha}).`);
-  L.push(`- Live and fallback models: ${LIVE_MODEL_CITE}; ${FALLBACK_CITE}.`);
+  L.push(`- Live and fallback models: ${LIVE_MODEL_CITE}; ${UNRULED_CITE}; ${FALLBACK_CITE}.`);
   L.push('');
   return L.join('\n') + '\n';
 }
@@ -228,6 +235,16 @@ function usage() {
   console.error('usage: tooling-provenance-doc.mjs [--muse json] [--house json] [--scan scan02.json] [--out md] [--repo dir]');
 }
 
+export function findRepoRoot(from) {
+  let d = resolve(from);
+  for (;;) {
+    if (existsSync(join(d, '_system', 'ledger', 'receipts.jsonl'))) return d;
+    const up = dirname(d);
+    if (up === d) return null;
+    d = up;
+  }
+}
+
 export async function main(argv = process.argv.slice(2)) {
   const musePath = at(argv, '--muse') || join(HERE, '..', '..', 'hackathon-command-desk', 'MUSE-TOOLING-PROVENANCE-01.json');
   const housePath = at(argv, '--house') || join(HERE, '..', '..', 'meta-tooling-depth-proof', 'META-AI-TOOLING-PROVENANCE-LEDGER.json');
@@ -236,6 +253,8 @@ export async function main(argv = process.argv.slice(2)) {
   for (const p of [musePath, housePath, scanPath]) {
     if (!existsSync(p)) { console.error('TOOLING-DOC ERROR: missing input ' + p); usage(); process.exit(2); }
   }
+  const repoRoot = at(argv, '--repo') || findRepoRoot(HERE) || findRepoRoot(dirname(resolve(musePath)));
+  if (!repoRoot) { console.error('TOOLING-DOC ERROR: cannot locate repo root (no marker above tool or inputs)'); usage(); process.exit(2); }
   const houseBytes = readFileSync(housePath);
   if (houseBytes.length !== P2_PIN.bytes || shaFile(housePath) !== P2_PIN.sha256) {
     console.error('TOOLING-DOC REFUSED: house ledger does not match the P2 pin (26504 B dde00683...)');
@@ -251,9 +270,8 @@ export async function main(argv = process.argv.slice(2)) {
     const museBytes = readFileSync(musePath).length;
     const md = buildDoc({
       muse, house, musePath, housePath, museBytes, museSha: shaFile(musePath),
-      houseSha: P2_PIN.sha256, scanBytes, scanSha: shaFile(scanPath),
+      houseSha: P2_PIN.sha256, scanBytes, scanSha: shaFile(scanPath), repoRoot,
     });
-    const repoRoot = at(argv, '--repo') || resolve(HERE, '..', '..', '..', '..');
     const detector = await import(pathToFileURL(join(repoRoot, 'scripts', 'lib', 'secret-patterns.mjs')).href);
     screenOutput(md, rules, detector.scanTextForSecrets);
     writeFileSync(outPath, md);
