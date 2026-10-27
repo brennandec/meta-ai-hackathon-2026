@@ -371,6 +371,9 @@ async function main() {
     const failMatch = failCombined.match(/CANDIDATE_LAUNCHER_CHECK_[A-Z]+/);
     e4LauncherOnlyStatusToken = failMatch ? failMatch[0] : 'UNKNOWN';
 
+    // Restore base launcher.mjs before applying unifiedDiff patches via git apply
+    fs.copyFileSync(path.join(candSrc, 'launcher.mjs'), path.join(candDst, 'launcher.mjs'));
+
     // 3b. Apply all E4 unifiedDiff patches via git apply and verify resulting bytes & SHA-256 equal proposedContent & proposedSha256
     for (const item of packetObj.files) {
       const relTarget = item.targetPath || item.path || item.targetFile;
