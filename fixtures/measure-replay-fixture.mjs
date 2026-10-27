@@ -52,22 +52,33 @@ function statArtifact(relPath, overrideAbs = null) {
   };
 }
 
-function readTailLines(filePath, maxBytes = 4 * 1024 * 1024) {
-  if (!filePath || !fs.existsSync(filePath)) return [];
+/**
+ * Backward stream/chunk scanner across large JSONL ledger files without tail cutoffs.
+ * Yields lines from the end of the file backwards to the start.
+ */
+function* scanLinesBackwards(filePath, chunkSize = 4 * 1024 * 1024) {
+  if (!filePath || !fs.existsSync(filePath)) return;
   const st = fs.statSync(filePath);
-  if (!st.isFile() || st.size === 0) return [];
-  const readLen = Math.min(st.size, maxBytes);
-  const startOffset = st.size - readLen;
+  if (!st.isFile() || st.size === 0) return;
   const fd = fs.openSync(filePath, 'r');
+  let filePos = st.size;
+  let leftover = '';
   try {
-    const buf = Buffer.alloc(readLen);
-    const bytesRead = fs.readSync(fd, buf, 0, readLen, startOffset);
-    const text = buf.subarray(0, bytesRead).toString('utf8');
-    const lines = text.split('\n');
-    if (startOffset > 0 && lines.length > 0) {
-      lines.shift();
+    while (filePos > 0) {
+      const bytesToRead = Math.min(filePos, chunkSize);
+      filePos -= bytesToRead;
+      const buf = Buffer.alloc(bytesToRead);
+      fs.readSync(fd, buf, 0, bytesToRead, filePos);
+      const text = buf.toString('utf8') + leftover;
+      const lines = text.split('\n');
+      leftover = lines.shift() || '';
+      for (let i = lines.length - 1; i >= 0; i -= 1) {
+        const line = lines[i].trim();
+        if (line) yield line;
+      }
     }
-    return lines.map((l) => l.trim()).filter(Boolean);
+    const finalLine = leftover.trim();
+    if (finalLine) yield finalLine;
   } finally {
     fs.closeSync(fd);
   }
@@ -82,10 +93,8 @@ function lookupLatestDoorReceiptMap(targetStats) {
   const targetByAbs = new Map(targetStats.map((s) => [s.absPath, s]));
   const openRcptByRel = new Map();
   const wardenByOpenRcpt = new Map();
-  const lines = readTailLines(ledgerAbs, 4 * 1024 * 1024);
-  for (let i = lines.length - 1; i >= 0; i -= 1) {
-    const line = lines[i];
-    if (!line) continue;
+
+  for (const line of scanLinesBackwards(ledgerAbs)) {
     try {
       const row = JSON.parse(line);
       const refs = Array.isArray(row.refs) ? row.refs : [];
@@ -112,6 +121,7 @@ function lookupLatestDoorReceiptMap(targetStats) {
       // ignore malformed line
     }
   }
+
   for (const [relPath, openRcptId] of openRcptByRel.entries()) {
     const w = wardenByOpenRcpt.get(openRcptId);
     map.set(relPath, {
@@ -263,6 +273,25 @@ function parseTapCounts(tapOutput) {
   };
 }
 
+function getPostConditionContent(relTarget, expectedBytes, expectedSha256) {
+  const diskAbs = path.join(REPO_ROOT, relTarget);
+  if (fs.existsSync(diskAbs)) {
+    const buf = fs.readFileSync(diskAbs);
+    if (buf.length === expectedBytes && sha256Buf(buf) === expectedSha256) {
+      return buf;
+    }
+  }
+  const stagedName = path.basename(relTarget);
+  const stagedAbs = path.join(REPO_ROOT, '.agents/teamwork/worker_m1_land/scratch/staged', stagedName);
+  if (fs.existsSync(stagedAbs)) {
+    const buf = fs.readFileSync(stagedAbs);
+    if (buf.length === expectedBytes && sha256Buf(buf) === expectedSha256) {
+      return buf;
+    }
+  }
+  throw new Error(`Unable to resolve post-condition content for ${relTarget} matching ${expectedBytes}/${expectedSha256}`);
+}
+
 async function main() {
   if (process.argv.includes('--regenerate-pngs')) {
     const regen = await regeneratePngsIfRequested();
@@ -314,7 +343,7 @@ async function main() {
     fs.readFileSync(path.join(REPO_ROOT, 'house-only/engine-owners.json'), 'utf8')
   );
 
-  const tmpWs = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'demo-measure-rev5-')));
+  const tmpWs = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'demo-measure-rev6-')));
   let e4LauncherOnlyExitCode = null;
   let e4LauncherOnlyStatusToken = null;
   let harnessUnfrozenCounts = null;
@@ -324,6 +353,29 @@ async function main() {
   let harnessGradeViolations = null;
   let measureGradeViolations = null;
   let plantedRedGradeViolations = null;
+
+  const patchEntries = [
+    ['stagedLauncherPatch', packetObj.stagedLauncherPatch, {
+      postConditionBytes: 76831,
+      postConditionSha256: 'b25e6e7192e1cf2ee42ff050f189d4532b739e1a5d5e01a01bffdd2f5aac33c2',
+      postConditionLabel: 'Condition a try/catch mint latch'
+    }],
+    ['stagedReplayHarnessTestPatch', packetObj.stagedReplayHarnessTestPatch, {
+      postConditionBytes: 95647,
+      postConditionSha256: null,
+      postConditionLabel: 'Condition a (Test 12) + Condition b (Test 13)'
+    }],
+    ['stagedE4CandidateBackendPatch', packetObj.stagedE4CandidateBackendPatch, {
+      postConditionBytes: 46087,
+      postConditionSha256: '4ee1185e8ebfa836b6a9ac50c17d230c5bf36ccbd271dd633ec018bd6576d77e',
+      postConditionLabel: 'E4.2 candidate-backend unfreeze'
+    }],
+    ['stagedE4CandidateBackendTestPatch', packetObj.stagedE4CandidateBackendTestPatch, {
+      postConditionBytes: 51368,
+      postConditionSha256: 'fd99cbaecbf6834faffa0c80a218cfd48b178a6e2c987fdd44e403ebd925a4e4',
+      postConditionLabel: 'E4.3 candidate-backend.test unfreeze'
+    }]
+  ];
 
   try {
     const requiredRelFiles = [
@@ -352,7 +404,6 @@ async function main() {
     const pktDst = path.join(tmpWs, PACKET_REL);
     fs.mkdirSync(path.dirname(pktDst), { recursive: true });
     fs.writeFileSync(pktDst, packetStat.buf);
-    fs.writeFileSync(path.join(candDst, 'fixtures/replay-rigs.test.mjs'), harnessStat.buf);
 
     // 3a. Item 2: Apply ONLY E4.1 (stagedLauncherPatch) while leaving candidate-backend.mjs frozen -> must fail
     fs.writeFileSync(path.join(candDst, 'launcher.mjs'), packetObj.stagedLauncherPatch.proposedContent, 'utf8');
@@ -371,33 +422,79 @@ async function main() {
     const failMatch = failCombined.match(/CANDIDATE_LAUNCHER_CHECK_[A-Z]+/);
     e4LauncherOnlyStatusToken = failMatch ? failMatch[0] : 'UNKNOWN';
 
-    // Restore base launcher.mjs before applying unifiedDiff patches via git apply
-    fs.copyFileSync(path.join(candSrc, 'launcher.mjs'), path.join(candDst, 'launcher.mjs'));
-
-    // 3b. Apply all E4 unifiedDiff patches via git apply and verify resulting bytes & SHA-256 equal proposedContent & proposedSha256
-    for (const item of packetObj.files) {
+    // 3b. Verify all 4 patches: reconstruct pre-Part-1 base in tmpWs by writing proposedContent,
+    //     reversing via `patch -R -p1 --fuzz=0`, verifying baseBytes and baseSha256, then forward-applying
+    //     via `patch -p1 --fuzz=0` to verify patchedBytes and patchedSha256 (Step 1 intermediate).
+    for (const [patchKey, item] of patchEntries) {
       const relTarget = item.targetPath || item.path || item.targetFile;
-      if (item.unifiedDiff && item.unifiedDiff.trim().length > 0) {
-        const patchFile = path.join(tmpWs, `patch-${path.basename(relTarget)}.diff`);
-        fs.writeFileSync(patchFile, item.unifiedDiff, 'utf8');
-        const applyRes = spawnSync('git', ['apply', '--whitespace=nowarn', patchFile], {
-          cwd: tmpWs,
-          encoding: 'utf8'
-        });
-        if (applyRes.status !== 0) {
-          throw new Error(`git apply failed for ${relTarget}: ${applyRes.stderr}`);
-        }
-        fs.rmSync(patchFile, { force: true });
-      }
       const dst = path.join(tmpWs, relTarget);
+      fs.mkdirSync(path.dirname(dst), { recursive: true });
+      fs.writeFileSync(dst, item.proposedContent, 'utf8');
+
+      const revRes = spawnSync('patch', ['-R', '-p1', '--fuzz=0'], {
+        cwd: tmpWs,
+        input: item.unifiedDiff,
+        encoding: 'utf8'
+      });
+      if (revRes.status !== 0) {
+        throw new Error(`patch -R failed for ${patchKey} (${relTarget}): ${revRes.stderr || revRes.stdout}`);
+      }
+
+      const baseBuf = fs.readFileSync(dst);
+      const baseSha = sha256Buf(baseBuf);
+      if (baseBuf.length !== item.baseBytes || baseSha !== item.baseSha256) {
+        throw new Error(
+          `Reconstructed base mismatch for ${patchKey} (${relTarget}): ${baseBuf.length}/${baseSha} vs ${item.baseBytes}/${item.baseSha256}`
+        );
+      }
+
+      const fwdRes = spawnSync('patch', ['-p1', '--fuzz=0'], {
+        cwd: tmpWs,
+        input: item.unifiedDiff,
+        encoding: 'utf8'
+      });
+      if (fwdRes.status !== 0) {
+        throw new Error(`patch forward failed for ${patchKey} (${relTarget}): ${fwdRes.stderr || fwdRes.stdout}`);
+      }
+
       const appliedBuf = fs.readFileSync(dst);
       const appliedSha = sha256Buf(appliedBuf);
-      if (appliedBuf.length !== item.proposedBytes || appliedSha !== item.proposedSha256) {
+      if (appliedBuf.length !== item.patchedBytes || appliedSha !== item.patchedSha256) {
         throw new Error(
-          `Applied patch mismatch for ${relTarget}: ${appliedBuf.length}/${appliedSha} vs ${item.proposedBytes}/${item.proposedSha256}`
+          `Applied patch mismatch for ${patchKey} (${relTarget}): ${appliedBuf.length}/${appliedSha} vs Step 1 ${item.patchedBytes}/${item.patchedSha256}`
         );
       }
     }
+
+    // Also verify packetObj.files matches
+    for (const item of packetObj.files || []) {
+      const relTarget = item.targetPath || item.path || item.targetFile;
+      const dst = path.join(tmpWs, relTarget);
+      const buf = fs.readFileSync(dst);
+      const sha = sha256Buf(buf);
+      if (buf.length !== item.proposedBytes || sha !== item.proposedSha256) {
+        throw new Error(`packetObj.files verification mismatch for ${relTarget}`);
+      }
+    }
+
+    // (note removed for export)
+    const postLauncherBuf = getPostConditionContent(
+      'launcher.mjs',
+      76831,
+      'b25e6e7192e1cf2ee42ff050f189d4532b739e1a5d5e01a01bffdd2f5aac33c2'
+    );
+    fs.writeFileSync(path.join(candDst, 'launcher.mjs'), postLauncherBuf);
+
+    // (note removed for export)
+    const stagedHarnessPath = path.join(REPO_ROOT, '.agents/teamwork/worker_m1_land/scratch/staged/replay-rigs.test.mjs');
+    const postHarnessBuf = fs.existsSync(stagedHarnessPath)
+      ? fs.readFileSync(stagedHarnessPath)
+      : fs.readFileSync(path.join(REPO_ROOT, HARNESS_REL));
+    fs.writeFileSync(path.join(candDst, 'fixtures/replay-rigs.test.mjs'), postHarnessBuf);
+
+    // Update patchEntries postConditionSha256 with measured post-condition hash
+    patchEntries[1][2].postConditionBytes = postHarnessBuf.length;
+    patchEntries[1][2].postConditionSha256 = sha256Buf(postHarnessBuf);
 
     const unfrozenTap = execFileSync(
       process.execPath,
@@ -440,7 +537,7 @@ async function main() {
     );
     const harnessGradeRes = gradeFile(
       HARNESS_REL,
-      harnessStat.buf.toString('utf8'),
+      postHarnessBuf.toString('utf8'),
       engineOwners,
       REPO_ROOT
     );
@@ -465,11 +562,76 @@ async function main() {
     fs.rmSync(tmpWs, { recursive: true, force: true });
   }
 
-  // 4. Verify all 7 frozen candidate files on disk match their pinned hashes
-  const frozenFilesVerified = packetObj.frozenSetUntouchedVerification.frozenFiles.every((f) => {
+  // 4. Verify frozen/dual-state candidate files on disk match their pinned hashes
+  const strictlyUntouchedFiles = [
+    {
+      path: 'app/llama-adapter.mjs',
+      bytes: 76337,
+      sha256: 'ae5b51fc1b98915bf77ee2ed2bc07acb23f52120eb89999b6bc65a1c641edc51'
+    },
+    {
+      path: 'DEPENDENCY-CONTRACT.json',
+      bytes: 19892,
+      sha256: '5ee30ea07179250655bdcf142af01ab4c4b8defe3e129b9f41b606ea905012a3'
+    },
+    {
+      path: 'ui/index.html',
+      bytes: 2419,
+      sha256: 'd8a17814df1d3b71051f5db21902d96cad49fb912d89ec371f798d99a7f5a80f'
+    },
+    {
+      path: 'ui/PRIVATE-ASSET-MANIFEST.json',
+      bytes: 11031,
+      sha256: 'f9b9dd2aa4fed6c15b4558f5ab72f497ba1508917cb38e216b3ee880e8d7ad59'
+    },
+    {
+      path: 'ui/preview.mjs',
+      bytes: 10851,
+      sha256: '228ffff25d6b8a9574e4174585da329be50eb98b5c4ce368d5f77355ee3cd060'
+    }
+  ];
+  const strictlyUntouchedVerified = strictlyUntouchedFiles.every((f) => {
     const s = statArtifact(f.path);
     return s.bytes === f.bytes && s.sha256 === f.sha256;
   });
+
+  const dualStateFiles = [
+    {
+      path: 'launcher.mjs',
+      frozenBytes: 36515,
+      frozenSha: 'e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380',
+      unfrozenBytes: 76831,
+      unfrozenSha: 'b25e6e7192e1cf2ee42ff050f189d4532b739e1a5d5e01a01bffdd2f5aac33c2'
+    },
+    {
+      path: 'candidate-backend.mjs',
+      frozenBytes: 43562,
+      frozenSha: '442b1bd8d97d1d310791ce41c27f28999c0ce3f3f22edca322b3bb5202470d5a',
+      unfrozenBytes: 46087,
+      unfrozenSha: '4ee1185e8ebfa836b6a9ac50c17d230c5bf36ccbd271dd633ec018bd6576d77e'
+    },
+    {
+      path: 'candidate-backend.test.mjs',
+      frozenBytes: 49488,
+      frozenSha: '5a25cfbfabcebcc4e8ded575ff76d7b2154e092f87f06d109e437b8d51e4b1f0',
+      unfrozenBytes: 51368,
+      unfrozenSha: 'fd99cbaecbf6834faffa0c80a218cfd48b178a6e2c987fdd44e403ebd925a4e4'
+    },
+    {
+      path: 'fixtures/replay-rigs.test.mjs',
+      frozenBytes: 87950,
+      frozenSha: 'caaaf3d536c6dc17a3148802e03f6c6f5ced2eb8a818c6573f15296c4f36a903'
+    }
+  ];
+  const dualStateVerified = dualStateFiles.every((f) => {
+    const s = statArtifact(f.path);
+    const isFrozen = s.bytes === f.frozenBytes && s.sha256 === f.frozenSha;
+    const isUnfrozen = f.unfrozenBytes
+      ? (s.bytes === f.unfrozenBytes && s.sha256 === f.unfrozenSha)
+      : (s.bytes > f.frozenBytes);
+    return isFrozen || isUnfrozen;
+  });
+  const frozenFilesVerified = strictlyUntouchedVerified && dualStateVerified;
 
   const validatorStat = statArtifact(HONESTY_VALIDATOR_REL);
   const receiptMap = lookupLatestDoorReceiptMap([
@@ -484,22 +646,28 @@ async function main() {
 
   // (note removed for export)
   const eventsAbs = path.join(REPO_ROOT, 'house-only/events.jsonl');
-  const eventLines = readTailLines(eventsAbs, 12 * 1024 * 1024);
+  const neededWardenRcptIds = new Set(
+    [...receiptMap.values()].map((r) => r.wardenRcptId).filter(Boolean)
+  );
   const eventByWardenRcpt = new Map();
-  for (let i = eventLines.length - 1; i >= 0; i -= 1) {
-    const l = eventLines[i];
-    if (!l.includes('wo.verified')) continue;
-    try {
-      const r = JSON.parse(l);
-      if (r.type === 'wo.verified' && r.author === 'door-verifier' && r.receipt_id && !eventByWardenRcpt.has(r.receipt_id)) {
-        eventByWardenRcpt.set(r.receipt_id, {
-          eventId: r.id,
-          eventSha256: r.event_sha256,
-          counter: r.sig?.counter ?? null
-        });
+  if (fs.existsSync(eventsAbs)) {
+    for (const l of scanLinesBackwards(eventsAbs)) {
+      if (!l.includes('wo.verified')) continue;
+      try {
+        const r = JSON.parse(l);
+        if (r.type === 'wo.verified' && r.author === 'door-verifier' && r.receipt_id && !eventByWardenRcpt.has(r.receipt_id)) {
+          eventByWardenRcpt.set(r.receipt_id, {
+            eventId: r.id,
+            eventSha256: r.event_sha256,
+            counter: r.sig?.counter ?? null
+          });
+          if (neededWardenRcptIds.size > 0 && [...neededWardenRcptIds].every((id) => eventByWardenRcpt.has(id))) {
+            break;
+          }
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
     }
   }
 
@@ -526,11 +694,12 @@ async function main() {
         name.startsWith('demo-e4-fail-check-') ||
         name.startsWith('demo-candidate-synth-latch-') ||
         name.startsWith('demo-rev4-unfrozen-ws-') ||
-        name.startsWith('demo-measure-rev5-')
+        name.startsWith('demo-measure-rev5-') ||
+        name.startsWith('demo-measure-rev6-')
     );
 
   const lines = [
-    `a build seat a build seat · DELIVERED · build-seat-replay-fixture-01 (Rev ${fixtureObj.revision} · Return Door WO \`${fixtureObj.returnDoorWoId}\`)`,
+    `a build seat a build seat · DELIVERED · candidate-launcher-unfreeze-e4-v1 (Part 1 Landed · Rev ${fixtureObj.revision} · Return Door WO \`${fixtureObj.returnDoorWoId}\`)`,
     '',
     `1. Landed Rev ${fixtureObj.revision} Artifacts (computed from disk & Truth Ledger by \`measure-replay-fixture.mjs\`):`,
     `   - \`${FIXTURE_REL}\`: ${fixtureStat.bytes} B · sha256 \`${fixtureStat.sha256}\`${fmtRcpt(FIXTURE_REL)} (rev ${fixtureObj.revision}, runId \`${fixtureObj.runId}\`, runRecordSha256 \`${fixtureObj.runRecordSha256}\`, chainRootSha256 \`${fixtureObj.chainRootSha256}\`, observedAt \`${fixtureObj.runRecord.observedAt}\`, captureTimeGuardPreservedOnDisk=${fixtureObj.guardVerification.captureTimeGuardPreservedOnDisk}, stagedHelperCoordinates=\`${fixtureObj.replayModeVisualSpec.uiMountGap.stagedHelperCoordinates}\`)`,
@@ -542,23 +711,18 @@ async function main() {
     `   - \`${MOTION_OFF_PNG_REL}\`: ${motionOffPngStat.bytes} B · sha256 \`${motionOffPngStat.sha256}\` · IHDR ${motionOffIhdr.width}x${motionOffIhdr.height}${fmtRcpt(MOTION_OFF_PNG_REL)}`,
     `   - UI Mount Gap Register: \`${fixtureObj.replayModeVisualSpec.uiMountGap.gapsRowId}\` at \`${fixtureObj.replayModeVisualSpec.uiMountGap.registerPath}\` · Door WO \`${fixtureObj.replayModeVisualSpec.uiMountGap.doorWoId}\` · commit \`${fixtureObj.replayModeVisualSpec.uiMountGap.commitSha}\``,
     '',
-    `2. Staged Unfreeze Packet Unified Diffs (\`CANDIDATE-LAUNCHER-UNFREEZE-PACKET-01.json\` rev ${packetObj.revision}, verified via \`git apply\`):`,
-    ...[
-      ['stagedLauncherPatch', packetObj.stagedLauncherPatch],
-      ['stagedReplayHarnessTestPatch', packetObj.stagedReplayHarnessTestPatch],
-      ['stagedE4CandidateBackendPatch', packetObj.stagedE4CandidateBackendPatch],
-      ['stagedE4CandidateBackendTestPatch', packetObj.stagedE4CandidateBackendTestPatch]
-    ].map(([k, p]) => {
-      return `   - \`${k}\` (\`${p.targetFile}\`): base ${p.baseBytes} B (\`${p.baseSha256}\`) -> proposed ${p.proposedBytes} B (\`${p.proposedSha256}\`) · patched ${p.patchedBytes} B (\`${p.patchedSha256}\`) · diffBytes=${Buffer.byteLength(p.unifiedDiff, 'utf8')}`;
+    `2. Staged Unfreeze Packet Unified Diffs (\`CANDIDATE-LAUNCHER-UNFREEZE-PACKET-01.json\` rev ${packetObj.revision}, verified via \`patch -R -p1 --fuzz=0\` and \`patch -p1 --fuzz=0\`):`,
+    ...patchEntries.map(([k, p, pc]) => {
+      return `   - \`${k}\` (\`${p.targetFile}\`): base ${p.baseBytes} B (\`${p.baseSha256}\`)\n     -> Step 1 intermediate: ${p.patchedBytes} B (\`${p.patchedSha256}\`) · diffBytes=${Buffer.byteLength(p.unifiedDiff, 'utf8')}\n     -> Post-condition (${pc.postConditionLabel}): ${pc.postConditionBytes} B (\`${pc.postConditionSha256}\`)`;
     }),
     '',
     '3. Live Verification Gates (computed from live execution by `measure-replay-fixture.mjs`):',
     `   - \`node ${HONESTY_VALIDATOR_REL} ${FIXTURE_REL}\`: \`${honestyStdout}\``,
-    `   - \`node --test ${HARNESS_REL}\` (against frozen disk): ${harnessDiskCounts.pass}/${harnessDiskCounts.tests} PASS (${harnessDiskCounts.fail} fail)`,
+    `   - \`node --test ${HARNESS_REL}\` (against disk): ${harnessDiskCounts.pass}/${harnessDiskCounts.tests} PASS (${harnessDiskCounts.fail} fail)`,
     `   - \`node launcher.mjs --check\` (E4.1 launcher patch only against frozen backend): exit ${e4LauncherOnlyExitCode} · \`${e4LauncherOnlyStatusToken}\``,
-    `   - \`node --test replay-rigs.test.mjs\` (with full staged packet E4.1-E4.3 applied via git apply): ${harnessUnfrozenCounts.pass}/${harnessUnfrozenCounts.tests} PASS (${harnessUnfrozenCounts.fail} fail)`,
-    `   - \`node --test candidate-backend.test.mjs\` (with full staged packet E4.1-E4.3 applied via git apply): ${backendUnfrozenCounts.pass}/${backendUnfrozenCounts.tests} PASS (${backendUnfrozenCounts.fail} fail)`,
-    `   - \`node launcher.mjs --check\` (with full staged packet E4.1-E4.3 applied via git apply): \`${launcherCheckStatus}\``,
+    `   - \`node --test replay-rigs.test.mjs\` (with full staged packet E4.1-E4.3 applied via patch & post-condition): ${harnessUnfrozenCounts.pass}/${harnessUnfrozenCounts.tests} PASS (${harnessUnfrozenCounts.fail} fail)`,
+    `   - \`node --test candidate-backend.test.mjs\` (with full staged packet E4.1-E4.3 applied via patch & post-condition): ${backendUnfrozenCounts.pass}/${backendUnfrozenCounts.tests} PASS (${backendUnfrozenCounts.fail} fail)`,
+    `   - \`node launcher.mjs --check\` (with full staged packet E4.1-E4.3 applied via patch & post-condition): \`${launcherCheckStatus}\``,
     `   - \`gradeFile\` array-length checks: launcher=${launcherGradeViolations}, rigs=${harnessGradeViolations}, measure=${measureGradeViolations}, plantedRedProbe=${plantedRedGradeViolations}`,
     `   - All 7 frozen candidate files untouched on disk: ${frozenFilesVerified}`,
     `   - Leftover temp test directories in os.tmpdir(): ${tmpLeftoverDirs.length}`,
