@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 // (note removed for export)
-// 5 tests: determinism, wo_ ids resolve in the receipt log, house detector
-// 0 hits, planted home path refuses, pins plus row completeness.
-import test from 'node:test';
+// 6 tests: determinism, wo_ ids resolve in the receipt log, house detector
+// 0 hits, planted home path refuses, pins plus row completeness, no---repo CLI.
+import test, { after } from 'node:test';
 import assert from 'node:assert';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdtempSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { LIVE_MODEL, FALLBACK_CANDIDATES, P2_PIN } from './tooling-provenance-doc.mjs';
+
+const TRACKED_DIRS = [];
+function track(d) { TRACKED_DIRS.push(d); return d; }
+after(() => { for (const d of TRACKED_DIRS) rmSync(d, { recursive: true, force: true }); });
 
 const TESTDIR = dirname(fileURLToPath(import.meta.url));
 function findRepo() {
@@ -37,7 +41,7 @@ function runDoc(out, muse = MUSE) {
 }
 
 test('generator is deterministic: two runs byte-identical', () => {
-  const dir = realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-det-')));
+  const dir = track(realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-det-'))));
   const a = join(dir, 'a.md');
   const b = join(dir, 'b.md');
   assert.equal(runDoc(a).status, 0);
@@ -46,7 +50,7 @@ test('generator is deterministic: two runs byte-identical', () => {
 });
 
 test('every cited wo_ exists in the ledger receipts', () => {
-  const dir = realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-wo-')));
+  const dir = track(realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-wo-'))));
   const out = join(dir, 'doc.md');
   assert.equal(runDoc(out).status, 0);
   const md = readFileSync(out, 'utf8');
@@ -58,7 +62,7 @@ test('every cited wo_ exists in the ledger receipts', () => {
 });
 
 test('output passes the house secret detector with 0 hits', async () => {
-  const dir = realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-sec-')));
+  const dir = track(realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-sec-'))));
   const out = join(dir, 'doc.md');
   assert.equal(runDoc(out).status, 0);
   const detector = await import(pathToFileURL(join(REPO, 'house-only/secret-patterns.mjs')).href);
@@ -67,7 +71,7 @@ test('output passes the house secret detector with 0 hits', async () => {
 });
 
 test('planted home path in a temp input copy refuses the run', () => {
-  const dir = realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-plant-')));
+  const dir = track(realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-plant-'))));
   const poisoned = join(dir, 'muse.json');
   const muse = JSON.parse(readFileSync(MUSE, 'utf8'));
   muse.rows[0].notes.push('planted probe house-only/evidence.txt');
@@ -82,7 +86,7 @@ test('pins hold, rows complete, WO lines carry the stated models', () => {
   const houseBytes = readFileSync(HOUSE);
   assert.equal(houseBytes.length, P2_PIN.bytes);
   assert.equal(createHash('sha256').update(houseBytes).digest('hex'), P2_PIN.sha256);
-  const dir = realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-pin-')));
+  const dir = track(realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-pin-'))));
   const out = join(dir, 'doc.md');
   assert.equal(runDoc(out).status, 0);
   const md = readFileSync(out, 'utf8');
@@ -91,9 +95,33 @@ test('pins hold, rows complete, WO lines carry the stated models', () => {
   for (const r of house.provenanceRecords) assert.ok(md.includes(r.recordId), r.recordId);
   assert.ok(md.includes(LIVE_MODEL));
   for (const c of FALLBACK_CANDIDATES) assert.ok(md.includes(c), c);
-  const woLines = readFileSync(WO, 'utf8').split('\n');
-  assert.ok(woLines[483].includes(LIVE_MODEL), 'WO P1 action row carries the live model');
-  assert.ok(woLines[462].includes('Glimmer') && woLines[462].includes('Muse Spark Open'), 'WO P1 D-E row carries the fallback candidates');
+  const woText = readFileSync(WO, 'utf8');
+  const woLines = woText.split('\n');
+  const woSha = createHash('sha256').update(woText).digest('hex').slice(0, 16);
+  const p1 = woLines.findIndex((l) => l.startsWith('### P1'));
+  assert.ok(p1 >= 0, `### P1 section found (WO sha ${woSha})`);
+  const action = woLines.slice(p1).find((l) => l.startsWith('| action |'));
+  assert.ok(action && action.includes(LIVE_MODEL), `WO P1 action row carries the live model (WO sha ${woSha})`);
+  const deIdx = woLines.findIndex((l) => l.startsWith('- D-E ('));
+  assert.ok(deIdx >= 0, `D-E bullet found (WO sha ${woSha})`);
+  const hdr = woLines.slice(0, deIdx).filter((l) => l.startsWith('## ')).pop();
+  assert.ok(hdr && hdr.startsWith('## 3.'), `D-E bullet sits under §3 (WO sha ${woSha}): ${hdr}`);
+  const bullet = woLines[deIdx];
+  for (const c of FALLBACK_CANDIDATES) assert.ok(bullet.includes(c), `§3 bullet names ${c} (WO sha ${woSha})`);
+  assert.ok(bullet.includes('Oct 29'), `§3 bullet carries the ruling date (WO sha ${woSha})`);
+  const branch = woLines.slice(p1).find((l) => l.startsWith('| D-E branch |'));
+  assert.ok(branch && branch.includes('eligibility ruling'), `P1 D-E branch row carries the unruled route (WO sha ${woSha})`);
+  assert.ok(!branch.includes('Glimmer') && !branch.includes('Spark Open'), 'branch row names no candidate');
+  assert.ok(md.includes('§3 D-E bullet'), 'doc cites the bullet location');
   assert.ok(!md.includes('@'), 'no sealed handle anywhere');
   assert.ok(!md.includes('ops-bridge/'), 'no internal-vocabulary path prefix');
+});
+
+test('CLI resolves the repo with no --repo flag', () => {
+  const dir = track(realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-norepo-'))));
+  const out = join(dir, 'doc.md');
+  const r = spawnSync('node', [TOOL, '--muse', MUSE, '--house', HOUSE, '--scan', SCAN, '--out', out],
+    { encoding: 'utf8', timeout: 60000 });
+  assert.equal(r.status, 0, (r.stdout || '') + (r.stderr || ''));
+  assert.ok(readFileSync(out, 'utf8').includes('# TOOLING-PROVENANCE'));
 });
