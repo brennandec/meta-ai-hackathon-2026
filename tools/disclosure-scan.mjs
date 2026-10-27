@@ -7,7 +7,9 @@
 // carries no pattern literal and no trip token (class names that collide with
 // the rules are assembled from parts). The 24+ class runs each file through
 // the house detector and keeps key, secret and placeholder findings only.
-// Rows carry both scan02 fences: as-applied (route vs basename) and corrected
+// rev 2: one fence (full route). Provenance keeps the scan01 as-applied arithmetic only.
+// Excerpts mask rule spans plus every 20+ run (the detector's key-shaped floor) on the line.
+// Git mode enumerates one unit per (blob, path) pair via per-commit ls-tree.
 // (route vs path relative to the candidate or app root). Excerpts are
 // 80-char windows with every hit replaced by [MASK n ch].
 // CLI: node tools/disclosure-scan.mjs [paths...] [--git <clone>]
@@ -100,7 +102,7 @@ export function maskExcerpt(line, spans) {
   return { excerpt: masked.slice(start, start + 80), excerptStartCol: start };
 }
 
-const TOKEN24_RUN = /[A-Za-z0-9_-]{24,}/g;
+const MASK_RUN = /[A-Za-z0-9_-]{20,}/g;
 export function scanText(text, rules, detectorFindings) {
   const rows = [];
   const lines = String(text).split('\n');
@@ -122,17 +124,18 @@ export function scanText(text, rules, detectorFindings) {
       for (const h of hits) byClass.get(r.class).toks.add(h.text);
       spans.push(...hits);
     }
+    MASK_RUN.lastIndex = 0;
+    const runs = [];
+    let m;
+    while ((m = MASK_RUN.exec(line)) !== null) runs.push({ index: m.index, length: m[0].length });
+    const allSpans = spans.concat(runs);
     for (const [cls, g] of byClass) {
-      const { excerpt, excerptStartCol } = maskExcerpt(line, spans);
+      const { excerpt, excerptStartCol } = maskExcerpt(line, allSpans);
       rows.push({ line: n, class: cls, ruleSet: g.ruleSet, tokens: [...g.toks], suggestedExportAction: ACTION[cls] || 'strip comment', excerpt, excerptStartCol, lineChars: line.length });
     }
     const det = findingsByLine.get(n);
     if (det && det.size) {
-      TOKEN24_RUN.lastIndex = 0;
-      const dspans = [];
-      let m;
-      while ((m = TOKEN24_RUN.exec(line)) !== null) dspans.push({ index: m.index, length: m[0].length });
-      const { excerpt, excerptStartCol } = maskExcerpt(line, dspans);
+      const { excerpt, excerptStartCol } = maskExcerpt(line, allSpans);
       rows.push({ line: n, class: C_TOKEN24, ruleSet: 'delta', tokens: [...det], suggestedExportAction: ACTION[C_TOKEN24], excerpt, excerptStartCol, lineChars: line.length });
     }
   }
@@ -174,14 +177,6 @@ export function census24(text) {
   return out;
 }
 
-export function fenceFor(path, routes, modules) {
-  const base = path.split('/').pop();
-  if (modules.has(path)) return { fence: FENCE_MODULE, ref: path };
-  for (const r of routes) {
-    if (r === '/' + base || r === base) return { fence: FENCE_ROUTE, ref: r };
-  }
-  return { fence: FENCE_OUTSIDE, ref: null };
-}
 export function correctedKey(path) {
   const i1 = path.indexOf(CAND_MARK);
   if (i1 >= 0) return path.slice(i1 + CAND_MARK.length);
@@ -189,13 +184,21 @@ export function correctedKey(path) {
   if (i2 >= 0) return path.slice(i2 + APP_MARK.length);
   return path;
 }
-export function fenceCorrectedFor(path, routes, modules) {
+export function fenceFor(path, routes, modules) {
   const key = correctedKey(path);
-  if (modules.has(path)) return { fenceCorrected: FENCE_MODULE, ref: path };
+  if (modules.has(path)) return { fence: FENCE_MODULE, ref: path };
   for (const r of routes) {
-    if (r === '/' + key || r === key) return { fenceCorrected: FENCE_ROUTE, ref: r };
+    if (r === '/' + key || r === key) return { fence: FENCE_ROUTE, ref: r };
   }
-  return { fenceCorrected: FENCE_OUTSIDE, ref: null };
+  return { fence: FENCE_OUTSIDE, ref: null };
+}
+export function basenameFenceForProvenance(path, routes, modules) {
+  const base = path.split('/').pop();
+  if (modules.has(path)) return FENCE_MODULE;
+  for (const r of routes) {
+    if (r === '/' + base || r === base) return FENCE_ROUTE;
+  }
+  return FENCE_OUTSIDE;
 }
 
 function collectFiles(paths, repo) {
@@ -227,17 +230,17 @@ function run(cmd, args, cwd) {
 
 export function collectGitBlobs(clone) {
   const abs = resolve(clone);
-  const revs = run('git', ['rev-list', '--all', '--objects'], abs).split('\n').filter(Boolean);
-  const blobs = new Map();
-  for (const rev of revs) {
-    const sp = rev.indexOf(' ');
-    if (sp < 0) continue;
-    const sha = rev.slice(0, sp);
-    const kind = run('git', ['cat-file', '-t', sha], abs).trim();
-    if (kind !== 'blob' || blobs.has(sha)) continue;
-    blobs.set(sha, rev.slice(sp + 1));
+  const commits = run('git', ['rev-list', '--all'], abs).split('\n').filter(Boolean);
+  const pairs = new Map();
+  for (const c of commits) {
+    const ls = run('git', ['ls-tree', '-r', c], abs).split('\n').filter(Boolean);
+    for (const ln of ls) {
+      const m = /^(\d+) (blob|tree|commit) ([0-9a-f]+)\t(.*)$/.exec(ln);
+      if (!m || m[2] !== 'blob') continue;
+      pairs.set(m[3] + '\0' + m[4], { sha: m[3], path: m[4] });
+    }
   }
-  return [...blobs.entries()].map(([sha, path]) => ({ sha, path })).sort((a, b) => String(a.path).localeCompare(String(b.path)));
+  return [...pairs.values()].sort((a, b) => String(a.path).localeCompare(String(b.path)) || a.sha.localeCompare(b.sha));
 }
 
 export function readGitBlob(clone, sha) {
@@ -265,9 +268,8 @@ export async function scanInputs({ inputs, git, rules, scanSecrets, repo, fence 
   for (const u of units) {
     const findings = scanSecrets(u.text);
     for (const r of scanText(u.text, rules, findings)) {
-      const fa = fenceFor(u.path, routes, modules);
-      const fc = fenceCorrectedFor(u.path, routes, modules);
-      const row = { path: u.path, line: r.line, class: r.class, ruleSet: r.ruleSet, tokens: r.tokens, suggestedExportAction: r.suggestedExportAction, fence: fa.fence, fenceRef: fa.ref, fenceCorrected: fc.fenceCorrected, fenceCorrectedRef: fc.ref, excerpt: r.excerpt, excerptStartCol: r.excerptStartCol, lineChars: r.lineChars };
+      const f = fenceFor(u.path, routes, modules);
+      const row = { path: u.path, line: r.line, class: r.class, ruleSet: r.ruleSet, tokens: r.tokens, suggestedExportAction: r.suggestedExportAction, fence: f.fence, fenceRef: f.ref, excerpt: r.excerpt, excerptStartCol: r.excerptStartCol, lineChars: r.lineChars };
       if (u.blob) row.blob = u.blob;
       rows.push(row);
     }
@@ -281,13 +283,17 @@ export async function scanInputs({ inputs, git, rules, scanSecrets, repo, fence 
   const countsPerClass = {};
   for (const r of [...rules.scan01, ...rules.delta]) if (!(r.class in countsPerClass)) countsPerClass[r.class] = 0;
   if (!(C_TOKEN24 in countsPerClass)) countsPerClass[C_TOKEN24] = 0;
-  const fenceCounts = { asApplied: { scan01: 0, delta: 0, all: 0 }, corrected: { scan01: 0, delta: 0, all: 0 } };
+  const countsPerClassInside = { ...countsPerClass };
+  const countsPerClassOutside = { ...countsPerClass };
+  const fenceCounts = { scan01: 0, delta: 0, all: 0 };
+  const scan01AsApplied = { scan01: 0, delta: 0, all: 0 };
   for (const r of rows) {
     countsPerClass[r.class] = (countsPerClass[r.class] || 0) + 1;
-    if (r.fence === FENCE_OUTSIDE) { fenceCounts.asApplied[r.ruleSet === 'scan01' ? 'scan01' : 'delta']++; fenceCounts.asApplied.all++; }
-    if (r.fenceCorrected === FENCE_OUTSIDE) { fenceCounts.corrected[r.ruleSet === 'scan01' ? 'scan01' : 'delta']++; fenceCounts.corrected.all++; }
+    if (r.fence === FENCE_OUTSIDE) { fenceCounts[r.ruleSet === 'scan01' ? 'scan01' : 'delta']++; fenceCounts.all++; countsPerClassOutside[r.class]++; }
+    else countsPerClassInside[r.class]++;
+    if (basenameFenceForProvenance(r.path, routes, modules) === FENCE_OUTSIDE) { scan01AsApplied[r.ruleSet === 'scan01' ? 'scan01' : 'delta']++; scan01AsApplied.all++; }
   }
-  return { rows, countsPerClass, fenceCounts, tokenCensus24: census, filesScanned: units.length };
+  return { rows, countsPerClass, countsPerClassInside, countsPerClassOutside, fenceCounts, provenance: { scan01AsApplied }, tokenCensus24: census, filesScanned: units.length };
 }
 
 export function findRepo(from) {
@@ -329,7 +335,8 @@ export async function main(argv, repoOverride) {
   }
   const { scanTextForSecrets } = await import(pathToFileURL(join(repo, 'scripts', 'lib', 'secret-patterns.mjs')).href);
   const result = await scanInputs({ inputs: positional, git, rules, scanSecrets: scanTextForSecrets, repo, fence });
-  result.method = { scan01Rules: rules.scan01.length, deltaRules: rules.delta.length, detector: 'house secret-patterns', keyShapedRule: receipt.tokenCensus24 ? receipt.tokenCensus24.keyShapedRule : null };
+  result.revision = 2;
+  result.method = { scan01Rules: rules.scan01.length, deltaRules: rules.delta.length, detector: 'house secret-patterns', keyShapedRule: receipt.tokenCensus24 ? receipt.tokenCensus24.keyShapedRule : null, fence: 'full-route' };
   const json = JSON.stringify(result, null, 2) + '\n';
   if (outPath) writeFileSync(outPath, json);
   else process.stdout.write(json);
