@@ -4,45 +4,45 @@
  "inputs": {
   "fixtures": [
    {
-    "path": "house-only/fault-case-1-0000.json",
+    "path": "fixtures/faults/fault-case-1-0000.json",
     "bytes": 1526,
     "sha256": "ba3cd95bbd8c8b4a56890b4847c0da044660abd8d350ffe8c1a8dd4640b3ece2",
     "revision": null
    },
    {
-    "path": "house-only/fault-case-1-0001.json",
+    "path": "fixtures/faults/fault-case-1-0001.json",
     "bytes": 1545,
     "sha256": "159ff7cbfde454e650fdb757c81e4a30cf2be3941f252236887e1606e1ce49b8",
     "revision": null
    },
    {
-    "path": "house-only/fault-case-1-0002.json",
+    "path": "fixtures/faults/fault-case-1-0002.json",
     "bytes": 1522,
     "sha256": "e544d17083be9b4a2068b04e405f26259219ef9c7135e7e2fa5dc38c1a5d1634",
     "revision": null
    },
    {
-    "path": "house-only/fault-case-1-0003.json",
+    "path": "fixtures/faults/fault-case-1-0003.json",
     "bytes": 1553,
     "sha256": "0a7bf0ff4184ff8bc19f187607bc6c179eb1ab4e4a90bbeefdbe776953ce2988",
     "revision": null
    },
    {
-    "path": "house-only/index.json",
+    "path": "fixtures/faults/index.json",
     "bytes": 937,
     "sha256": "4692989ba4443720244a9e7e2c0d31d2bdbd051c776c81221ded4173d1537b87",
     "revision": null
    },
    {
-    "path": "house-only/synthetic-transport-run-record.json",
+    "path": "fixtures/synthetic-transport-run-record.json",
     "bytes": 50907,
     "sha256": "ef11653ff858c01b9cfb07c254d4d02d9008037caef11d5ca23c5923e4a40c92",
     "revision": 6
    }
   ],
   "beatmap": {
-   "bytes": 21835,
-   "sha256": "a6429c68f2679323a413cb20384af4e794094e8d10ce2d1357f9d371f53f1d9c",
+   "bytes": 21205,
+   "sha256": "431651196a663940f44b98a89dc2fa7a2ad43818435675a58433686d84b2a447",
    "script": {
     "rev": 6,
     "status": "held-unaccepted",
@@ -64,7 +64,7 @@
  },
  "rows": [
   {
-   "path": "house-only/fault-case-1-0000.json",
+   "path": "fixtures/faults/fault-case-1-0000.json",
    "bytes": 1526,
    "sha256": "ba3cd95bbd8c8b4a56890b4847c0da044660abd8d350ffe8c1a8dd4640b3ece2",
    "honestyPass": true,
@@ -94,7 +94,7 @@
    ]
   },
   {
-   "path": "house-only/fault-case-1-0001.json",
+   "path": "fixtures/faults/fault-case-1-0001.json",
    "bytes": 1545,
    "sha256": "159ff7cbfde454e650fdb757c81e4a30cf2be3941f252236887e1606e1ce49b8",
    "honestyPass": true,
@@ -118,7 +118,7 @@
    ]
   },
   {
-   "path": "house-only/fault-case-1-0002.json",
+   "path": "fixtures/faults/fault-case-1-0002.json",
    "bytes": 1522,
    "sha256": "e544d17083be9b4a2068b04e405f26259219ef9c7135e7e2fa5dc38c1a5d1634",
    "honestyPass": true,
@@ -136,7 +136,7 @@
    ]
   },
   {
-   "path": "house-only/fault-case-1-0003.json",
+   "path": "fixtures/faults/fault-case-1-0003.json",
    "bytes": 1553,
    "sha256": "0a7bf0ff4184ff8bc19f187607bc6c179eb1ab4e4a90bbeefdbe776953ce2988",
    "honestyPass": true,
@@ -154,7 +154,7 @@
    ]
   },
   {
-   "path": "house-only/index.json",
+   "path": "fixtures/faults/index.json",
    "bytes": 937,
    "sha256": "4692989ba4443720244a9e7e2c0d31d2bdbd051c776c81221ded4173d1537b87",
    "honestyPass": true,
@@ -165,7 +165,7 @@
    "beatsCited": []
   },
   {
-   "path": "house-only/synthetic-transport-run-record.json",
+   "path": "fixtures/synthetic-transport-run-record.json",
    "bytes": 50907,
    "sha256": "ef11653ff858c01b9cfb07c254d4d02d9008037caef11d5ca23c5923e4a40c92",
    "honestyPass": true,
