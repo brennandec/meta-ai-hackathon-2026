@@ -471,9 +471,13 @@ async function main() {
     `   - UI Mount Gap Register: \`${fixtureObj.replayModeVisualSpec.uiMountGap.gapsRowId}\` at \`${fixtureObj.replayModeVisualSpec.uiMountGap.registerPath}\` · Door WO \`${fixtureObj.replayModeVisualSpec.uiMountGap.doorWoId}\` · commit \`${fixtureObj.replayModeVisualSpec.uiMountGap.commitSha}\``,
     '',
     `2. Staged Unfreeze Packet Patches (\`CANDIDATE-LAUNCHER-UNFREEZE-PACKET-01.json\` rev ${packetObj.revision}):`,
-    `   - \`${packetObj.stagedLauncherPatch.targetPath}\`: current ${packetObj.stagedLauncherPatch.currentBytes} B (\`${packetObj.stagedLauncherPatch.currentSha256}\`) -> proposed ${packetObj.stagedLauncherPatch.proposedBytes} B (\`${packetObj.stagedLauncherPatch.proposedSha256}\`)`,
-    `   - \`${packetObj.stagedE4CandidateBackendPatch.targetPath}\`: current ${packetObj.stagedE4CandidateBackendPatch.currentBytes} B (\`${packetObj.stagedE4CandidateBackendPatch.currentSha256}\`) -> proposed ${packetObj.stagedE4CandidateBackendPatch.proposedBytes} B (\`${packetObj.stagedE4CandidateBackendPatch.proposedSha256}\`)`,
-    `   - \`${packetObj.stagedE4CandidateBackendTestPatch.targetPath}\`: current ${packetObj.stagedE4CandidateBackendTestPatch.currentBytes} B (\`${packetObj.stagedE4CandidateBackendTestPatch.currentSha256}\`) -> proposed ${packetObj.stagedE4CandidateBackendTestPatch.proposedBytes} B (\`${packetObj.stagedE4CandidateBackendTestPatch.proposedSha256}\`)`,
+    ...packetObj.files.map((item) => {
+      const curBytes = item.baseBytes ?? item.currentFrozenBytes ?? item.currentBytes;
+      const curSha = item.baseSha256 ?? item.currentFrozenSha256 ?? item.currentSha256;
+      const propBytes = item.proposedBytes ?? item.patchedBytes ?? Buffer.byteLength(item.proposedContent, 'utf8');
+      const propSha = item.proposedSha256 ?? item.patchedSha256 ?? sha256Buf(Buffer.from(item.proposedContent, 'utf8'));
+      return `   - \`${item.targetPath}\`: current ${curBytes} B (\`${curSha}\`) -> proposed ${propBytes} B (\`${propSha}\`)`;
+    }),
     '',
     '3. Live Verification Gates (computed from live execution by `measure-replay-fixture.mjs`):',
     `   - \`node ${HONESTY_VALIDATOR_REL} ${FIXTURE_REL}\`: \`${honestyStdout}\``,
