@@ -6,7 +6,7 @@
  * Reads only landed files and the unfreeze packet. Copies the candidate folder into a fresh mkdtemp
  * (note removed for export)
  * Checks every packet diff at 0 fuzz against base bytes read from git, checks every post-condition file
- * against the packet parts23PostCondition section by sha256, and prints every number from disk or live subprocess output.
+ * against the packet rev7_3_1PostCondition section by sha256, and prints every number from disk or live subprocess output.
  * Exit code 0 only when every check in the printed table passes.
  */
 
@@ -102,6 +102,14 @@ const TEMP_PREFIXES = Object.freeze([
   'demo-measure-rev7-',
   'demo-measure-rev71-'
 ]);
+
+const POST_CONDITION_CHAIN = Object.freeze([
+  Object.freeze({ key: 'parts23PostCondition', revision: '7.2', label: 'rev 6, rev 7 and rev 7.1 records' }),
+  Object.freeze({ key: 'rev7_3PostCondition', revision: '7.3', label: 'rev 6 through rev 7.2 records' }),
+  Object.freeze({ key: 'rev7_3_1PostCondition', revision: '7.3.1', label: 'rev 6 through rev 7.3 records' })
+]);
+
+const REV7_3_BOUND_RELS = Object.freeze([LAUNCHER_REL, SERVE_TEST_REL]);
 
 const PATCH_SECTION_KEYS = Object.freeze([
   'stagedLauncherPatch',
@@ -570,10 +578,14 @@ async function main() {
   if (!rev7 || rev7.revision !== '7.1' || !packetObj.rev7PostCondition || packetObj.rev7PostCondition.revision !== 7) {
     throw new Error('Packet has no rev7_1PostCondition section with revision 7.1 beside the rev 7 record');
   }
-  const latest = packetObj.parts23PostCondition;
-  if (!latest || latest.revision !== '7.2' || !Array.isArray(latest.postConditionFiles)) {
-    throw new Error('Packet has no parts23PostCondition section with revision 7.2 beside the rev 7.1 record');
+  for (const { key, revision } of POST_CONDITION_CHAIN) {
+    const section = packetObj[key];
+    if (!section || section.revision !== revision || !Array.isArray(section.postConditionFiles)) {
+      throw new Error(`Packet has no ${key} section with revision ${revision} and postConditionFiles`);
+    }
   }
+  const latest = packetObj.rev7_3_1PostCondition;
+  const rev73 = packetObj.rev7_3PostCondition;
   let gitBase;
   try {
     gitBase = resolveBaseGitDir(packetObj);
@@ -591,12 +603,29 @@ async function main() {
   const priorRecordsIdentical =
     sha256Buf(priorPrefix) === prior.prefixSha256 && priorRebuilt.length === prior.bytes && sha256Buf(priorRebuilt) === prior.sha256;
   if (!priorRecordsIdentical) failures.push('packet rev 6 and rev 7 records');
-  const prior71 = latest.priorPacket || {};
-  const prior71Prefix = packetStat.buf.subarray(0, prior71.prefixBytes || 0);
-  const prior71Rebuilt = Buffer.concat([prior71Prefix, Buffer.from(String(prior71.closingText || ''), 'utf8')]);
-  const prior71RecordsIdentical =
-    sha256Buf(prior71Prefix) === prior71.prefixSha256 && prior71Rebuilt.length === prior71.bytes && sha256Buf(prior71Rebuilt) === prior71.sha256;
-  if (!prior71RecordsIdentical) failures.push('packet rev 7.1 records');
+  let previousPrefixBytes = prior.prefixBytes || 0;
+  const chainRows = POST_CONDITION_CHAIN.map(({ key, revision, label }) => {
+    const sectionPrior = packetObj[key].priorPacket || {};
+    const sectionPrefix = packetStat.buf.subarray(0, sectionPrior.prefixBytes || 0);
+    const sectionRebuilt = Buffer.concat([sectionPrefix, Buffer.from(String(sectionPrior.closingText || ''), 'utf8')]);
+    const identical =
+      sha256Buf(sectionPrefix) === sectionPrior.prefixSha256 &&
+      sectionRebuilt.length === sectionPrior.bytes &&
+      sha256Buf(sectionRebuilt) === sectionPrior.sha256 &&
+      (sectionPrior.prefixBytes || 0) > previousPrefixBytes;
+    previousPrefixBytes = sectionPrior.prefixBytes || 0;
+    if (!identical) failures.push(`packet ${label} above ${key}`);
+    return { key, revision, label, sectionPrior, prefixSha256: sha256Buf(sectionPrefix), rebuiltBytes: sectionRebuilt.length, rebuiltSha256: sha256Buf(sectionRebuilt), identical };
+  });
+  const rev73ByPath = new Map(rev73.postConditionFiles.map((row) => [row.path, row]));
+  const latestByPath = new Map(latest.postConditionFiles.map((row) => [row.path, row]));
+  const boundRows = REV7_3_BOUND_RELS.map((rel) => {
+    const pinned = rev73ByPath.get(rel);
+    const row = latestByPath.get(rel);
+    const match = Boolean(pinned) && Boolean(row) && pinned.bytes === row.bytes && pinned.sha256 === row.sha256;
+    if (!match) failures.push(`rev7_3PostCondition binding ${rel}`);
+    return { rel, pinned, row, match };
+  });
 
   const landed = [LAUNCHER_REL, BACKEND_REL, BACKEND_TEST_REL, HARNESS_REL, MEASURE_REL, FIXTURE_REL, SERVE_TEST_REL].map((rel) => statArtifact(rel));
   const rev7ByPath = new Map(latest.postConditionFiles.map((row) => [row.path, row]));
@@ -708,14 +737,15 @@ async function main() {
     .filter((l) => /^(ok |not ok |1\.\.|# tests |# pass |# fail |# skipped )/.test(l));
 
   const lines = [
-    `E4 rev 7.2 measurement (parts 2-3 post-condition) · candidate-launcher-unfreeze-e4-v1 · packet parts23PostCondition generatedAt ${latest.generatedAt} · rev7_1PostCondition generatedAt ${rev7.generatedAt}`,
+    `E4 rev 7.3.1 measurement (rev 7.3.1 post-condition) · candidate-launcher-unfreeze-e4-v1 · packet rev7_3_1PostCondition generatedAt ${latest.generatedAt} · rev7_3PostCondition generatedAt ${rev73.generatedAt} · rev7_1PostCondition generatedAt ${rev7.generatedAt}`,
     `root: ${REPO_ROOT} (inside os.tmpdir(): ${REPO_ROOT === realTmp || REPO_ROOT.startsWith(realTmp + path.sep)}) · base bytes git dir: ${gitDir} (${gitBase.source})`,
     '',
-    '1. Post-condition files (disk vs packet parts23PostCondition, by bytes and sha256):',
+    '1. Post-condition files (disk vs packet rev7_3_1PostCondition, by bytes and sha256):',
     ...postRows.map((p) => `   - ${mark(p.match)} \`${p.stat.relPath}\`: ${p.stat.bytes} B · sha256 \`${p.stat.sha256}\` · packet ${p.row ? `${p.row.bytes} B \`${p.row.sha256}\`` : 'no row'}${fmtRcpt(p.stat.relPath)}`),
-    `   - \`${PACKET_REL}\`: ${packetStat.bytes} B · sha256 \`${packetStat.sha256}\` (schema \`${packetObj.schema}\`, rev ${packetObj.revision}, rev7PostCondition ${packetObj.rev7PostCondition.revision}, rev7_1PostCondition ${rev7.revision}, parts23PostCondition ${latest.revision})${fmtRcpt(PACKET_REL)}`,
+    `   - \`${PACKET_REL}\`: ${packetStat.bytes} B · sha256 \`${packetStat.sha256}\` (schema \`${packetObj.schema}\`, rev ${packetObj.revision}, rev7PostCondition ${packetObj.rev7PostCondition.revision}, rev7_1PostCondition ${rev7.revision}, ${POST_CONDITION_CHAIN.map(({ key }) => `${key} ${packetObj[key].revision}`).join(', ')})${fmtRcpt(PACKET_REL)}`,
     `   - ${mark(priorRecordsIdentical)} rev 6 and rev 7 records byte-identical: first ${prior.prefixBytes} B sha256 \`${sha256Buf(priorPrefix)}\` · rebuilt rev 7 packet ${priorRebuilt.length} B sha256 \`${sha256Buf(priorRebuilt)}\``,
-    `   - ${mark(prior71RecordsIdentical)} rev 6, rev 7 and rev 7.1 records byte-identical: first ${prior71.prefixBytes} B sha256 \`${sha256Buf(prior71Prefix)}\` · rebuilt rev 7.1 packet ${prior71Rebuilt.length} B sha256 \`${sha256Buf(prior71Rebuilt)}\``,
+    ...chainRows.map((c) => `   - ${mark(c.identical)} ${c.label} byte-identical above ${c.key}: first ${c.sectionPrior.prefixBytes} B sha256 \`${c.prefixSha256}\` · rebuilt prior packet ${c.rebuiltBytes} B sha256 \`${c.rebuiltSha256}\``),
+    ...boundRows.map((b) => `   - ${mark(b.match)} rev7_3_1PostCondition row for \`${b.rel}\` equals the rev7_3PostCondition row: ${b.row ? `${b.row.bytes} B \`${b.row.sha256}\`` : 'no row'} · rev 7.3 ${b.pinned ? `${b.pinned.bytes} B \`${b.pinned.sha256}\`` : 'no row'}`),
     `   - \`${HONESTY_VALIDATOR_REL}\`: ${validatorStat.bytes} B · sha256 \`${validatorStat.sha256}\`${fmtRcpt(HONESTY_VALIDATOR_REL)}`,
     `   - \`${DEFAULT_PNG_REL}\`: ${defaultPngStat.bytes} B · sha256 \`${defaultPngStat.sha256}\` · IHDR ${defaultIhdr.width}x${defaultIhdr.height}`,
     `   - \`${MOTION_OFF_PNG_REL}\`: ${motionOffPngStat.bytes} B · sha256 \`${motionOffPngStat.sha256}\` · IHDR ${motionOffIhdr.width}x${motionOffIhdr.height}`,

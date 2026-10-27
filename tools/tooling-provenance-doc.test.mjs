@@ -2,6 +2,9 @@
 // (note removed for export)
 // 6 tests: determinism, wo_ ids resolve in the receipt log, house detector
 // 0 hits, planted home path refuses, pins plus row completeness, no---repo CLI.
+// Rev 3 (closure lane): 7 tests; adds house files outside the candidate cited
+// by role, bytes and sha256 only, with a self-red: a planted Muse ledger file
+// whose basename carries a seat token leaves 0 seat-token hits in the output.
 import test, { after } from 'node:test';
 import assert from 'node:assert';
 import { spawnSync } from 'node:child_process';
@@ -124,4 +127,42 @@ test('CLI resolves the repo with no --repo flag', () => {
     { encoding: 'utf8', timeout: 60000 });
   assert.equal(r.status, 0, (r.stdout || '') + (r.stderr || ''));
   assert.ok(readFileSync(out, 'utf8').includes('# TOOLING-PROVENANCE'));
+});
+
+const SEAT_PARTS = [['op', 'us'], ['gem', 'ini'], ['as', 'tra'], ['ki', 'mi']];
+function seatTokenHits(text) {
+  const hits = [];
+  for (const parts of SEAT_PARTS) {
+    const tok = parts.join('');
+    const m = text.match(new RegExp('(?<![A-Za-z])' + tok + '(?![A-Za-z])', 'gi'));
+    if (m) hits.push(tok + ':' + m.length);
+  }
+  return hits;
+}
+
+test('house files outside the candidate are cited by role, bytes and sha256; self-red: a planted seat-named ledger file leaves 0 seat-token hits', () => {
+  const dir = track(realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-role-'))));
+  const out = join(dir, 'doc.md');
+  assert.equal(runDoc(out).status, 0);
+  const md = readFileSync(out, 'utf8');
+  assert.deepEqual(seatTokenHits(md), [], 'seat token in the generated doc');
+  for (const name of ['hackathon-command-desk/', 'meta-tooling-depth-proof/', 'MUSE-TOOLING-PROVENANCE-01.json', 'meta-hackathon-product-v1.md', 'MUSE-DUAL-MODEL-ARCHITECTURE.md']) {
+    assert.ok(!md.includes(name), name + ' cited by house path or basename');
+  }
+  assert.ok(md.includes('2026-10-26/meta-portable-demo-candidate/tools/'), 'candidate files keep their candidate paths');
+  const museBuf = readFileSync(MUSE);
+  const museSha = createHash('sha256').update(museBuf).digest('hex');
+  assert.ok(md.includes(`desk record (${museBuf.length} B, sha ${museSha})`), 'Muse ledger cited by role, bytes and sha256');
+  const tok = SEAT_PARTS[0].join('').toUpperCase();
+  const poisoned = join(dir, 'muse.json');
+  const muse = JSON.parse(museBuf.toString('utf8'));
+  muse.rows[0].files.push({ path: 'house-only/hackathon-command-desk' + tok + '-PLANTED-AUDIT-01.json', bytes: 33, sha256: 'b'.repeat(64), wo: null, state: 'current' });
+  writeFileSync(poisoned, JSON.stringify(muse));
+  const planted = join(dir, 'planted.md');
+  const r = runDoc(planted, poisoned);
+  assert.equal(r.status, 0, r.stderr);
+  const pmd = readFileSync(planted, 'utf8');
+  assert.deepEqual(seatTokenHits(pmd), [], 'planted seat token leaked');
+  assert.ok(!pmd.includes('PLANTED-AUDIT-01'), 'planted basename leaked');
+  assert.ok(pmd.includes(`desk record (33 B, sha ${'b'.repeat(64)}) (ledger; absent from disk)`), 'planted file cited by role, bytes and sha256');
 });

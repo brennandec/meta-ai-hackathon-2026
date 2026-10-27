@@ -8,8 +8,13 @@
 // CLI: node tools/tooling-provenance-doc.mjs [--muse json] [--house json]
 //   [--scan scan02.json] [--out md]
 // Exit 0 wrote, 2 usage/refusal.
+// Rev 3 (closure lane): a house file outside the candidate folder is cited by
+// role, bytes and sha256 only, never by house path or basename; ledger free
+// text keeps candidate file names and replaces other hyphen- or
+// underscore-joined file names with [house file] and house record names
+// (three or more upper-case parts joined by hyphens) with [house record].
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -19,10 +24,17 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 // P1 D-E branch row leaves the route unruled; the §3 D-E bullet names the
 // candidates and the Oct 29 eligibility ruling.
 export const LIVE_MODEL = 'muse-spark-1.3';
-export const LIVE_MODEL_CITE = 'meta-hackathon-product-v1.md P1 action row';
+export const LIVE_MODEL_CITE = 'product work order P1 action row';
 export const FALLBACK_CANDIDATES = ['Muse Glimmer', 'Muse Spark Open'];
-export const FALLBACK_CITE = 'meta-hackathon-product-v1.md §3 D-E bullet (V12, V19, X7)';
-export const UNRULED_CITE = 'meta-hackathon-product-v1.md P1 D-E branch row';
+export const FALLBACK_CITE = 'product work order §3 D-E bullet (V12, V19, X7)';
+export const UNRULED_CITE = 'product work order P1 D-E branch row';
+export const WORK_ORDER_REL = ['ops-bridge', 'receipts', '2026-10-26', 'hackathon-command-desk', 'meta-hackathon-product-v1.md'];
+export const CANDIDATE_FOLDER = 'meta-portable-demo-candidate';
+export const ROLE_BY_FOLDER = Object.freeze({
+  'hackathon-command-desk': 'desk record',
+  'meta-tooling-depth-proof': 'provenance record',
+  'meta-hackathon-readiness': 'app module',
+});
 export const FALLBACK_RULING = 'HO eligibility ruling Thu Oct 29 12:00 PDT';
 
 function at(argv, flag) { const i = argv.indexOf(flag); return i >= 0 && argv[i + 1] ? argv[i + 1] : null; }
@@ -95,6 +107,45 @@ export function relReceiptsPath(p) {
   return s;
 }
 
+export function isCandidatePath(p) {
+  const rel = relReceiptsPath(p);
+  return !String(p).startsWith('/') && rel.split('/')[1] === CANDIDATE_FOLDER;
+}
+
+export function houseRoleOf(p) {
+  const s = String(p);
+  if (s.includes('house-only/receipts')) return ROLE_BY_FOLDER[relReceiptsPath(s).split('/')[1]] || 'house file';
+  return s.startsWith('/') ? 'house file outside this repo' : 'house file';
+}
+
+export function houseCite(role, bytes, sha) {
+  const b = Number.isInteger(bytes) ? `${bytes} B` : 'bytes not recorded';
+  return `${role} (${b}, sha ${sha || 'not recorded'})`;
+}
+
+const FILE_WORD = /[A-Za-z0-9][A-Za-z0-9._]*[-_][A-Za-z0-9._-]*\.(?:md|json|jsonl|mjs|cjs|js|txt|html|css|py|sh|yaml|yml)\b/g;
+const RECORD_WORD = /\b[A-Z][A-Z0-9]*(?:-[A-Z0-9]+){2,}\b/g;
+
+export function redactHouseText(text, candidateNames = new Set()) {
+  return String(text)
+    .replace(FILE_WORD, (w) => (candidateNames.has(w) ? w : '[house file]'))
+    .replace(RECORD_WORD, '[house record]');
+}
+
+function candidateNamesOf(repoRoot) {
+  const out = new Set();
+  const root = join(repoRoot, 'ops-bridge', 'receipts', '2026-10-26', CANDIDATE_FOLDER);
+  const walk = (d) => {
+    if (!existsSync(d)) return;
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      if (e.isDirectory()) walk(join(d, e.name));
+      else out.add(e.name);
+    }
+  };
+  walk(root);
+  return out;
+}
+
 function humanizeWo(wo) {
   return String(wo).replace(/^muse-/, '').replace(/-01$/, '').replace(/-/g, ' ');
 }
@@ -111,6 +162,15 @@ function verifierText(row) {
 
 function museRow(r, repoRoot) {
   const files = r.files.map((f) => {
+    if (!isCandidatePath(f.path)) {
+      const abs = join(repoRoot, f.path);
+      if (f.state === 'superseded') return `${houseCite(houseRoleOf(f.path), f.bytes, f.sha256)} (superseded by ${f.supersededBy})`;
+      if (!existsSync(abs)) return `${houseCite(houseRoleOf(f.path), f.bytes, f.sha256)} (ledger; absent from disk)`;
+      const buf = readFileSync(abs);
+      const disk = createHash('sha256').update(buf).digest('hex');
+      if (disk !== f.sha256) return `${houseCite(houseRoleOf(f.path), buf.length, disk)} (ledger sha ${f.sha256})`;
+      return houseCite(houseRoleOf(f.path), buf.length, disk);
+    }
     const rel = relReceiptsPath(f.path);
     if (f.state === 'superseded') {
       return `${rel} (superseded by ${f.supersededBy}; rev sha ${f.sha256})`;
@@ -132,14 +192,15 @@ function museRow(r, repoRoot) {
   };
 }
 
-function houseRow(r) {
+function houseRow(r, candidateNames) {
+  const target = String(r.targetFile || '');
   return {
     record: r.recordId,
-    built: sanitize(r.action || ''),
-    builder: sanitize(r.model || ''),
+    built: redactHouseText(sanitize(r.action || ''), candidateNames),
+    builder: redactHouseText(sanitize(r.model || ''), candidateNames),
     verifier: 'not recorded in house ledger',
     wo: r.doorWorkOrder || 'not recorded',
-    files: `${basename(String(r.targetFile || ''))} (sha ${r.sha256 || 'not recorded'})`,
+    files: target ? houseCite(houseRoleOf(target), r.bytes, r.sha256) : 'no file recorded',
   };
 }
 
@@ -154,8 +215,12 @@ export const P2_PIN = { bytes: 26504, sha256: 'dde00683ff0c316238fb06950920a031e
 
 export function buildDoc({ muse, house, musePath, housePath, museBytes, museSha, houseSha, scanBytes, scanSha, repoRoot }) {
   if (!repoRoot) throw new Error('repoRoot required: file shas are measured from disk');
+  const candidateNames = candidateNamesOf(repoRoot);
   const museRows = muse.rows.map((r) => museRow(r, repoRoot));
-  const houseRows = house.provenanceRecords.map(houseRow);
+  const houseRows = house.provenanceRecords.map((r) => houseRow(r, candidateNames));
+  const woAbs = join(repoRoot, ...WORK_ORDER_REL);
+  const woBuf = existsSync(woAbs) ? readFileSync(woAbs) : null;
+  const woCite = woBuf ? houseCite('product work order', woBuf.length, createHash('sha256').update(woBuf).digest('hex')) : 'product work order (absent from disk)';
   const L = [];
   L.push('# TOOLING-PROVENANCE');
   L.push('');
@@ -185,15 +250,15 @@ export function buildDoc({ muse, house, musePath, housePath, museBytes, museSha,
   L.push('');
   L.push('Public-safe by construction, checked at generation time; any hit refuses the write:');
   L.push('');
-  L.push('- the Muse ledger is screened for home paths (scan02 home-path rules, receipt lines 388-410); house run records are absolute by house format, consumed field by field (basenames, sanitized text) and never emitted raw;');
+  L.push('- the Muse ledger is screened for home paths (scan02 home-path rules, receipt lines 388-410); house run records are absolute by house format, consumed field by field (role, bytes and sha256; sanitized text) and never emitted raw;');
   L.push('- output scanned for sealed names (rules receipt lines 413-430), internal vocabulary (rules receipt lines 433-470), home paths, and key-shaped 24+ segments (rule receipt line 765);');
   L.push('- output scanned by the house detector secret-patterns (labelled-seed generic rule, core line 72): 0 hits;');
-  L.push('- paths are relative to the receipts root; no bus line numbers; sealed handles emitted as [handle].');
+  L.push('- candidate paths are relative to the receipts root; a house file outside the candidate folder is cited by role, bytes and sha256 only; ledger text carries [house file] and [house record] for other names; no bus line numbers; sealed handles emitted as [handle].');
   L.push('');
   L.push('## Sources');
   L.push('');
-  L.push(`- Muse ledger ${relReceiptsPath(musePath)} (${muse.rows.length} plates, ${museBytes} B, sha ${museSha}); house ledger ${relReceiptsPath(housePath)} (content version ${house.version}, P2-pinned bytes verified, sha ${houseSha}); scan02 receipt (${scanBytes} B, sha ${scanSha}).`);
-  L.push(`- Live and fallback models: ${LIVE_MODEL_CITE}; ${UNRULED_CITE}; ${FALLBACK_CITE}.`);
+  L.push(`- Muse ledger: ${houseCite(houseRoleOf(resolve(musePath)), museBytes, museSha)}, ${muse.rows.length} plates; house ledger: ${houseCite('provenance record', P2_PIN.bytes, houseSha)}, content version ${house.version}, P2-pinned bytes verified; scan02 receipt (${scanBytes} B, sha ${scanSha}).`);
+  L.push(`- Live and fallback models: ${LIVE_MODEL_CITE}; ${UNRULED_CITE}; ${FALLBACK_CITE}; ${woCite}.`);
   L.push('');
   return L.join('\n') + '\n';
 }
@@ -211,7 +276,7 @@ function collectStrings(node, out, skipKeys = null) {
 
 // The Muse ledger must be home-path-free; the house ledger legitimately
 // carries absolute run records (commands, target files), so it is consumed
-// field by field (basenames, sanitized text) and only the emitted output is
+// field by field (role, bytes and sha256; sanitized text) and only the emitted output is
 // scanned. A planted home path in the Muse ledger refuses the run.
 function screenInputs(muse, rules) {
   const texts = [];
