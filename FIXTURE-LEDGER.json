@@ -35,9 +35,9 @@
    },
    {
     "path": "house-only/synthetic-transport-run-record.json",
-    "bytes": 46985,
-    "sha256": "0fd113bab45b75ba2e6852bd550e958c4e99e1ea25c78fc0e7d124166c097ebe",
-    "revision": 4
+    "bytes": 50907,
+    "sha256": "ef11653ff858c01b9cfb07c254d4d02d9008037caef11d5ca23c5923e4a40c92",
+    "revision": 6
    }
   ],
   "beatmap": {
@@ -166,8 +166,8 @@
   },
   {
    "path": "house-only/synthetic-transport-run-record.json",
-   "bytes": 46985,
-   "sha256": "0fd113bab45b75ba2e6852bd550e958c4e99e1ea25c78fc0e7d124166c097ebe",
+   "bytes": 50907,
+   "sha256": "ef11653ff858c01b9cfb07c254d4d02d9008037caef11d5ca23c5923e4a40c92",
    "honestyPass": true,
    "honestyViolations": [],
    "metric": 5434.78,
