@@ -1,21 +1,21 @@
 {
   "rehearsal": "REHEARSAL-REPORT",
   "plateId": "M-NEXT-31",
-  "rev": 3,
+  "rev": 4,
   "wo": "muse-rehearsal-runner-01",
   "author": "muse",
-  "startedAtUtc": "2026-10-27T06:57:16.712Z",
-  "endedAtUtc": "2026-10-27T07:00:30.183Z",
+  "startedAtUtc": "2026-10-27T12:17:28.308Z",
+  "endedAtUtc": "2026-10-27T12:18:53.350Z",
   "candidateDir": ".",
   "repoRoot": ".",
   "isolation": {
-    "home": "<tmp>/rehearse-NUXjhS/home-eYCn1m",
+    "home": "<tmp>/rehearse-AslUKT/home-0wUx6i",
     "homeIsTemp": true,
-    "tmpdir": "<tmp>/rehearse-NUXjhS/home-eYCn1m",
+    "tmpdir": "<tmp>/rehearse-AslUKT/home-0wUx6i",
     "nodePath": "",
     "nodeVersion": "v22.23.2",
-    "network": "external refused: net.connect/createConnection/Socket.connect, tls.connect, http/https request/get, dns lookup/resolve incl promises",
-    "preloadSha256": "87e35ae085f8afb764295661144ddcfd5b8354ac3f67746064bde54290f95f53",
+    "network": "external refused: net.connect/createConnection/Socket.connect, tls.connect, http/https request/get, dns lookup/resolve incl promises and Resolver classes",
+    "preloadSha256": "763f0cd0c5c7ca7dec1855711d104b60ca1a25b19a266d6f073449937e2a831b",
     "loopback": "127.0.0.1/::1/localhost allowed for the candidate self-check server only"
   },
   "rows": [
@@ -28,10 +28,10 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 178,
+      "durationMs": 221,
       "inputHashes": {
-        "launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "launcher.mjs": "b25e6e7192e1cf2ee42ff050f189d4532b739e1a5d5e01a01bffdd2f5aac33c2",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -51,11 +51,11 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 105,
+      "durationMs": 129,
       "inputHashes": {
         "tools/accepted-engineering-metric.test.mjs": "6c6d5d50fa94ddcc2565602c71a6120690dbde00c283eb3676034d811a37673e",
         "tools/accepted-engineering-metric.mjs": "1c9af20677f0a5ba0aca0238129ad3dc69588ef286199bf6cf1a824103548de0",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -66,7 +66,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 68.074459"
+          "# duration_ms 87.325458"
         ],
         "stderrTail": []
       }
@@ -80,11 +80,41 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 118,
+      "durationMs": 219,
       "inputHashes": {
-        "tools/beat-map.test.mjs": "9eb586f565c0b153ead3cb6eed6ff94046ba148570457298f2014b8db90946b8",
-        "tools/beat-map.mjs": "68bf75a854d75a32584fe03f6147f6a3a5ef573dedcbd8da2b03b2ea1c1ad637",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/beat-map.test.mjs": "efccce5b0e97d08e431588d0368a103ab91e6dad98bbf833e931e63cd9a8b019",
+        "tools/beat-map.mjs": "25edb24c2ad5d9fa93a59a066c79f4426de25c91b496d570dae27d29226fd997",
+        "BEAT-MAP.json": "a6429c68f2679323a413cb20384af4e794094e8d10ce2d1357f9d371f53f1d9c",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 7",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 185.619209"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:captions.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "tools/captions.test.mjs"
+      ],
+      "cwd": ".",
+      "exit": 0,
+      "durationMs": 249,
+      "inputHashes": {
+        "tools/captions.test.mjs": "e9c10e047f9713d6a133728235e1e83a4b483eed312a3eedccdf93521d12f4fe",
+        "tools/captions.mjs": "29a5d8afa94124c50f3937373482b494f33d8915a470dc077cffb8f6c44dbdf1",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -95,7 +125,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 82.167083"
+          "# duration_ms 206.331417"
         ],
         "stderrTail": []
       }
@@ -109,22 +139,25 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 104,
+      "durationMs": 328,
       "inputHashes": {
-        "tools/capture-slate.test.mjs": "78ed068a368d1de062b86f705ffdd1b7e1eda4acc1672d28d8b8c78f44ece2ef",
-        "tools/capture-slate.mjs": "7ddf085d706ebd959d7d4fbbf300c54cfe7fd037f55c3794b57b4e3d5fe17944",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/capture-slate.test.mjs": "d7f81dd9dca6b979908472685135a10ec8a95e8476bfa55ba12c7b6a3ae27754",
+        "tools/capture-slate.mjs": "b185c034182a0622289c9b83c7d05749d87094c32da0de927a5c94d7591c4778",
+        "tools/frame-test.mjs": "63c08107acbef449b94502f462f4f7e6824027b69740fa61678d45d011fba51b",
+        "../hackathon-command-desk/MUSE-FILM-SCRIPT-V3-01.md": "88aaeb2f93cdd2455e0335535a0cafdbe5f7137037cc9eb5ad9739eb6e9d197c",
+        "BEAT-MAP.json": "a6429c68f2679323a413cb20384af4e794094e8d10ce2d1357f9d371f53f1d9c",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
       "detail": {
         "stdoutTail": [
-          "# pass 5",
+          "# pass 10",
           "# fail 0",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 68.72575"
+          "# duration_ms 288.318875"
         ],
         "stderrTail": []
       }
@@ -138,22 +171,61 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 181972,
+      "durationMs": 34608,
       "inputHashes": {
-        "tools/disclosure-scan.test.mjs": "e84f3e3cc8034657fcc18b7df1506e60cc6e28ecdf340fd6df936ef85d4250fb",
-        "tools/disclosure-scan.mjs": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/disclosure-scan.test.mjs": "d0c17d214fd39548839f9b4df66d2ada809b1026e3fe235ed405739888ddca36",
+        "tools/disclosure-scan.mjs": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "../../../../artifacts/scratch/build-seat-capture-slate-verify/stills/TAKE-SLATE.json": "ceee677985715ad0e25ea777f0026f97cdda0d975d8eac8d2c328f7822a3fa45",
+        "../../2026-10-24/meta-hackathon-readiness/app/index.html": "92adaab10209043ec70e474899436f5b77562e75fd448c5a6a71590d5a6ea70b",
+        "../../2026-10-24/meta-hackathon-readiness/app/rules-intake-gate.mjs": "84222ab99ad41bc09b6bc2cbecfcd7f5651a05fff42c9a5001dc2d8b37b88795",
+        "../../2026-10-24/meta-hackathon-readiness/app/stage5-contingency-adapters.mjs": "16ae66844df64346fa5fdbbef73586d104c97a7437292b32ea7f254d49606fcd",
+        "../hackathon-command-desk/Build-seat-DISCLOSURE-SCAN-02.json": "a8a239761e079a9343f09e7e574df5030bc140c9ec15ba6a629c8f1fa857431a",
+        "BEAT-MAP.json": "a6429c68f2679323a413cb20384af4e794094e8d10ce2d1357f9d371f53f1d9c",
+        "DEPENDENCY-CONTRACT.json": "5ee30ea07179250655bdcf142af01ab4c4b8defe3e129b9f41b606ea905012a3",
+        "EVENT-NEW-MANIFEST.json": "0ee4a122fad5b266e1dccf39b58fc1b19e46bf1a789310a9474df5efc54e9105",
+        "FIXTURE-LEDGER.json": "5ac8d3d3d8e7e78423071da400d3b5eec850d7a034dbbc62f17de8211a15ffae",
+        "REHEARSAL-REPORT.json": "1800d8da684de4c4de125c7fd8d435507d0e15ce29ae16c7319365f770475d40",
+        "candidate-backend.mjs": "4ee1185e8ebfa836b6a9ac50c17d230c5bf36ccbd271dd633ec018bd6576d77e",
+        "candidate-backend.test.mjs": "fd99cbaecbf6834faffa0c80a218cfd48b178a6e2c987fdd44e403ebd925a4e4",
+        "fixtures/faults/fault-case-1-0000.json": "ba3cd95bbd8c8b4a56890b4847c0da044660abd8d350ffe8c1a8dd4640b3ece2",
+        "fixtures/faults/fault-case-1-0001.json": "159ff7cbfde454e650fdb757c81e4a30cf2be3941f252236887e1606e1ce49b8",
+        "fixtures/faults/fault-case-1-0002.json": "e544d17083be9b4a2068b04e405f26259219ef9c7135e7e2fa5dc38c1a5d1634",
+        "fixtures/faults/fault-case-1-0003.json": "0a7bf0ff4184ff8bc19f187607bc6c179eb1ab4e4a90bbeefdbe776953ce2988",
+        "fixtures/faults/index.json": "4692989ba4443720244a9e7e2c0d31d2bdbd051c776c81221ded4173d1537b87",
+        "fixtures/replay-rigs.test.mjs": "c24427ded3ca600bf1b2ae6779a23e5c3e6ed2c893dfd22105c89123caacbeb6",
+        "fixtures/synthetic-transport-run-record.json": "ef11653ff858c01b9cfb07c254d4d02d9008037caef11d5ca23c5923e4a40c92",
+        "launcher.mjs": "b25e6e7192e1cf2ee42ff050f189d4532b739e1a5d5e01a01bffdd2f5aac33c2",
+        "tools/accepted-engineering-metric.mjs": "1c9af20677f0a5ba0aca0238129ad3dc69588ef286199bf6cf1a824103548de0",
+        "tools/accepted-engineering-metric.test.mjs": "6c6d5d50fa94ddcc2565602c71a6120690dbde00c283eb3676034d811a37673e",
+        "tools/beat-map.mjs": "25edb24c2ad5d9fa93a59a066c79f4426de25c91b496d570dae27d29226fd997",
+        "tools/beat-map.test.mjs": "efccce5b0e97d08e431588d0368a103ab91e6dad98bbf833e931e63cd9a8b019",
+        "tools/capture-slate.mjs": "b185c034182a0622289c9b83c7d05749d87094c32da0de927a5c94d7591c4778",
+        "tools/capture-slate.test.mjs": "d7f81dd9dca6b979908472685135a10ec8a95e8476bfa55ba12c7b6a3ae27754",
+        "tools/event-new-manifest.mjs": "d40e6c4f02b7ca68333ac79d2dde6eb057c0836634444e533c1206e1aef427ec",
+        "tools/event-new-manifest.test.mjs": "1e315b705a0b4cfb3c33b4debc9f430b9b32136c942120a80d1bd3f09ac1a561",
+        "tools/fault-injector.mjs": "da8d1374b6397cdbab10fd55efcf2f4a341ee398c121df268d24be97c529ee43",
+        "tools/fault-injector.test.mjs": "38c2661fc1529724f2621d3480e10efde944145e4a750d7c4149de965cb8f8b5",
+        "tools/fixture-ledger.mjs": "13dec22c4f083cf1122991b0901716e0c9e3aa18dda8078e1b5e1bfb20ff3b5e",
+        "tools/fixture-ledger.test.mjs": "1f770d49829974be90bdfa6414b7c895ba56cc40c56dd7eae302239b312de198",
+        "tools/frame-test.mjs": "63c08107acbef449b94502f462f4f7e6824027b69740fa61678d45d011fba51b",
+        "tools/frame-test.test.mjs": "291046fa3dcf8ae8245a9f3ee03cd6dccfa2c529255c793cbef05262129da47b",
+        "tools/honesty-validator.mjs": "e1f8f38fadf4d6c7876ceda6ba8a9f50f2c00506f531208e19fdd7a674e8fcdb",
+        "tools/honesty-validator.test.mjs": "1cb01fc51fd5998b80920e59963ecb78a1dc8d9316f2fe21005f471545259916",
+        "tools/rehearse.mjs": "2653eea84627d3a43d70dd5f42344eb01d2f100e9f5d1543196fd4d5b2c9bae7",
+        "tools/rehearse.test.mjs": "7777a6fbd3ec98e17f803677aff13251cb418fd0d7616801c5b13521d344e251",
+        "ui/PRIVATE-ASSET-MANIFEST.json": "f9b9dd2aa4fed6c15b4558f5ab72f497ba1508917cb38e216b3ee880e8d7ad59",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
       "detail": {
         "stdoutTail": [
-          "# pass 5",
+          "# pass 6",
           "# fail 0",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 181932.83125"
+          "# duration_ms 34564.016167"
         ],
         "stderrTail": []
       }
@@ -167,11 +239,11 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 127,
+      "durationMs": 158,
       "inputHashes": {
         "tools/event-new-manifest.test.mjs": "1e315b705a0b4cfb3c33b4debc9f430b9b32136c942120a80d1bd3f09ac1a561",
         "tools/event-new-manifest.mjs": "d40e6c4f02b7ca68333ac79d2dde6eb057c0836634444e533c1206e1aef427ec",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -182,7 +254,39 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 83.478209"
+          "# duration_ms 100.346166"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:export-generator.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "tools/export-generator.test.mjs"
+      ],
+      "cwd": ".",
+      "exit": 1,
+      "durationMs": 4283,
+      "inputHashes": {
+        "tools/export-generator.test.mjs": "ad431110dc6192ce3ed3343014e86166bde29c2d2941201e6da34c42b79edbb5",
+        "tools/export-generator.mjs": "1a470e976588d9ed0be9462ca97c21d0472223a7f0fcd8fed4b6fb1e2da120e6",
+        "house-only/fonts.css": "9040a1c814f90fbccdd4faee760e33330e4c6a54d2d5db559326b6bba7edb19c",
+        "house-only/design-tokens.css": "b458b02a4a671bb304de32bf87d83770a3bca8ce0fdfa1e152d861e359eb4e98",
+        "launcher.mjs": "b25e6e7192e1cf2ee42ff050f189d4532b739e1a5d5e01a01bffdd2f5aac33c2",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
+      },
+      "verdict": "FAIL",
+      "reason": "exit 1",
+      "detail": {
+        "stdoutTail": [
+          "# pass 11",
+          "# fail 1",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 4238.484125"
         ],
         "stderrTail": []
       }
@@ -196,11 +300,13 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 125,
+      "durationMs": 169,
       "inputHashes": {
         "tools/fault-injector.test.mjs": "38c2661fc1529724f2621d3480e10efde944145e4a750d7c4149de965cb8f8b5",
         "tools/fault-injector.mjs": "da8d1374b6397cdbab10fd55efcf2f4a341ee398c121df268d24be97c529ee43",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "candidate-backend.mjs": "4ee1185e8ebfa836b6a9ac50c17d230c5bf36ccbd271dd633ec018bd6576d77e",
+        "launcher.mjs": "b25e6e7192e1cf2ee42ff050f189d4532b739e1a5d5e01a01bffdd2f5aac33c2",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -211,7 +317,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 92.444125"
+          "# duration_ms 123.511667"
         ],
         "stderrTail": []
       }
@@ -224,23 +330,25 @@
         "tools/fixture-ledger.test.mjs"
       ],
       "cwd": ".",
-      "exit": 0,
-      "durationMs": 156,
+      "exit": 1,
+      "durationMs": 253,
       "inputHashes": {
-        "tools/fixture-ledger.test.mjs": "6579c1125121682f1c4fd15b5e2de75d52e7bc8b39609542c92fbbd90ee9c43e",
-        "tools/fixture-ledger.mjs": "8aecf785b1c91a00b7ef0e7c49a907e94f076dd1e97a69dd01a972010010c5c7",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/fixture-ledger.test.mjs": "1f770d49829974be90bdfa6414b7c895ba56cc40c56dd7eae302239b312de198",
+        "tools/fixture-ledger.mjs": "13dec22c4f083cf1122991b0901716e0c9e3aa18dda8078e1b5e1bfb20ff3b5e",
+        "BEAT-MAP.json": "a6429c68f2679323a413cb20384af4e794094e8d10ce2d1357f9d371f53f1d9c",
+        "FIXTURE-LEDGER.json": "5ac8d3d3d8e7e78423071da400d3b5eec850d7a034dbbc62f17de8211a15ffae",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
-      "verdict": "PASS",
-      "reason": "exit 0",
+      "verdict": "FAIL",
+      "reason": "exit 1",
       "detail": {
         "stdoutTail": [
           "# pass 4",
-          "# fail 0",
+          "# fail 1",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 115.962708"
+          "# duration_ms 205.750542"
         ],
         "stderrTail": []
       }
@@ -253,23 +361,24 @@
         "tools/frame-test.test.mjs"
       ],
       "cwd": ".",
-      "exit": 0,
-      "durationMs": 150,
+      "exit": 1,
+      "durationMs": 208,
       "inputHashes": {
         "tools/frame-test.test.mjs": "291046fa3dcf8ae8245a9f3ee03cd6dccfa2c529255c793cbef05262129da47b",
         "tools/frame-test.mjs": "63c08107acbef449b94502f462f4f7e6824027b69740fa61678d45d011fba51b",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "BEAT-MAP.json": "a6429c68f2679323a413cb20384af4e794094e8d10ce2d1357f9d371f53f1d9c",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
-      "verdict": "PASS",
-      "reason": "exit 0",
+      "verdict": "FAIL",
+      "reason": "exit 1",
       "detail": {
         "stdoutTail": [
-          "# pass 4",
-          "# fail 0",
+          "# pass 2",
+          "# fail 2",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 107.075042"
+          "# duration_ms 163.995667"
         ],
         "stderrTail": []
       }
@@ -282,23 +391,24 @@
         "tools/honesty-validator.test.mjs"
       ],
       "cwd": ".",
-      "exit": 0,
-      "durationMs": 1804,
+      "exit": 1,
+      "durationMs": 999,
       "inputHashes": {
-        "tools/honesty-validator.test.mjs": "6d3c528000613a85935fe72d2777f631457eac9e849d73d3f24b570590b2edaf",
-        "tools/honesty-validator.mjs": "2907981a61feb140b19867a622c9148ea258b944633f7e80e4360e0afeccaaac",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/honesty-validator.test.mjs": "1cb01fc51fd5998b80920e59963ecb78a1dc8d9316f2fe21005f471545259916",
+        "tools/honesty-validator.mjs": "e1f8f38fadf4d6c7876ceda6ba8a9f50f2c00506f531208e19fdd7a674e8fcdb",
+        "fixtures/synthetic-transport-run-record.json": "ef11653ff858c01b9cfb07c254d4d02d9008037caef11d5ca23c5923e4a40c92",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
-      "verdict": "PASS",
-      "reason": "exit 0",
+      "verdict": "FAIL",
+      "reason": "exit 1",
       "detail": {
         "stdoutTail": [
-          "# pass 24",
-          "# fail 0",
+          "# pass 45",
+          "# fail 1",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 1766.298916"
+          "# duration_ms 940.190542"
         ],
         "stderrTail": []
       }
@@ -312,22 +422,80 @@
       ],
       "cwd": ".",
       "exit": 1,
-      "durationMs": 2419,
+      "durationMs": 32538,
       "inputHashes": {
-        "tools/judge-clock.test.mjs": "05a48074038be2f9cd3b675c47a8d333dd23786e1bd18a41614748cdaf5d406d",
-        "tools/judge-clock.mjs": "ea656c71b5eaca5665b752a86a84683c02b707b15d0c53931cea3f331a974e32",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/judge-clock.test.mjs": "672f8149d3c16720260e1fa7861bd6d0a0e6a89068e872e97cea8ffd8a58ee24",
+        "tools/judge-clock.mjs": "3bcbc8b5cb4e3d0ad4a249466d920c4542bb1f2f8f01f5823b768f639d9c2eff",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "FAIL",
       "reason": "exit 1",
       "detail": {
         "stdoutTail": [
-          "# pass 4",
+          "# pass 5",
           "# fail 1",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 2378.047125"
+          "# duration_ms 32498.69425"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:notice-rows.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "tools/notice-rows.test.mjs"
+      ],
+      "cwd": ".",
+      "exit": 0,
+      "durationMs": 127,
+      "inputHashes": {
+        "tools/notice-rows.test.mjs": "38eba078342c5582a82d9b38ac4e10e9cbd2f12d398cb1e32a788aadb588a042",
+        "tools/notice-rows.mjs": "4d9a30f036ec1001739f85fe40f2cd226ca196aa8a1b42f1fa0ccae8c75fed98",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 7",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 85.1565"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:p6-cite-check.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "tools/p6-cite-check.test.mjs"
+      ],
+      "cwd": ".",
+      "exit": 0,
+      "durationMs": 174,
+      "inputHashes": {
+        "tools/p6-cite-check.test.mjs": "30978428f9041e8a0848590917f84e56bc7f32e78f7130fcd2c358a8cbbcc6e9",
+        "tools/p6-cite-check.mjs": "d471397851c3e74193a7ffaafaa52ae3178cc578631f9a3f89ad952584b41e5a",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 137.368417"
         ],
         "stderrTail": []
       }
@@ -341,22 +509,51 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 1732,
+      "durationMs": 3718,
       "inputHashes": {
-        "tools/rehearse.test.mjs": "c0a248f2ba9980aee33f0a1b044a2c1b822b4dd64ce30590219c83be0b854ace",
-        "tools/rehearse.mjs": "45860ba2080eac1b47321b2f9ea933ba4e20a879d4e7ef07395d5ece10a7c735",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/rehearse.test.mjs": "7777a6fbd3ec98e17f803677aff13251cb418fd0d7616801c5b13521d344e251",
+        "tools/rehearse.mjs": "2653eea84627d3a43d70dd5f42344eb01d2f100e9f5d1543196fd4d5b2c9bae7",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
       "detail": {
         "stdoutTail": [
-          "# pass 6",
+          "# pass 7",
           "# fail 0",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 1691.592958"
+          "# duration_ms 3671.855459"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:rights-status.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "tools/rights-status.test.mjs"
+      ],
+      "cwd": ".",
+      "exit": 0,
+      "durationMs": 130,
+      "inputHashes": {
+        "tools/rights-status.test.mjs": "66d150313c2cea26cc29aad1824c506a31744727e78614265dbccb0bbacae649",
+        "tools/rights-status.mjs": "276deac3dcaa64309cdf5a994bea84d210cccbdb410e19ebca00d04938f8b991",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 85.056625"
         ],
         "stderrTail": []
       }
@@ -369,23 +566,52 @@
         "tools/tooling-provenance-doc.test.mjs"
       ],
       "cwd": ".",
-      "exit": 1,
-      "durationMs": 3287,
+      "exit": 0,
+      "durationMs": 3147,
       "inputHashes": {
-        "tools/tooling-provenance-doc.test.mjs": "dbfdff5c8cb7535fe8f0b5d25ff41ff1aa265ed9786741528b4e828d6c90e257",
-        "tools/tooling-provenance-doc.mjs": "33b77060121d3e60bf1e0751ebc0aed40ad97f4c53d826759113886ebd02af81",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/tooling-provenance-doc.test.mjs": "76a5f780d9074ba3e4304bf6229ea30dd52134667c73a3d9b34c3e0f3d9ab6fb",
+        "tools/tooling-provenance-doc.mjs": "a63451f72725dd77874ebc296969ac3f398637c2c91a17db0b0e10289a676124",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
-      "verdict": "FAIL",
-      "reason": "exit 1",
+      "verdict": "PASS",
+      "reason": "exit 0",
       "detail": {
         "stdoutTail": [
-          "# pass 4",
-          "# fail 1",
+          "# pass 6",
+          "# fail 0",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 3241.788833"
+          "# duration_ms 3105.421958"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:verify-batch.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "tools/verify-batch.test.mjs"
+      ],
+      "cwd": ".",
+      "exit": 0,
+      "durationMs": 1966,
+      "inputHashes": {
+        "tools/verify-batch.test.mjs": "68718604ce5b66cee85da6365c37ca3e8e9b1c45e413808eec62f0ed1c5cfad9",
+        "tools/verify-batch.mjs": "a2e81e88accff32d1856edc2957314f2dac33baa0c03610706d2469cac0bbb12",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 1938.080083"
         ],
         "stderrTail": []
       }
@@ -399,11 +625,11 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 58,
+      "durationMs": 42,
       "inputHashes": {
-        "tools/honesty-validator.mjs": "2907981a61feb140b19867a622c9148ea258b944633f7e80e4360e0afeccaaac",
+        "tools/honesty-validator.mjs": "e1f8f38fadf4d6c7876ceda6ba8a9f50f2c00506f531208e19fdd7a674e8fcdb",
         "fixtures/faults/fault-case-1-0000.json": "ba3cd95bbd8c8b4a56890b4847c0da044660abd8d350ffe8c1a8dd4640b3ece2",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -423,11 +649,11 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 52,
+      "durationMs": 43,
       "inputHashes": {
-        "tools/honesty-validator.mjs": "2907981a61feb140b19867a622c9148ea258b944633f7e80e4360e0afeccaaac",
+        "tools/honesty-validator.mjs": "e1f8f38fadf4d6c7876ceda6ba8a9f50f2c00506f531208e19fdd7a674e8fcdb",
         "fixtures/faults/fault-case-1-0001.json": "159ff7cbfde454e650fdb757c81e4a30cf2be3941f252236887e1606e1ce49b8",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -447,11 +673,11 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 64,
+      "durationMs": 43,
       "inputHashes": {
-        "tools/honesty-validator.mjs": "2907981a61feb140b19867a622c9148ea258b944633f7e80e4360e0afeccaaac",
+        "tools/honesty-validator.mjs": "e1f8f38fadf4d6c7876ceda6ba8a9f50f2c00506f531208e19fdd7a674e8fcdb",
         "fixtures/faults/fault-case-1-0002.json": "e544d17083be9b4a2068b04e405f26259219ef9c7135e7e2fa5dc38c1a5d1634",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -471,11 +697,11 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 59,
+      "durationMs": 46,
       "inputHashes": {
-        "tools/honesty-validator.mjs": "2907981a61feb140b19867a622c9148ea258b944633f7e80e4360e0afeccaaac",
+        "tools/honesty-validator.mjs": "e1f8f38fadf4d6c7876ceda6ba8a9f50f2c00506f531208e19fdd7a674e8fcdb",
         "fixtures/faults/fault-case-1-0003.json": "0a7bf0ff4184ff8bc19f187607bc6c179eb1ab4e4a90bbeefdbe776953ce2988",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -495,11 +721,11 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 57,
+      "durationMs": 42,
       "inputHashes": {
-        "tools/honesty-validator.mjs": "2907981a61feb140b19867a622c9148ea258b944633f7e80e4360e0afeccaaac",
+        "tools/honesty-validator.mjs": "e1f8f38fadf4d6c7876ceda6ba8a9f50f2c00506f531208e19fdd7a674e8fcdb",
         "fixtures/faults/index.json": "4692989ba4443720244a9e7e2c0d31d2bdbd051c776c81221ded4173d1537b87",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -519,11 +745,11 @@
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 58,
+      "durationMs": 51,
       "inputHashes": {
-        "tools/honesty-validator.mjs": "2907981a61feb140b19867a622c9148ea258b944633f7e80e4360e0afeccaaac",
-        "fixtures/synthetic-transport-run-record.json": "0fd113bab45b75ba2e6852bd550e958c4e99e1ea25c78fc0e7d124166c097ebe",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/honesty-validator.mjs": "e1f8f38fadf4d6c7876ceda6ba8a9f50f2c00506f531208e19fdd7a674e8fcdb",
+        "fixtures/synthetic-transport-run-record.json": "ef11653ff858c01b9cfb07c254d4d02d9008037caef11d5ca23c5923e4a40c92",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0",
@@ -544,27 +770,27 @@
         "--manifest",
         "EVENT-NEW-MANIFEST.json",
         "--out",
-        "<tmp>/rehearse-NUXjhS/BEAT-MAP.regen.json"
+        "<tmp>/rehearse-AslUKT/BEAT-MAP.regen.json"
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 57,
+      "durationMs": 52,
       "inputHashes": {
-        "tools/beat-map.mjs": "68bf75a854d75a32584fe03f6147f6a3a5ef573dedcbd8da2b03b2ea1c1ad637",
-        "../../hackathon-command-desk/MUSE-FILM-SCRIPT-V3-01.md": "d13b87d9968729cbdfc9804c4658b145de247a6ce4b030f7373b03ea6b931f8a",
+        "tools/beat-map.mjs": "25edb24c2ad5d9fa93a59a066c79f4426de25c91b496d570dae27d29226fd997",
+        "../../hackathon-command-desk/MUSE-FILM-SCRIPT-V3-01.md": "88aaeb2f93cdd2455e0335535a0cafdbe5f7137037cc9eb5ad9739eb6e9d197c",
         "EVENT-NEW-MANIFEST.json": "0ee4a122fad5b266e1dccf39b58fc1b19e46bf1a789310a9474df5efc54e9105",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0; regenerated map differs from landed BEAT-MAP.json (inputs moved on)",
       "detail": {
         "stdoutTail": [
-          "BEAT-MAP WROTE <tmp>/rehearse-NUXjhS/BEAT-MAP.regen.json pass=8 baseline-only=0 no-capture=0"
+          "BEAT-MAP WROTE <tmp>/rehearse-AslUKT/BEAT-MAP.regen.json pass=8 baseline-only=0 no-capture=0"
         ],
         "stderrTail": [],
         "outputMatchesLanded": false,
-        "regenBytes": 21730,
-        "landedBytes": 21016
+        "regenBytes": 21833,
+        "landedBytes": 21835
       }
     },
     {
@@ -577,21 +803,21 @@
         "--beatmap",
         "BEAT-MAP.json",
         "--out",
-        "<tmp>/rehearse-NUXjhS/FIXTURE-LEDGER.regen.json"
+        "<tmp>/rehearse-AslUKT/FIXTURE-LEDGER.regen.json"
       ],
       "cwd": ".",
       "exit": 0,
-      "durationMs": 60,
+      "durationMs": 64,
       "inputHashes": {
-        "tools/fixture-ledger.mjs": "8aecf785b1c91a00b7ef0e7c49a907e94f076dd1e97a69dd01a972010010c5c7",
-        "BEAT-MAP.json": "b2ca5f0a16cb905528b83beb0c78c0696554dc901360bbc6cb226f4358f52853",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "tools/fixture-ledger.mjs": "13dec22c4f083cf1122991b0901716e0c9e3aa18dda8078e1b5e1bfb20ff3b5e",
+        "BEAT-MAP.json": "a6429c68f2679323a413cb20384af4e794094e8d10ce2d1357f9d371f53f1d9c",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "exit 0; regenerated ledger differs from landed FIXTURE-LEDGER.json (inputs moved on)",
       "detail": {
         "stdoutTail": [
-          "LEDGER WROTE <tmp>/rehearse-NUXjhS/FIXTURE-LEDGER.regen.json records=6 honest=6 violating=0 metricComputed=1 metricNull=5"
+          "LEDGER WROTE <tmp>/rehearse-AslUKT/FIXTURE-LEDGER.regen.json records=6 honest=6 violating=0 metricComputed=1 metricNull=5"
         ],
         "stderrTail": [],
         "outputMatchesLanded": false
@@ -607,7 +833,7 @@
       "exit": null,
       "durationMs": 0,
       "inputHashes": {
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "SKIPPED",
       "reason": "NO-STILLS: no stills folder and take slate passed",
@@ -620,1048 +846,39 @@
         "tools/disclosure-scan.mjs",
         ".",
         "--out",
-        "<tmp>/rehearse-NUXjhS/tool-tree.json"
+        "<tmp>/rehearse-AslUKT/tool-tree.json"
       ],
       "cwd": "<home>/Documents/manymoats-demo",
       "exit": 0,
-      "durationMs": 189,
+      "durationMs": 241,
       "inputHashes": {
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "inventorySha256": "d54902361435e6ebf081965dc8677174ea9a076971da44ae8a2db2682df23db6",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "inventorySha256": "af2df9e559da11c8b5b2584486e808a0096913880aeceae8aa7b8f2f937eb0fa",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
-      "reason": "tree scanned: 1844 rows over 44 files, 201 outside the inventory fence",
+      "reason": "tree scanned: 2597 rows over 59 files, 0 outside the inventory fence",
       "detail": {
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "inventorySha256": "d54902361435e6ebf081965dc8677174ea9a076971da44ae8a2db2682df23db6",
-        "filesScanned": 44,
-        "rowsTotal": 1844,
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "inventorySha256": "af2df9e559da11c8b5b2584486e808a0096913880aeceae8aa7b8f2f937eb0fa",
+        "filesScanned": 59,
+        "rowsTotal": 2597,
         "countsPerClassInside": {
-          "house law": 463,
-          "delta: internal vocabulary": 665,
-          "absolute path": 85,
-          "internal module": 279,
-          "delta: sealed name": 113,
-          "delta: boundary (boundary rule)": 17,
+          "house law": 744,
+          "delta: sealed name": 162,
+          "delta: internal vocabulary": 1254,
+          "absolute path": 43,
+          "internal module": 327,
+          "delta: boundary (boundary rule)": 44,
           "delta: 24+ char token": 1,
-          "delta: home path": 19,
-          "delta: private record set": 1
+          "delta: private record set": 10,
+          "sealed name": 1,
+          "internal tool": 4,
+          "delta: other-competition residue": 1,
+          "delta: home path": 6
         },
-        "countsPerClassOutside": {
-          "house law": 70,
-          "delta: sealed name": 5,
-          "delta: internal vocabulary": 123,
-          "delta: home path": 2,
-          "absolute path": 1
-        },
-        "outsideRows": [
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 5,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 8,
-            "class": "delta: sealed name"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 10,
-            "class": "delta: sealed name"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 18,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 18,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 23,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 23,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 34,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 34,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 39,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 39,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 50,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 50,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 55,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 55,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 66,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 66,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 71,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 71,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 82,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 82,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 87,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 87,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 98,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 98,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 103,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 103,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 108,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 108,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 133,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 133,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 138,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 143,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 148,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 153,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 174,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 174,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 179,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 179,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 184,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 189,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 194,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 199,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 204,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 209,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 209,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 231,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 231,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 236,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 241,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 246,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 251,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 256,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 261,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 279,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 279,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 284,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 289,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 308,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 308,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 313,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 313,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 318,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 323,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 328,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 345,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 366,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 371,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 376,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 381,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 386,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 398,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 410,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 422,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 427,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 432,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 454,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 459,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 464,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 469,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 474,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 482,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 487,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 500,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 505,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 510,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 515,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 520,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 520,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 525,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 538,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 543,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 548,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 548,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 553,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 558,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 571,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 576,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 581,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 586,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 591,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 596,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 601,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 606,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 606,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 618,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 623,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 628,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 633,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 638,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 638,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 643,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 656,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 656,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 661,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 666,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 671,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 683,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 688,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 693,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 693,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 705,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 710,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 710,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 722,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 727,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 739,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 744,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 749,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 761,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 766,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 766,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 778,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 783,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 783,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 795,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 807,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 812,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 817,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 835,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 835,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 868,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 873,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 873,
-            "class": "house law"
-          },
-          {
-            "file": "JUDGE-ACTION-CONTRACT.json",
-            "line": 889,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 15,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 16,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 17,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 18,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 19,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 20,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 21,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 22,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 23,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 24,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 25,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 26,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 27,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 34,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 36,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 37,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 38,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 39,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 40,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 41,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 42,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 43,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 44,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 45,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 46,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 47,
-            "class": "house law"
-          },
-          {
-            "file": "TOOLING-PROVENANCE.md",
-            "line": 61,
-            "class": "house law"
-          },
-          {
-            "file": "tools/judge-clock.mjs",
-            "line": 2,
-            "class": "house law"
-          },
-          {
-            "file": "tools/judge-clock.mjs",
-            "line": 218,
-            "class": "house law"
-          },
-          {
-            "file": "tools/judge-clock.test.mjs",
-            "line": 2,
-            "class": "house law"
-          },
-          {
-            "file": "tools/judge-clock.test.mjs",
-            "line": 7,
-            "class": "delta: sealed name"
-          },
-          {
-            "file": "tools/judge-clock.test.mjs",
-            "line": 20,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/judge-clock.test.mjs",
-            "line": 21,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/judge-clock.test.mjs",
-            "line": 25,
-            "class": "delta: home path"
-          },
-          {
-            "file": "tools/judge-clock.test.mjs",
-            "line": 25,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.mjs",
-            "line": 2,
-            "class": "house law"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.mjs",
-            "line": 17,
-            "class": "house law"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.mjs",
-            "line": 21,
-            "class": "house law"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.mjs",
-            "line": 23,
-            "class": "house law"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.mjs",
-            "line": 90,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.mjs",
-            "line": 91,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.mjs",
-            "line": 97,
-            "class": "house law"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.mjs",
-            "line": 234,
-            "class": "delta: sealed name"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 2,
-            "class": "house law"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 19,
-            "class": "delta: home path"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 19,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 22,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 27,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 28,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 29,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 29,
-            "class": "delta: sealed name"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 30,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 31,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 31,
-            "class": "house law"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 64,
-            "class": "delta: internal vocabulary"
-          },
-          {
-            "file": "tools/tooling-provenance-doc.test.mjs",
-            "line": 73,
-            "class": "absolute path"
-          }
-        ]
+        "countsPerClassOutside": {},
+        "outsideRows": []
       }
     },
     {
@@ -1671,21 +888,21 @@
         "tools/disclosure-scan.mjs",
         "<tmp>house-only/capture-slate.mjs",
         "--out",
-        "<tmp>/rehearse-NUXjhS/tool-control.json"
+        "<tmp>/rehearse-AslUKT/tool-control.json"
       ],
-      "cwd": "<tmp>/rehearse-NUXjhS/stage-VkO3y6",
+      "cwd": "<tmp>/rehearse-AslUKT/stage-8zv6NJ",
       "exit": 0,
-      "durationMs": 69,
+      "durationMs": 66,
       "inputHashes": {
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "stage:tools/capture-slate.mjs": "7ddf085d706ebd959d7d4fbbf300c54cfe7fd037f55c3794b57b4e3d5fe17944",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "stage:tools/capture-slate.mjs": "b185c034182a0622289c9b83c7d05749d87094c32da0de927a5c94d7591c4778",
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
-      "reason": "control scanned: 2 baseline rows over 105 lines",
+      "reason": "control scanned: 3 baseline rows over 194 lines",
       "detail": {
-        "controlLines": 105,
-        "controlRows": 2
+        "controlLines": 194,
+        "controlRows": 3
       }
     },
     {
@@ -1695,16 +912,16 @@
         "tools/disclosure-scan.mjs",
         "<tmp>house-only/capture-slate.mjs",
         "--out",
-        "<tmp>/rehearse-NUXjhS/tool-plant-home-path.json"
+        "<tmp>/rehearse-AslUKT/tool-plant-home-path.json"
       ],
-      "cwd": "<tmp>/rehearse-NUXjhS/stage-occi92",
+      "cwd": "<tmp>/rehearse-AslUKT/stage-wuSIE3",
       "exit": 0,
-      "durationMs": 68,
+      "durationMs": 87,
       "inputHashes": {
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "stage:tools/capture-slate.mjs": "2b452e8098d8c17313f844134d22c9d8234d0486dc84afae99fec4b0dfeeeb36",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "stage:tools/capture-slate.mjs": "a0330607910bf8eef04537114c7963dcfc0618a0074cf324c4a8796dbe398544",
         "plantValueSha": "bc78491296767683b035be3b7ba44b9b2c5658965c4eb3eb3b9bf3b9dafe973f",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "planted home-path caught by tool rule absolute path [scan01]",
@@ -1713,7 +930,7 @@
         "expectedToolClass": "absolute path",
         "firedRuleId": "absolute path",
         "firedRuleSet": "scan01",
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
         "freshRows": 1
       }
     },
@@ -1724,16 +941,16 @@
         "tools/disclosure-scan.mjs",
         "<tmp>house-only/capture-slate.mjs",
         "--out",
-        "<tmp>/rehearse-NUXjhS/tool-plant-token-24plus.json"
+        "<tmp>/rehearse-AslUKT/tool-plant-token-24plus.json"
       ],
-      "cwd": "<tmp>/rehearse-NUXjhS/stage-UUkT7g",
+      "cwd": "<tmp>/rehearse-AslUKT/stage-B1CnqF",
       "exit": 0,
-      "durationMs": 69,
+      "durationMs": 94,
       "inputHashes": {
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "stage:tools/capture-slate.mjs": "957ec43ea9fb1dd595fe53ac1e16fb496c25ab750947e7894baa082667bdfc00",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "stage:tools/capture-slate.mjs": "554297ee1f996f8d48a513b405587a3bb83e3cd0694b6a1f97fc5fa5848d6c1d",
         "plantValueSha": "81b688358ce06139e5a65658a4245829593c20da0fdd041cf1210c576319423b",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "planted token-24plus caught by tool rule delta: 24+ char token [delta]",
@@ -1742,7 +959,7 @@
         "expectedToolClass": "delta: 24+ char token",
         "firedRuleId": "delta: 24+ char token",
         "firedRuleSet": "delta",
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
         "freshRows": 1
       }
     },
@@ -1753,16 +970,16 @@
         "tools/disclosure-scan.mjs",
         "<tmp>house-only/capture-slate.mjs",
         "--out",
-        "<tmp>/rehearse-NUXjhS/tool-plant-sealed-name.json"
+        "<tmp>/rehearse-AslUKT/tool-plant-sealed-name.json"
       ],
-      "cwd": "<tmp>/rehearse-NUXjhS/stage-9lpxMw",
+      "cwd": "<tmp>/rehearse-AslUKT/stage-R87RZl",
       "exit": 0,
-      "durationMs": 69,
+      "durationMs": 98,
       "inputHashes": {
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "stage:tools/capture-slate.mjs": "27f6a8ed92f7d8f14fc14daa0f21702d33e35168071648c810cf2299322bce6e",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "stage:tools/capture-slate.mjs": "e7dda6b9d21533fb37afe4c37b1b17349bd2da9f4d5a5a1b0cecd3f22d11a63f",
         "plantValueSha": "ae66b8f509a07dab58763f42afc523fc33fe77de2fa86e2a523e2cccb036419e",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "planted sealed-name caught by tool rule delta: sealed name [delta]",
@@ -1771,7 +988,7 @@
         "expectedToolClass": "delta: sealed name",
         "firedRuleId": "delta: sealed name",
         "firedRuleSet": "delta",
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
         "freshRows": 1
       }
     },
@@ -1782,16 +999,16 @@
         "tools/disclosure-scan.mjs",
         "<tmp>house-only/capture-slate.mjs",
         "--out",
-        "<tmp>/rehearse-NUXjhS/tool-plant-foreign-competition-token.json"
+        "<tmp>/rehearse-AslUKT/tool-plant-foreign-competition-token.json"
       ],
-      "cwd": "<tmp>/rehearse-NUXjhS/stage-YkjjFK",
+      "cwd": "<tmp>/rehearse-AslUKT/stage-kexQkp",
       "exit": 0,
-      "durationMs": 69,
+      "durationMs": 89,
       "inputHashes": {
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "stage:tools/capture-slate.mjs": "d5ccf1fe05d5b3afdb8ce2437687fe13a48878c3aed6ec570be1d197b9873936",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "stage:tools/capture-slate.mjs": "5ea96495bc9d5c26915c21617fc69f44834e5858d74972c1404ed001cc62cc1e",
         "plantValueSha": "f7c872d22361a60bc1e0f51beeadd1099edccd079970997ac6d80d683e6d3276",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "planted foreign-competition-token caught by tool rule delta: other-competition residue [delta]",
@@ -1800,7 +1017,7 @@
         "expectedToolClass": "delta: other-competition residue",
         "firedRuleId": "delta: other-competition residue",
         "firedRuleSet": "delta",
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
         "freshRows": 1
       }
     },
@@ -1811,16 +1028,16 @@
         "tools/disclosure-scan.mjs",
         "<tmp>house-only/capture-slate.mjs",
         "--out",
-        "<tmp>/rehearse-NUXjhS/tool-plant-benign-control.json"
+        "<tmp>/rehearse-AslUKT/tool-plant-benign-control.json"
       ],
-      "cwd": "<tmp>/rehearse-NUXjhS/stage-aAFQR8",
+      "cwd": "<tmp>/rehearse-AslUKT/stage-0tL68N",
       "exit": 0,
-      "durationMs": 70,
+      "durationMs": 75,
       "inputHashes": {
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
-        "stage:tools/capture-slate.mjs": "63abd979448e1aff9cb6dca5c3c7dac6fd633341063f49e317259b447efb6038",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
+        "stage:tools/capture-slate.mjs": "8b398214ba6a6a636783c9f219995809c0286d2c5a343e4469312285497bff58",
         "plantValueSha": "b4186616f93fded916087ab8d978bc36f737a97e9025c8a15eede19cc6ac80a0",
-        "meta-hackathon-product-v1.md": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66"
+        "meta-hackathon-product-v1.md": "6977f53ee6d57269a821b6a33a0e1bd74cae8836d86b2730a26c82b8b7d22a99"
       },
       "verdict": "PASS",
       "reason": "benign plant left the tool silent past the control lines",
@@ -1829,16 +1046,16 @@
         "expectedToolClass": null,
         "firedRuleId": null,
         "firedRuleSet": null,
-        "toolSha256": "430878fb740844c2499b45d85dcedf364c73788bf292e10e8948b1bfab5743d6",
+        "toolSha256": "6262b8a2d3e6947d80e829a9a0f6b912257d9089b5f66d62a89c447cfe533c86",
         "freshRows": 0
       }
     }
   ],
   "summary": {
     "verdict": "FAIL",
-    "total": 29,
-    "pass": 26,
-    "fail": 2,
+    "total": 35,
+    "pass": 29,
+    "fail": 5,
     "skipped": 1
   }
 }
