@@ -103,14 +103,41 @@ export function maskExcerpt(line, spans) {
 }
 
 const MASK_RUN = /[A-Za-z0-9_-]{20,}/g;
+// Value-span patterns for the detector ids whose values admit separators.
+// Group 1 is the value in each, as in the detector core: the scanner reports
+// line-level findings only by design, so the spans are re-derived here. If the
+// detector widens a value charset, widen the copy to match; the separator
+// fixtures in T3 pin the behavior.
+const SEP_BEARER = /\bBearer\s+([A-Za-z0-9._~+/=-]{10,})/g;
+const SEP_AWS = /aws_secret_access_key\s*[:=]\s*['"]?([A-Za-z0-9/+=]{30,})/gi;
+const SEP_SEED = /(?<![A-Za-z0-9_])[A-Za-z0-9_-]{0,40}?(?:seed|private|secret)(?:[_ -]?(?:key|seed|bytes|b64|base64|hex|material))?["'`]?\s*(?:[:=]|\bis\b)\s*(?:[A-Za-z_][\w.]*\(\s*)?["'`]?([A-Za-z0-9+/_-]{22,}={0,2})(?![A-Za-z0-9+/_=-])/gi;
+function seedShaped(value) {
+  const v = String(value || '').replace(/=+$/, '');
+  if (/^[0-9a-f]+$/i.test(v)) return v.length >= 32;
+  if (!/[0-9]/.test(v) || !/[a-z]/.test(v) || !/[A-Z]/.test(v)) return false;
+  return Math.floor((v.length * 3) / 4) >= 16;
+}
+function separatorSpans(line) {
+  const out = [];
+  for (const [re, gate] of [[SEP_BEARER, null], [SEP_AWS, null], [SEP_SEED, seedShaped]]) {
+    re.lastIndex = 0;
+    for (const m of line.matchAll(re)) {
+      if (gate && !gate(m[1])) continue;
+      out.push({ index: m.index + m[0].length - m[1].length, length: m[1].length });
+    }
+  }
+  return out;
+}
 export function scanText(text, rules, detectorFindings) {
   const rows = [];
   const lines = String(text).split('\n');
   const findingsByLine = new Map();
+  const jwkLines = new Set();
   for (const h of detectorFindings || []) {
     if (h.class !== 'key' && h.class !== 'secret' && h.class !== 'placeholder') continue;
     if (!findingsByLine.has(h.line)) findingsByLine.set(h.line, new Set());
     findingsByLine.get(h.line).add('[detector ' + h.id + ' ' + h.class + ']');
+    if (h.id === 'private-jwk') jwkLines.add(h.line);
   }
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -128,7 +155,9 @@ export function scanText(text, rules, detectorFindings) {
     const runs = [];
     let m;
     while ((m = MASK_RUN.exec(line)) !== null) runs.push({ index: m.index, length: m[0].length });
-    const allSpans = spans.concat(runs);
+    const allSpans = jwkLines.has(n)
+      ? [{ index: 0, length: line.length }]
+      : spans.concat(runs, separatorSpans(line));
     for (const [cls, g] of byClass) {
       const { excerpt, excerptStartCol } = maskExcerpt(line, allSpans);
       rows.push({ line: n, class: cls, ruleSet: g.ruleSet, tokens: [...g.toks], suggestedExportAction: ACTION[cls] || 'strip comment', excerpt, excerptStartCol, lineChars: line.length });
@@ -335,11 +364,11 @@ export async function main(argv, repoOverride) {
   }
   const { scanTextForSecrets } = await import(pathToFileURL(join(repo, 'scripts', 'lib', 'secret-patterns.mjs')).href);
   const result = await scanInputs({ inputs: positional, git, rules, scanSecrets: scanTextForSecrets, repo, fence });
-  result.revision = 2;
-  result.method = { scan01Rules: rules.scan01.length, deltaRules: rules.delta.length, detector: 'house secret-patterns', keyShapedRule: receipt.tokenCensus24 ? receipt.tokenCensus24.keyShapedRule : null, fence: 'full-route' };
+  result.revision = 3;
+  result.method = { scan01Rules: rules.scan01.length, deltaRules: rules.delta.length, detector: 'house secret-patterns', keyShapedRule: receipt.tokenCensus24 ? receipt.tokenCensus24.keyShapedRule : null, fence: 'full-route', excerptMask: 'rev3-separator-spans' };
   const json = JSON.stringify(result, null, 2) + '\n';
   if (outPath) writeFileSync(outPath, json);
-  else process.stdout.write(json);
+  else await new Promise((res) => { if (process.stdout.write(json)) res(); else process.stdout.once('drain', res); });
   return 0;
 }
 
