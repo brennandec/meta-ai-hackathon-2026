@@ -1,0 +1,130 @@
+{
+ "schema": "muse-fixture-ledger/1",
+ "generator": "fixture-ledger.mjs (muse-fixture-ledger-01, M-NEXT-22, author muse)",
+ "summary": {
+  "records": 6,
+  "honest": 6,
+  "violating": 0,
+  "metricComputed": 1,
+  "metricNull": 5
+ },
+ "rows": [
+  {
+   "path": "house-only/fault-case-1-0000.json",
+   "bytes": 1526,
+   "sha256": "ba3cd95bbd8c8b4a56890b4847c0da044660abd8d350ffe8c1a8dd4640b3ece2",
+   "honestyPass": true,
+   "honestyViolations": [],
+   "metric": null,
+   "metricReason": "tokens-unknown",
+   "label": "synthetic",
+   "beatsCited": [
+    {
+     "beat": "S2",
+     "matchedVia": [
+      "drift",
+      "friction"
+     ]
+    }
+   ]
+  },
+  {
+   "path": "house-only/fault-case-1-0001.json",
+   "bytes": 1545,
+   "sha256": "159ff7cbfde454e650fdb757c81e4a30cf2be3941f252236887e1606e1ce49b8",
+   "honestyPass": true,
+   "honestyViolations": [],
+   "metric": null,
+   "metricReason": "tokens-unknown",
+   "label": "synthetic",
+   "beatsCited": [
+    {
+     "beat": "S2",
+     "matchedVia": [
+      "friction"
+     ]
+    }
+   ]
+  },
+  {
+   "path": "house-only/fault-case-1-0002.json",
+   "bytes": 1522,
+   "sha256": "e544d17083be9b4a2068b04e405f26259219ef9c7135e7e2fa5dc38c1a5d1634",
+   "honestyPass": true,
+   "honestyViolations": [],
+   "metric": null,
+   "metricReason": "tokens-unknown",
+   "label": "synthetic",
+   "beatsCited": [
+    {
+     "beat": "S6",
+     "matchedVia": [
+      "brake",
+      "force"
+     ]
+    }
+   ]
+  },
+  {
+   "path": "house-only/fault-case-1-0003.json",
+   "bytes": 1553,
+   "sha256": "0a7bf0ff4184ff8bc19f187607bc6c179eb1ab4e4a90bbeefdbe776953ce2988",
+   "honestyPass": true,
+   "honestyViolations": [],
+   "metric": null,
+   "metricReason": "tokens-unknown",
+   "label": "synthetic",
+   "beatsCited": [
+    {
+     "beat": "S5",
+     "matchedVia": [
+      "structural"
+     ]
+    },
+    {
+     "beat": "S6",
+     "matchedVia": [
+      "structural"
+     ]
+    }
+   ]
+  },
+  {
+   "path": "house-only/index.json",
+   "bytes": 937,
+   "sha256": "4692989ba4443720244a9e7e2c0d31d2bdbd051c776c81221ded4173d1537b87",
+   "honestyPass": true,
+   "honestyViolations": [],
+   "metric": null,
+   "metricReason": "unmeasurable-shape",
+   "label": "recorded",
+   "beatsCited": []
+  },
+  {
+   "path": "house-only/synthetic-transport-run-record.json",
+   "bytes": 42544,
+   "sha256": "61349744701a9dd0aab76a3ccef4be6af49961bdca2e5437bc99579576658404",
+   "honestyPass": true,
+   "honestyViolations": [],
+   "metric": 5434.78,
+   "metricReason": null,
+   "label": "synthetic",
+   "beatsCited": [
+    {
+     "beat": "S4",
+     "matchedVia": [
+      "synthetic",
+      "transport"
+     ]
+    },
+    {
+     "beat": "S5",
+     "matchedVia": [
+      "synthetic",
+      "transport"
+     ]
+    }
+   ]
+  }
+ ]
+}
