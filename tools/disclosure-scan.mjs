@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// disclosure-scan.mjs - M-NEXT-30 house tool. Author: muse.
+// disclosure-scan.mjs - M-NEXT-30 house tool. Author: muse; rev 4 tooling batch A.
 // One house tool for the export disclosure scans: the 26 SCAN-01 rules plus
 // the 7 R9 delta classes, over files, directories, or every blob of every
 // commit in an export clone. Rule patterns load verbatim from the scan02
@@ -9,13 +9,14 @@
 // the house detector and keeps key, secret and placeholder findings only.
 // rev 2: one fence (full route). Provenance keeps the scan01 as-applied arithmetic only.
 // Excerpts mask rule spans plus every 20+ run (the detector's key-shaped floor) on the line.
+// rev 4: a private-jwk finding masks every line of its JSON document, not only the start line.
 // Git mode enumerates one unit per (blob, path) pair via per-commit ls-tree.
 // (route vs path relative to the candidate or app root). Excerpts are
 // 80-char windows with every hit replaced by [MASK n ch].
 // CLI: node tools/disclosure-scan.mjs [paths...] [--git <clone>]
 //   [--rules <scan02.json>] [--fence <preflight.json>] [--out <json>]
 // Output: rows plus per-class counts, fence counts and the 24+ token census.
-// Exit 0 scanned, 2 usage or IO error.
+// Exit 0 scanned, 2 usage or IO error (a stdout consumer that closes early is EPIPE: exit 2, one stderr line).
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, realpathSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -103,6 +104,33 @@ export function maskExcerpt(line, spans) {
 }
 
 const MASK_RUN = /[A-Za-z0-9_-]{20,}/g;
+const JWK_MAX_LINES = 200;
+export function objectEndLine(lines, start) {
+  const first = lines[start] || '';
+  let j = first.indexOf('{');
+  if (j < 0) return start;
+  let depth = 0;
+  let quote = null;
+  let esc = false;
+  const lim = Math.min(lines.length, start + JWK_MAX_LINES);
+  for (let i = start; i < lim; i++) {
+    const s = lines[i];
+    for (; j < s.length; j++) {
+      const ch = s[j];
+      if (quote) {
+        if (esc) esc = false;
+        else if (ch === '\\') esc = true;
+        else if (ch === quote) quote = null;
+        continue;
+      }
+      if (ch === '"' || ch === "'" || ch === '`') quote = ch;
+      else if (ch === '{') depth++;
+      else if (ch === '}' && --depth === 0) return i;
+    }
+    j = 0;
+  }
+  return lim - 1;
+}
 // Value-span patterns for the detector ids whose values admit separators.
 // Group 1 is the value in each, as in the detector core: the scanner reports
 // line-level findings only by design, so the spans are re-derived here. If the
@@ -137,7 +165,10 @@ export function scanText(text, rules, detectorFindings) {
     if (h.class !== 'key' && h.class !== 'secret' && h.class !== 'placeholder') continue;
     if (!findingsByLine.has(h.line)) findingsByLine.set(h.line, new Set());
     findingsByLine.get(h.line).add('[detector ' + h.id + ' ' + h.class + ']');
-    if (h.id === 'private-jwk') jwkLines.add(h.line);
+    if (h.id === 'private-jwk') {
+      const end = objectEndLine(lines, h.line - 1);
+      for (let k = h.line; k <= end + 1; k++) jwkLines.add(k);
+    }
   }
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -364,12 +395,17 @@ export async function main(argv, repoOverride) {
   }
   const { scanTextForSecrets } = await import(pathToFileURL(join(repo, 'scripts', 'lib', 'secret-patterns.mjs')).href);
   const result = await scanInputs({ inputs: positional, git, rules, scanSecrets: scanTextForSecrets, repo, fence });
-  result.revision = 3;
-  result.method = { scan01Rules: rules.scan01.length, deltaRules: rules.delta.length, detector: 'house secret-patterns', keyShapedRule: receipt.tokenCensus24 ? receipt.tokenCensus24.keyShapedRule : null, fence: 'full-route', excerptMask: 'rev3-separator-spans' };
+  result.revision = 4;
+  result.method = { scan01Rules: rules.scan01.length, deltaRules: rules.delta.length, detector: 'house secret-patterns', keyShapedRule: receipt.tokenCensus24 ? receipt.tokenCensus24.keyShapedRule : null, fence: 'full-route', excerptMask: 'rev4-separator-spans-jwk-document' };
   const json = JSON.stringify(result, null, 2) + '\n';
-  if (outPath) writeFileSync(outPath, json);
-  else await new Promise((res) => { if (process.stdout.write(json)) res(); else process.stdout.once('drain', res); });
-  return 0;
+  if (outPath) { writeFileSync(outPath, json); return 0; }
+  const err = await new Promise((res) => {
+    process.stdout.on('error', res);
+    process.stdout.write(json, (e) => res(e || null));
+  });
+  if (!err) return 0;
+  if (err.code === 'EPIPE') { console.error('E_SCAN stdout closed early (EPIPE): output truncated'); return 2; }
+  throw err;
 }
 
 const invoked = process.argv[1] ? realpathSync(process.argv[1]) === fileURLToPath(import.meta.url) : false;
