@@ -1,0 +1,520 @@
+{
+  "schema": "meta-portable-demo-candidate-dependency-contract/1",
+  "status": "EXPORT_MODE_COPY_NOT_RELEASE_CLEARANCE",
+  "ownerSeat": "build-seat",
+  "workerId": "34e744d4-0dc4-4572-9c05-c4e065a5ed34",
+  "acceptedAppSnapshot": {
+    "commit": "12148715887a14c31dcac01f1463f6cf8ad7a1df",
+    "appDirectory": "app/",
+    "appFiles": 12,
+    "appBytes": 510074,
+    "appTreeSha256": "ef930e96eddbef8f2d017d320b1b60203f83913b1dd1410baf65ef3513f504cd",
+    "status": "IMMUTABLE_HISTORICAL_CHECKPOINT"
+  },
+  "portabilityBoundary": {
+    "portabilityStatus": "PRIVATE_LOCAL_CANDIDATE_NOT_STANDALONE_PORTABLE",
+    "standalonePortabilityClaimed": false,
+    "ownerModulesCopiedIntoCandidate": false,
+    "copiedSolverHashAuthLogic": false,
+    "externalCallsDefault": "BLOCKED",
+    "authorizationModel": "TRUSTED_SERVER_OWNED_AUTHORIZATION_AND_REGISTERED_LOADER_INJECTION_ONLY",
+    "callerRulesVerifiedOrKeyPathAccepted": false,
+    "ambientEnvFallbackAccepted": false,
+    "transportModeInPreparation": "INJECTED_SYNTHETIC_TRANSPORT_ONLY",
+    "realKeyLoadPerformed": false,
+    "realModelCallPerformed": false,
+    "uiAndControlIntegration": "EXACT_18_ROW_PRIVATE_OWNER_MOUNT_AND_ENTRY_VERIFICATION_UI_ONLY"
+  },
+  "candidateOwnedFiles": [
+    {
+      "path": "candidate-backend.mjs",
+      "role": "Minimal candidate HTTP backend entrypoint accepting injected proposal/evaluator/critic/receipt owners and exact 18-row /__owners/ mount seam"
+    },
+    {
+      "path": "launcher.mjs",
+      "role": "Private local launcher binding accepted local owner modules in-place, canonical 18-row /__owners/ resolver, and synthetic transport self-check"
+    },
+    {
+      "path": "candidate-backend.test.mjs",
+      "role": "Focused Node test suite verifying owner injection, default external call block, synthetic transport, exact 18-row /__owners/ allowlist, excluded surfaces, and frozen accepted app integrity"
+    },
+    {
+      "path": "DEPENDENCY-CONTRACT.json",
+      "role": "Machine-readable runtime dependency contract, UI mount contract, and future reviewed package mapping"
+    }
+  ],
+  "uiOwnerMountContract": {
+    "exclusiveUiOwnerSeat": "entry_verification",
+    "reservedUiFiles": [
+      "ui/index.html",
+      "ui/preview.mjs",
+      "ui/PRIVATE-ASSET-MANIFEST.json"
+    ],
+    "servedUiRoutes": {
+      "/": {
+        "target": "ui/index.html",
+        "mimeType": "text/html; charset=utf-8"
+      },
+      "/index.html": {
+        "target": "ui/index.html",
+        "mimeType": "text/html; charset=utf-8"
+      },
+      "/ui/index.html": {
+        "target": "ui/index.html",
+        "mimeType": "text/html; charset=utf-8"
+      },
+      "/ui/preview.mjs": {
+        "target": "ui/preview.mjs",
+        "mimeType": "text/javascript"
+      }
+    },
+    "manifestServedOverHttp": false,
+    "exactPrivateOwnerMountAllowlistCount": 18,
+    "exactPrivateOwnerMountAllowlist": [
+      {
+        "urlPath": "/__owners/deploy/_shared/widget-faces/faces/button.mjs",
+        "repoRelativePath": "deploy/_shared/widget-faces/faces/button.mjs",
+        "mimeType": "text/javascript",
+        "kind": "js",
+        "expectedBytes": 13164,
+        "expectedSha256": "dd0ebf2e0172eb7baa9d46f4e7488ad9c75fa9f4e4eabe1147372c3900e2b96d"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/widget-faces/faces/badge.mjs",
+        "repoRelativePath": "deploy/_shared/widget-faces/faces/badge.mjs",
+        "mimeType": "text/javascript",
+        "kind": "js",
+        "expectedBytes": 736,
+        "expectedSha256": "ec2e77df6a0e321ab0b6b1cc41432d86551e75f4d6cfcdc7db7bc4139d08b47a"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/widget-faces/faces/receipt.mjs",
+        "repoRelativePath": "deploy/_shared/widget-faces/faces/receipt.mjs",
+        "mimeType": "text/javascript",
+        "kind": "js",
+        "expectedBytes": 1139,
+        "expectedSha256": "1efe20a9eba7d30e90a08203d55434a5ef56d3bf891207f5e175da2c436a7638"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/widget-faces/faces/input.mjs",
+        "repoRelativePath": "deploy/_shared/widget-faces/faces/input.mjs",
+        "mimeType": "text/javascript",
+        "kind": "js",
+        "expectedBytes": 26513,
+        "expectedSha256": "97075dd43e970c51b72695a8343171af1aa4f4d2a2aafdf13990ba349d32f294"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/widget-faces/faces/el.mjs",
+        "repoRelativePath": "deploy/_shared/widget-faces/faces/el.mjs",
+        "mimeType": "text/javascript",
+        "kind": "js",
+        "expectedBytes": 390,
+        "expectedSha256": "cab541bba9ba003d5d574a2cbe91c2d54a0f9ebb19827a8ec4acbbef530d6990"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/widget-faces/faces/uid.mjs",
+        "repoRelativePath": "deploy/_shared/widget-faces/faces/uid.mjs",
+        "mimeType": "text/javascript",
+        "kind": "js",
+        "expectedBytes": 60,
+        "expectedSha256": "930a7785154dae9a380ed889bc55d662a5971fe49f5769163e004aee4f0a98f8"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/hash/uid.mjs",
+        "repoRelativePath": "deploy/_shared/hash/uid.mjs",
+        "mimeType": "text/javascript",
+        "kind": "js",
+        "expectedBytes": 726,
+        "expectedSha256": "48948b11b107ffc2d882945e4bf2e3a4e9c2fc7fc7cf78ff545061e7798ce130"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/hash/index.mjs",
+        "repoRelativePath": "deploy/_shared/hash/index.mjs",
+        "mimeType": "text/javascript",
+        "kind": "js",
+        "expectedBytes": 1622,
+        "expectedSha256": "0bbfe655fded57829d1644bfb11fa4985552b6435dcc37f1ddb76ecc1dd3fc32"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/widget-faces/faces.css",
+        "repoRelativePath": "deploy/_shared/widget-faces/faces.css",
+        "mimeType": "text/css",
+        "kind": "css",
+        "expectedBytes": 50953,
+        "expectedSha256": "736ee94500bb99f98aa09ebdd40d1a6e95f1f514f62ced0542acf998113898a7"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/design-system-v1/components.css",
+        "repoRelativePath": "deploy/_shared/design-system-v1/components.css",
+        "mimeType": "text/css",
+        "kind": "css",
+        "expectedBytes": 5378,
+        "expectedSha256": "7fe1c67756dc6007123695d2bed0d8867c919d4a68a5fcc81647e3f577692dc6"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/design-system-v1/tokens.css",
+        "repoRelativePath": "deploy/_shared/design-system-v1/tokens.css",
+        "mimeType": "text/css",
+        "kind": "css",
+        "expectedBytes": 7053,
+        "expectedSha256": "b003c9a71c612bf24f5ef75caba3fde27b32c7ba0303a2f65e1c46486cd56714"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/os-tokens.css",
+        "repoRelativePath": "deploy/_shared/os-tokens.css",
+        "mimeType": "text/css",
+        "kind": "css",
+        "expectedBytes": 14158,
+        "expectedSha256": "ead5624804360b8600c9b0fae3b4260d4733b352fa435bd7f7044ee9052c10ad"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/ss-motion.css",
+        "repoRelativePath": "deploy/_shared/ss-motion.css",
+        "mimeType": "text/css",
+        "kind": "css",
+        "expectedBytes": 3512,
+        "expectedSha256": "7728e5c362a91d524044c81545c3d360e55607efc627bde86f0ab352de6c373c"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/fonts/fonts.css",
+        "repoRelativePath": "deploy/_shared/fonts/fonts.css",
+        "mimeType": "text/css",
+        "kind": "css",
+        "expectedBytes": 1677,
+        "expectedSha256": "d113a60557af2e6fa55f51e15715ad4c10a5f4c57bc9e52007e0637978d8b2d8"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/fonts/Inter5D-latin.woff2",
+        "repoRelativePath": "deploy/_shared/fonts/Inter5D-latin.woff2",
+        "mimeType": "font/woff2",
+        "kind": "font",
+        "expectedBytes": 99388,
+        "expectedSha256": "63b6e75d9c74ca5fbe697ec6aab81322de0058163805cfc30f5e0791fdd98855"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/fonts/jetbrains-mono/jetbrains-mono-latin-400-normal.woff2",
+        "repoRelativePath": "deploy/_shared/fonts/jetbrains-mono/jetbrains-mono-latin-400-normal.woff2",
+        "mimeType": "font/woff2",
+        "kind": "font",
+        "expectedBytes": 21168,
+        "expectedSha256": "14425ba9c695763c1547f48a206b7aa60350a33ae23de09f0407877f3fcd89eb"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/fonts/jetbrains-mono/jetbrains-mono-latin-500-normal.woff2",
+        "repoRelativePath": "deploy/_shared/fonts/jetbrains-mono/jetbrains-mono-latin-500-normal.woff2",
+        "mimeType": "font/woff2",
+        "kind": "font",
+        "expectedBytes": 21832,
+        "expectedSha256": "cb182feeed4d798ff6961d3c79f7026279448fca0676438aaecb21f3fc39553a"
+      },
+      {
+        "urlPath": "/__owners/deploy/_shared/fonts/jetbrains-mono/jetbrains-mono-latin-700-normal.woff2",
+        "repoRelativePath": "deploy/_shared/fonts/jetbrains-mono/jetbrains-mono-latin-700-normal.woff2",
+        "mimeType": "font/woff2",
+        "kind": "font",
+        "expectedBytes": 21908,
+        "expectedSha256": "d0d4e818808f2a0ba39b2b09d1989366f63494e295f003c7ef436697378507e8"
+      }
+    ],
+    "reservedUiFilesPinned": [
+      {
+        "path": "ui/index.html",
+        "expectedBytes": 2419,
+        "expectedSha256": "d8a17814df1d3b71051f5db21902d96cad49fb912d89ec371f798d99a7f5a80f"
+      },
+      {
+        "path": "ui/preview.mjs",
+        "expectedBytes": 10851,
+        "expectedSha256": "228ffff25d6b8a9574e4174585da329be50eb98b5c4ce368d5f77355ee3cd060"
+      },
+      {
+        "path": "ui/PRIVATE-ASSET-MANIFEST.json",
+        "expectedBytes": 11031,
+        "expectedSha256": "f9b9dd2aa4fed6c15b4558f5ab72f497ba1508917cb38e216b3ee880e8d7ad59"
+      }
+    ]
+  },
+  "runtimeDependencies": {
+    "nodeBuiltins": [
+      "node:http",
+      "node:fs",
+      "node:path",
+      "node:crypto",
+      "node:url"
+    ],
+    "testBuiltins": [
+      "node:test",
+      "node:assert/strict"
+    ],
+    "boundLocalOwnerModules": [
+      {
+        "role": "deterministic_physics_and_sha256_owner",
+        "dependencyKind": "direct_owner_import",
+        "repoRelativePath": "app/meta-physics-agent.mjs",
+        "expectedBytes": 23626,
+        "expectedSha256": "8f357327bae3845d3ee7acc41a9fc5f24ad4ca004c41e3c40befea15541753a5",
+        "injectedSymbols": [
+          "HEX64_REGEX",
+          "sha256Sync",
+          "canonicalStringify"
+        ]
+      },
+      {
+        "role": "proposal_extraction_gate_correction_and_receipt_chain_owner",
+        "dependencyKind": "direct_owner_import",
+        "repoRelativePath": "app/llama-adapter.mjs",
+        "expectedBytes": 76272,
+        "expectedSha256": "b0539b11e2c23612562b178b4f3d0d913e45c58df10a48dbef94cd0d24371e58",
+        "historical121487Bytes": 58338,
+        "historical121487Sha256": "7d0a87a4e2403580aed074840e7b241bdf4130ce37619ea5f0bf73c7596216c4",
+        "injectedSymbols": [
+          "DEFAULT_LLAMA_MODEL",
+          "CONFIGURABLE_LLAMA_MODELS",
+          "META_LLAMA_ENDPOINT",
+          "MAX_COMPLETION_TOKENS",
+          "DEFAULT_REQUEST_TIMEOUT_MS",
+          "PROPOSAL_SCHEMA",
+          "MAX_BOUNDED_CORRECTIONS",
+          "GENESIS_RECEIPT_HASH",
+          "OFFLINE_LLAMA_FIXTURES",
+          "ALLOWED_PROVIDER_USAGE_COUNTERS",
+          "sanitizeProviderUsage",
+          "sanitizeProviderTraceString",
+          "classifySafeTransportError",
+          "requestLlamaPhysicsProposal",
+          "validateAuthoritativeCurrentState",
+          "deriveAuthoritativeStateSnapshot",
+          "evaluateAndGateLlamaProposal",
+          "generateKinematicProposalReceipt",
+          "verifyProposalReceiptChain"
+        ]
+      },
+      {
+        "role": "critic_interlock_quorum_and_step_receipt_owner",
+        "dependencyKind": "direct_owner_import",
+        "repoRelativePath": "app/swarm-verifier.mjs",
+        "expectedBytes": 31929,
+        "expectedSha256": "2f119448c6540d11ae715326a6dc132737fcceb9461f1e589a45b0f456cafae2",
+        "injectedSymbols": [
+          "PLANT_MANIFEST",
+          "PLANT_MANIFEST_HASH",
+          "evaluateKinematicCritic",
+          "evaluateSafetyInterlock",
+          "evaluateInterlock",
+          "resolveSwarmQuorum",
+          "generateSwarmStepReceipt"
+        ]
+      },
+      {
+        "role": "transitive_trajectory_benchmark_fixtures_for_swarm_verifier",
+        "dependencyKind": "transitive_from_swarm_verifier",
+        "importedBy": "app/swarm-verifier.mjs",
+        "repoRelativePath": "app/trajectory-bench.mjs",
+        "expectedBytes": 14646,
+        "expectedSha256": "4cbd9d0d0afb0c1010157effc7fc526624321a02ec6b1f0c65a96ede71d9a71d",
+        "injectedSymbols": [
+          "NOMINAL_TRAJECTORY_5_STEP",
+          "KINEMATIC_DRIFT_TRAJECTORY_5_STEP",
+          "STRUCTURAL_LIMIT_TRAJECTORY_5_STEP"
+        ]
+      }
+    ]
+  },
+  "excludedSurfaces": {
+    "excludedModules": [
+      "app/rules-intake-gate.mjs",
+      "app/stage5-contingency-adapters.mjs",
+      "app/index.html"
+    ],
+    "excludedRoutes": [
+      "/rules-intake-gate.mjs",
+      "/stage5-contingency-adapters.mjs",
+      "/api/rules/clearance",
+      "/api/rules/intake",
+      "/admin",
+      "/ui/PRIVATE-ASSET-MANIFEST.json",
+      "/DEPENDENCY-CONTRACT.json",
+      "/candidate-backend.mjs",
+      "/launcher.mjs",
+      "/candidate-backend.test.mjs"
+    ],
+    "excludedContentCategories": [
+      "admin_rules_ui_and_routes",
+      "organizer_term_text",
+      "internal_disclosure_tokens",
+      "private_config_and_keys",
+      "bespoke_css_and_ui_components"
+    ]
+  },
+  "futureReviewedPackageMapping": [
+    {
+      "currentLocalSource": "app/meta-physics-agent.mjs",
+      "futureReviewedPackage": "@meta-demo/physics-core",
+      "futureEntrypoint": "packages/physics-core/index.mjs",
+      "status": "PENDING_ROOT_AND_LEGAL_REVIEW_NO_EXPORT",
+      "copiedIntoCandidate": false
+    },
+    {
+      "currentLocalSource": "app/llama-adapter.mjs",
+      "futureReviewedPackage": "@meta-demo/proposal-adapter",
+      "futureEntrypoint": "packages/proposal-adapter/index.mjs",
+      "status": "PENDING_ROOT_AND_LEGAL_REVIEW_NO_EXPORT",
+      "copiedIntoCandidate": false
+    },
+    {
+      "currentLocalSource": "app/swarm-verifier.mjs",
+      "futureReviewedPackage": "@meta-demo/swarm-critic-quorum",
+      "futureEntrypoint": "packages/swarm-critic-quorum/index.mjs",
+      "status": "PENDING_ROOT_AND_LEGAL_REVIEW_NO_EXPORT",
+      "copiedIntoCandidate": false
+    },
+    {
+      "currentLocalSource": "app/trajectory-bench.mjs",
+      "futureReviewedPackage": "@meta-demo/trajectory-bench-fixtures",
+      "futureEntrypoint": "packages/trajectory-bench-fixtures/index.mjs",
+      "status": "PENDING_ROOT_AND_LEGAL_REVIEW_NO_EXPORT",
+      "copiedIntoCandidate": false
+    },
+    {
+      "currentLocalSource": "deploy/_shared/{widget-faces,hash,design-system-v1,fonts,os-tokens.css,ss-motion.css} (18 exact allowlisted rows via /__owners/*)",
+      "futureReviewedPackage": "@meta-demo/registered-ui-owners",
+      "futureEntrypoint": "packages/registered-ui-owners/index.mjs",
+      "status": "PRIVATE_LOCAL_MOUNT_ONLY_NO_EXPORT",
+      "copiedIntoCandidate": false
+    },
+    {
+      "currentLocalSource": "house-only/meta-hackathon-route.mjs#loadKey (bound as zero-arg server-owned keyLoader interface)",
+      "futureReviewedPackage": "@meta-demo/registered-auth-loader-slot",
+      "futureEntrypoint": "packages/registered-auth-loader-slot/index.mjs",
+      "status": "SYNTHETIC_INJECTION_IN_PREP_OR_OPERATOR_ONE_ATTEMPT_ONLY",
+      "copiedIntoCandidate": false
+    },
+    {
+      "currentLocalSource": "ui/{index.html,preview.mjs}",
+      "futureReviewedPackage": "@meta-demo/registered-ui-surface",
+      "futureEntrypoint": "packages/registered-ui-surface/index.html",
+      "status": "OWNED_EXCLUSIVELY_BY_ENTRY_VERIFICATION",
+      "copiedIntoCandidate": false
+    }
+  ],
+  "workingAppTreeState": {
+    "baseCommit": "12148715887a14c31dcac01f1463f6cf8ad7a1df",
+    "appDirectory": "app/",
+    "appFiles": 12,
+    "frozenFilesUnchangedCount": 10,
+    "authorizedModifiedFilesCount": 2,
+    "authorizedModifiedFiles": [
+      "app/llama-adapter.mjs",
+      "app/llama-adapter.test.mjs"
+    ],
+    "all12WorkingFilesUnchangedFrom121487": false,
+    "appBytes": 548479,
+    "appTreeSha256": "fb2d8a90b85f7ccb379dccedfd5693c8d86c755f6e93d8c555e95375b453e4b0"
+  },
+  "liveEntryContract": {
+    "endpoint": "https://api.meta.ai/v1/chat/completions",
+    "allowedModels": [
+      "muse-spark-1.3",
+      "muse-wonder-1.0"
+    ],
+    "defaultModel": "muse-spark-1.3",
+    "responseFormat": "json_schema",
+    "strictSchema": true,
+    "timeoutMs": 15000,
+    "maxCompletionTokens": 512,
+    "maxLiveAttemptsPerEntry": 1,
+    "retriesAllowed": 0,
+    "providerFallbackAllowed": false,
+    "ambientEnvKeyAllowed": false,
+    "callerKeyPathAllowed": false,
+    "requireConfirmedModelIdentityDefault": true,
+    "registeredKeyLoaderInterfacePin": {
+      "repoRelativePath": "house-only/meta-hackathon-route.mjs",
+      "exportedSymbol": "loadKey",
+      "zeroArgBinding": "bindRegisteredZeroArgKeyLoader",
+      "expectedBytes": 7589,
+      "expectedSha256": "a9da971148d5468c3e96336b372492f8b4ac780bb22ab7ced391aab44d6cf233",
+      "invokedDuringBuildOrTest": false,
+      "exportMode": "HOUSE_ONLY_NOT_SHIPPED"
+    },
+    "runRecordContract": {
+      "schema": "meta-candidate-sanitized-run-record/1",
+      "ownerHashPrimitives": [
+        "sha256Sync",
+        "canonicalStringify"
+      ],
+      "providerTraceInsideKinematicReceiptChain": false,
+      "hashSemanticNote": "SHA-256 digests are deterministic integrity hashes, not issuer signatures; providerTrace is bound alongside receiptHashes in this runRecord.",
+      "allowedUsageCounters": [
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens"
+      ],
+      "secretOutputBoundary": "Transport and parse exceptions are classified with safe typed codes without echoing raw err.message; provider usage is restricted to finite non-negative safe-integer counters; trace identifiers strip known credential echoes."
+    }
+  },
+  "exportMode": {
+    "generator": "export-generator.mjs rev 2",
+    "pins": "expected bytes and sha256 values describe the exported bytes",
+    "keyLoader": "HOUSE_ONLY_NOT_SHIPPED",
+    "liveRunIntentContract": "trimmed from the unfreeze packet; door and ledger paths are house-only in this export"
+  },
+  "liveRunIntentContract": {
+    "contractId": "LIVE-RUN-INTENT-CONTRACT-01",
+    "intentDocumentPath": "fixtures/LIVE-RUN-INTENT.json",
+    "intentDocumentFields": {
+      "schema": "manymoats.meta_portable_demo_candidate.live_run_intent.v1",
+      "runId": "run_<32-hex>",
+      "createdAt": "<ISO-8601-UTC>",
+      "transport": "meta_api_https | synthetic_injected_transport",
+      "keyPathExists": "boolean (fs.existsSync(DEFAULT_KEY_FILE) only; never key contents)",
+      "requestedModel": "muse-spark-1.3",
+      "instructionSha256": "<64-hex-sha256>"
+    },
+    "doorPut": {
+      "script": "house-only/demo-door-put.mjs",
+      "targetRelPath": "fixtures/LIVE-RUN-INTENT.json",
+      "title": "live-run-intent-01: write-ahead one-attempt live-run-intent",
+      "subjectShape": "live-run-intent-01: write-ahead one-attempt live-run-intent",
+      "authorResolution": "resolveRuntimeDoorAuthor (KPF_DOOR_AUTHOR || KPF_SEAT_AUTHOR || USER || os.userInfo().username)",
+      "stdoutTokens": "<wo_id> <warden_receipt_id>"
+    },
+    "doorReceiptShape": {
+      "ledgerPath": "house-only/receipts.jsonl",
+      "eventsPath": "house-only/events.jsonl",
+      "openReceipt": {
+        "idPattern": "^rcpt_[0-9a-f]{16}$",
+        "kind": "work-order",
+        "subject": "live-run-intent-01: write-ahead one-attempt live-run-intent",
+        "authorResolution": "resolveRuntimeDoorAuthor (non-door-verifier runtime seat/operator author)",
+        "refs": "Array<string> ([path.resolve(repoRoot, intentDocumentPath)])",
+        "refsAreAbsolute": true,
+        "refsTargetRelPath": "fixtures/LIVE-RUN-INTENT.json",
+        "contentSha256IsNotFileSha": true
+      },
+      "wardenReceipt": {
+        "idPattern": "^rcpt_[0-9a-f]{16}$",
+        "kind": "work-order",
+        "subject": "live-run-intent-01: write-ahead one-attempt live-run-intent",
+        "author": "door-verifier",
+        "refs": "Array<string> ([woId, openReceiptId])",
+        "doorStdoutToken": true
+      },
+      "woVerifiedEventShape": {
+        "eventsPath": "house-only/events.jsonl",
+        "type": "wo.verified",
+        "author": "door-verifier",
+        "receiptIdMatchesWardenReceipt": true,
+        "payloadWoMatchesWoId": true,
+        "verifiedCommandCarriesIntentFileSha256": true
+      }
+    },
+    "recordBinding": {
+      "recordRunIdField": "runId",
+      "nestedRunRecordRunIdField": "runRecord.runId",
+      "recordIntentReceiptField": "liveRunIntentReceipt",
+      "nestedRunRecordIntentReceiptField": "runRecord.liveRunIntentReceipt",
+      "writeOrder": "launcher writes LIVE-RUN-INTENT.json and mints door receipt before first fetchImpl invocation; record.runId and record.runRecord.runId equal intentDocument.runId; liveRunIntentReceipt binds to the open receipt id (runtime seat/operator author, refs = [absPath]) verified alongside the wo.verified event carrying the intent file sha256"
+    }
+  }
+}

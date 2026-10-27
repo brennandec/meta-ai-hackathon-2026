@@ -1,0 +1,212 @@
+{
+  "schema": "export-notice-map/2",
+  "generator": "export-generator.mjs rev 2 notice pipeline",
+  "status": "draft; not a release clearance",
+  "noticeFile": "THIRD-PARTY-NOTICES.txt",
+  "noticeFileBytes": 9550,
+  "noticeFileSha256": "734853a0b0c024a5bc4b783991283f5de4eb045ecfb3beddba77aeafd253e705",
+  "byteRangeConvention": "zero-based, end-exclusive UTF-8 byte offsets",
+  "identify": "every row is identified by its exported sha256; file names are given where the name carries no internal term",
+  "coverage": {
+    "ownerRows": 18,
+    "covered": 18,
+    "thirdParty": 4,
+    "ownWork": 14
+  },
+  "rows": [
+    {
+      "ownerRow": 1,
+      "kind": "js",
+      "file": "button.mjs",
+      "exportBytes": 13164,
+      "exportSha256": "dd0ebf2e0172eb7baa9d46f4e7488ad9c75fa9f4e4eabe1147372c3900e2b96d",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 2,
+      "kind": "js",
+      "file": "badge.mjs",
+      "exportBytes": 736,
+      "exportSha256": "ec2e77df6a0e321ab0b6b1cc41432d86551e75f4d6cfcdc7db7bc4139d08b47a",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 3,
+      "kind": "js",
+      "file": "receipt.mjs",
+      "exportBytes": 1139,
+      "exportSha256": "1efe20a9eba7d30e90a08203d55434a5ef56d3bf891207f5e175da2c436a7638",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 4,
+      "kind": "js",
+      "file": "input.mjs",
+      "exportBytes": 26513,
+      "exportSha256": "97075dd43e970c51b72695a8343171af1aa4f4d2a2aafdf13990ba349d32f294",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 5,
+      "kind": "js",
+      "file": "el.mjs",
+      "exportBytes": 390,
+      "exportSha256": "cab541bba9ba003d5d574a2cbe91c2d54a0f9ebb19827a8ec4acbbef530d6990",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 6,
+      "kind": "js",
+      "file": "uid.mjs",
+      "exportBytes": 60,
+      "exportSha256": "930a7785154dae9a380ed889bc55d662a5971fe49f5769163e004aee4f0a98f8",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 7,
+      "kind": "js",
+      "file": "uid.mjs",
+      "exportBytes": 726,
+      "exportSha256": "48948b11b107ffc2d882945e4bf2e3a4e9c2fc7fc7cf78ff545061e7798ce130",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 8,
+      "kind": "js",
+      "file": "index.mjs",
+      "exportBytes": 1622,
+      "exportSha256": "0bbfe655fded57829d1644bfb11fa4985552b6435dcc37f1ddb76ecc1dd3fc32",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 9,
+      "kind": "css",
+      "file": "faces.css",
+      "exportBytes": 50953,
+      "exportSha256": "736ee94500bb99f98aa09ebdd40d1a6e95f1f514f62ced0542acf998113898a7",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 10,
+      "kind": "css",
+      "file": "components.css",
+      "exportBytes": 5378,
+      "exportSha256": "7fe1c67756dc6007123695d2bed0d8867c919d4a68a5fcc81647e3f577692dc6",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 11,
+      "kind": "css",
+      "file": "tokens.css",
+      "exportBytes": 7053,
+      "exportSha256": "b003c9a71c612bf24f5ef75caba3fde27b32c7ba0303a2f65e1c46486cd56714",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 12,
+      "kind": "css",
+      "file": null,
+      "exportBytes": 14158,
+      "exportSha256": "ead5624804360b8600c9b0fae3b4260d4733b352fa435bd7f7044ee9052c10ad",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 13,
+      "kind": "css",
+      "file": null,
+      "exportBytes": 3512,
+      "exportSha256": "7728e5c362a91d524044c81545c3d360e55607efc627bde86f0ab352de6c373c",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 14,
+      "kind": "css",
+      "file": "fonts.css",
+      "exportBytes": 1677,
+      "exportSha256": "d113a60557af2e6fa55f51e15715ad4c10a5f4c57bc9e52007e0637978d8b2d8",
+      "licence": "own work",
+      "notice": null
+    },
+    {
+      "ownerRow": 15,
+      "kind": "font",
+      "file": "Inter5D-latin.woff2",
+      "exportBytes": 99388,
+      "exportSha256": "63b6e75d9c74ca5fbe697ec6aab81322de0058163805cfc30f5e0791fdd98855",
+      "licence": "OFL-1.1",
+      "notice": {
+        "group": 1,
+        "byteRange": {
+          "start": 390,
+          "end": 4770
+        },
+        "byteLength": 4380,
+        "sha256": "d92358b79ba837fe8b1510637763c10f2b2f63b9caba75a5b3a0bc0b8de230f8"
+      }
+    },
+    {
+      "ownerRow": 16,
+      "kind": "font",
+      "file": "jetbrains-mono-latin-400-normal.woff2",
+      "exportBytes": 21168,
+      "exportSha256": "14425ba9c695763c1547f48a206b7aa60350a33ae23de09f0407877f3fcd89eb",
+      "licence": "OFL-1.1",
+      "notice": {
+        "group": 2,
+        "byteRange": {
+          "start": 5014,
+          "end": 9538
+        },
+        "byteLength": 4524,
+        "sha256": "403581b69dac5cff4079205e01c6b467e56af449ecbd7247693ddb1baafa005b"
+      }
+    },
+    {
+      "ownerRow": 17,
+      "kind": "font",
+      "file": "jetbrains-mono-latin-500-normal.woff2",
+      "exportBytes": 21832,
+      "exportSha256": "cb182feeed4d798ff6961d3c79f7026279448fca0676438aaecb21f3fc39553a",
+      "licence": "OFL-1.1",
+      "notice": {
+        "group": 2,
+        "byteRange": {
+          "start": 5014,
+          "end": 9538
+        },
+        "byteLength": 4524,
+        "sha256": "403581b69dac5cff4079205e01c6b467e56af449ecbd7247693ddb1baafa005b"
+      }
+    },
+    {
+      "ownerRow": 18,
+      "kind": "font",
+      "file": "jetbrains-mono-latin-700-normal.woff2",
+      "exportBytes": 21908,
+      "exportSha256": "d0d4e818808f2a0ba39b2b09d1989366f63494e295f003c7ef436697378507e8",
+      "licence": "OFL-1.1",
+      "notice": {
+        "group": 2,
+        "byteRange": {
+          "start": 5014,
+          "end": 9538
+        },
+        "byteLength": 4524,
+        "sha256": "403581b69dac5cff4079205e01c6b467e56af449ecbd7247693ddb1baafa005b"
+      }
+    }
+  ]
+}
