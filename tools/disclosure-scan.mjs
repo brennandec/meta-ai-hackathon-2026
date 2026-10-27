@@ -17,6 +17,8 @@
 //   [--rules <scan02.json>] [--fence <preflight.json>] [--out <json>]
 // Output: rows plus per-class counts, fence counts and the 24+ token census.
 // Exit 0 scanned, 2 usage or IO error (a stdout consumer that closes early is EPIPE: exit 2, one stderr line).
+// rev 5 (tooling batch C): an early close that surfaces as ENOTCONN or ECONNRESET (socketpair stdio) takes the
+// same exit 2 and one stderr line; scan output and its revision field are unchanged.
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, realpathSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -366,6 +368,7 @@ export function findRepo(from) {
   }
 }
 
+const EARLY_CLOSE = new Set(['EPIPE', 'ENOTCONN', 'ECONNRESET']);
 export async function main(argv, repoOverride) {
   const args = argv.slice(2);
   let repo = repoOverride || findRepo(HERE);
@@ -401,10 +404,10 @@ export async function main(argv, repoOverride) {
   if (outPath) { writeFileSync(outPath, json); return 0; }
   const err = await new Promise((res) => {
     process.stdout.on('error', res);
-    process.stdout.write(json, (e) => res(e || null));
+    try { process.stdout.write(json, (e) => res(e || null)); } catch (e) { res(e); }
   });
   if (!err) return 0;
-  if (err.code === 'EPIPE') { console.error('E_SCAN stdout closed early (EPIPE): output truncated'); return 2; }
+  if (EARLY_CLOSE.has(err.code)) { console.error('E_SCAN stdout closed early (' + err.code + '): output truncated'); return 2; }
   throw err;
 }
 
