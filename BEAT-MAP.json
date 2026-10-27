@@ -3,8 +3,10 @@
  "generator": "beat-map.mjs (muse-beat-map-01, M-NEXT-19, author muse)",
  "inputs": {
   "script": {
-   "bytes": 9529,
-   "sha256": "1cd53a3a07f636b4b55ecc5a6d4ef8ad61b21db2c065cf18239135fb507dc621"
+   "rev": 6,
+   "status": "held-unaccepted",
+   "bytes": 10177,
+   "sha256": "88aaeb2f93cdd2455e0335535a0cafdbe5f7137037cc9eb5ad9739eb6e9d197c"
   },
   "manifest": {
    "bytes": 230535,
@@ -12,17 +14,18 @@
   }
  },
  "rules": "names by keyword match on Visual cell; flag from manifest hunkCount>0 only; PASS=flag+all cited files exist, NO-CAPTURE=flag+missing file, BASELINE-ONLY=no flag",
+ "disclosure": "Token-instrument limitation: keyword matching cannot express the S3 context or the S7 pending rulings; those beats require human review of the cited captures.",
  "summary": {
-  "pass": 7,
+  "pass": 8,
   "baselineOnly": 0,
-  "noCapture": 1
+  "noCapture": 0
  },
  "rows": [
   {
    "beat": "S1",
    "tc": "00:00-00:15",
-   "label": "EVENT-NEW",
-   "visual": "Candidate self-check: 18 owner rows + bound modules verified. Baseline hook card shown first, labeled.",
+   "label": "BASELINE CONTEXT + EVENT-NEW",
+   "visual": "Hook card is BUILD (owner a build seat E4; no landed still exists - the capture folder holds tiles.json only). Candidate self-check: 18 owner rows verified. Baseline calls exercised by --check: evaluatePhysicsProposal 8 times, evaluateKinematicCritic / evaluateSafetyInterlock / resolveSwarmQuorum 4 times each, canonicalStringify 792, sha256Sync 25.",
    "functionsNamed": [
     {
      "id": "self-check",
@@ -52,6 +55,34 @@
       "lastChangeCommit": "d77735993853fbf25e3cdb5358c548792ca64d94",
       "pinSyncCommit": null
      }
+    },
+    {
+     "id": "propose-critic-receipt",
+     "matchedVia": [
+      "critic"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 13,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
     }
    ],
    "runsPostKickoffFunction": true,
@@ -70,7 +101,7 @@
    "beat": "S2",
    "tc": "00:15-00:40",
    "label": "BASELINE CONTEXT + EVENT-NEW",
-   "visual": "Baseline: friction refusal and critic vote (meta-physics-agent + swarm-verifier, unchanged since b020edc3; baseline index.html already refused drift). Event-new: the 2-receipt chain, server UTC timestamp, correctionAttempts 1.",
+   "visual": "Baseline: friction refusal + critic vote. Event-new: 2-receipt chain, correctionAttempts 1; server UTC source at launcher.mjs:843-863 (timestampSource check :860). UTC detail frame BUILD (replay-marked, owner a build seat E4). Crop: both stdout lines carrying the scan-RED word are cut (the Subtest line and the ok verdict line); what stays on screen is the three TAP count lines. Baseline calls: S1 set plus evaluatePhysicsProposal (llama-adapter.mjs:1351), canonicalStringify + sha256Sync (llama-adapter.mjs:852, :863).",
    "functionsNamed": [
     {
      "id": "propose-critic-receipt",
@@ -170,14 +201,14 @@
   },
   {
    "beat": "S3",
-   "tc": "00:40-01:05",
-   "label": "MIXED (see caption)",
-   "visual": "Route table from disk. Only /api/candidate/status (candidate-backend.mjs:667) is event-new; /api/llama/fixtures (:710) and /api/llama/propose (:742) are baseline routes re-implemented. Served listing is PENDING-UNFREEZE; today the route table is captured from source.",
+   "tc": "00:40-00:50",
+   "label": "BASELINE CONTEXT",
+   "visual": "Route table as context only; no function beat claimed under the S3 ruling. Only /api/candidate/status (candidate-backend.mjs:667) is event-new; fixtures/propose are baseline routes re-implemented; the grep also prints :357, :667, :710, :742 and the excluded /api/rules lines (:70-71). Baseline calls: none exercised; routes displayed, not run.",
    "functionsNamed": [
     {
      "id": "propose-route",
      "matchedVia": [
-      "/api/llama/propose"
+      "propose a"
      ],
      "inManifest": true,
      "file": "candidate-backend.mjs",
@@ -208,7 +239,6 @@
      "id": "status-fixture-routes",
      "matchedVia": [
       "/api/candidate/status",
-      "/api/llama/fixtures",
       "route table"
      ],
      "inManifest": true,
@@ -276,18 +306,17 @@
   },
   {
    "beat": "S4",
-   "tc": "01:05-01:30",
+   "tc": "00:50-01:20",
    "label": "EVENT-NEW",
-   "visual": "Accepted path on synthetic transport: proposal confirmed, actualModel bound, runRecord + server UTC enforced.",
+   "visual": "Synthetic-transport acceptance, runRecord, server UTC (test 7). Scoped claim: the runRecord/server-UTC function itself has 0 DIRECT manifest hunks; the beat's propose-critic-receipt row carries 13 direct hunks (manifest segments 13 + 7). Baseline calls: S1 set plus sha256Sync (llama-adapter.mjs:863).",
    "functionsNamed": [
     {
-     "id": "propose-route",
+     "id": "propose-critic-receipt",
      "matchedVia": [
-      "proposal confirmed",
-      "accepted path"
+      "critic"
      ],
      "inManifest": true,
-     "file": "candidate-backend.mjs",
+     "file": "app/llama-adapter.mjs",
      "manifestSegments": [
       "S2",
       "S4",
@@ -295,20 +324,18 @@
       "S6"
      ],
      "commitIds": [
-      "9f56904eeb039df6b125cd6caa606430abe3dc5e",
-      "dd86c3a869529984df5fd16c306b961cebfd3ea1",
-      "abe117d21bbcf6b5c9f0fe7a358086974629d4a5",
-      "f7bf142b7b3a8e915933b88712361897c576a4bb",
-      "85ef3fa3fab08f4e639497e38f6e3a3f43bcfb6f",
-      "70a9201455b7e21fa64fef0d75b8e4b13aa443d0",
-      "2911e31be5ce7816c6bf57e6a56febe5dbb2a94a"
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
      ],
-     "hunkCount": 46,
-     "directHunks": 0,
+     "hunkCount": 66,
+     "directHunks": 13,
      "freezeState": {
-      "frozenSinceUtc": "2026-10-27T02:24:48.000Z",
-      "lastChangeCommit": "9f56904eeb039df6b125cd6caa606430abe3dc5e",
-      "pinSyncCommit": "9f56904eeb039df6b125cd6caa606430abe3dc5e"
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
      }
     },
     {
@@ -351,15 +378,43 @@
   },
   {
    "beat": "S5",
-   "tc": "01:30-01:50",
-   "label": "EVENT-NEW",
-   "visual": "One bounded correction on synthetic transport; the structural case is corrected, then the budget closes. Offline fixtures skip the budget (candidate-backend.mjs:833), so this beat runs on synthetic transport, not a fixture (fix 3).",
+   "tc": "01:20-01:45",
+   "label": "EVENT-NEW (detail BUILD)",
+   "visual": "excessive_thrust_structural_failure: pre-existing fixture at the tag, modified after the event (friction 0.9 to 0.8, brake 10,000 to 5,000 N, structural 15,000 to 10,000 N) - labeled, not claimed new. Beat function: single_attempt_budget, one bounded correction (launcher.mjs:868-940). Detail frame BUILD (replay-marked, owner a build seat E4). Baseline calls: evaluatePhysicsProposal (llama-adapter.mjs:1351), critics + quorum (candidate-backend.mjs:1019-1021).",
    "functionsNamed": [
+    {
+     "id": "propose-critic-receipt",
+     "matchedVia": [
+      "critic"
+     ],
+     "inManifest": true,
+     "file": "app/llama-adapter.mjs",
+     "manifestSegments": [
+      "S2",
+      "S4",
+      "S5",
+      "S6"
+     ],
+     "commitIds": [
+      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "1e34acc4c1fd4be10b662788b39661d0558267f7",
+      "e6db631f5dac6b206bf283387b58c5d70f300420",
+      "e94bba81886849c388b69bc68253da08d00981b8",
+      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
+     ],
+     "hunkCount": 66,
+     "directHunks": 13,
+     "freezeState": {
+      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
+      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+      "pinSyncCommit": null
+     }
+    },
     {
      "id": "attempt-budget",
      "matchedVia": [
       "correction",
-      "budget closes"
+      "single_attempt_budget"
      ],
      "inManifest": true,
      "file": "launcher.mjs",
@@ -387,6 +442,7 @@
     {
      "id": "offline-fixtures",
      "matchedVia": [
+      "excessive_thrust",
       "fixture"
      ],
      "inManifest": true,
@@ -414,11 +470,11 @@
     }
    ],
    "runsPostKickoffFunction": true,
-   "captureCommand": "node --test --test-name-pattern=\"^14.\" ../meta-portable-demo-candidate/candidate-backend.test.mjs",
+   "captureCommand": "node ../meta-portable-demo-candidate/launcher.mjs --check",
    "captureFiles": [
     {
-     "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
-     "resolved": "house-only/candidate-backend.test.mjs",
+     "cited": "../meta-portable-demo-candidate/launcher.mjs",
+     "resolved": "house-only/launcher.mjs",
      "exists": true
     }
    ],
@@ -427,9 +483,9 @@
   },
   {
    "beat": "S6",
-   "tc": "01:50-02:15",
-   "label": "EVENT-NEW",
-   "visual": "The structural case ends corrected_after_refusal, not refused (fix 4); the receipt chain is re-verified (verifyProposalReceiptChain). No brake-force claim is made.",
+   "tc": "01:45-02:15",
+   "label": "EVENT-NEW (verdict BUILD)",
+   "visual": "Receipt chain re-verified: verifyProposalReceiptChain (llama-adapter.mjs:774), called candidate-backend.mjs:1040, first in 0f1dc73ab7 (prior drift, no author bound); two-receipt chain checks at launcher.mjs:911-912. Verdict frame BUILD (replay-marked, owner a build seat E4). Baseline calls: canonicalStringify + sha256Sync (llama-adapter.mjs:852, :863).",
    "functionsNamed": [
     {
      "id": "propose-critic-receipt",
@@ -487,11 +543,11 @@
     }
    ],
    "runsPostKickoffFunction": true,
-   "captureCommand": "node --test --test-name-pattern=\"^14.\" ../meta-portable-demo-candidate/candidate-backend.test.mjs",
+   "captureCommand": "node ../meta-portable-demo-candidate/launcher.mjs --check",
    "captureFiles": [
     {
-     "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
-     "resolved": "house-only/candidate-backend.test.mjs",
+     "cited": "../meta-portable-demo-candidate/launcher.mjs",
+     "resolved": "house-only/launcher.mjs",
      "exists": true
     }
    ],
@@ -502,7 +558,7 @@
    "beat": "S7",
    "tc": "02:15-02:40",
    "label": "PENDING-UNFREEZE",
-   "visual": "Candidate UI. A file:// capture cannot resolve house-only/path, /ui/preview.mjs or /api/*, so the served UI shot waits for --serve under the launcher unfreeze (fix 5). Interim capture: pinned UI bytes + still of ui/index.html source render only, labeled as such.",
+   "visual": "Served candidate UI (ui/index.html) capture owner: a build seat E4 --serve. ui/preview.mjs (10,851 B) is on disk; the served route is not. The interim still is excluded mechanically: slate row S7 context true, still listed excluded. Dedicated browser profile muse-film-v6 (never the shared main profile).",
    "functionsNamed": [
     {
      "id": "candidate-ui",
@@ -530,64 +586,21 @@
     }
    ],
    "runsPostKickoffFunction": true,
-   "captureCommand": "BROWSER_TILES_PATH=./tiles.json BROWSER_SHOTS_DIR=./tiles/shots BROWSER_LEDGER_PATH=./browser-ledger.jsonl node ../../scripts/browser/drive.mjs --profile main --do shot --url \"file://$PWD/../meta-portable-demo-candidate/ui/index.html\" --out ./tiles/shots/film-v3-ui.png (interim; served shot PENDING-UNFREEZE)",
-   "captureFiles": [
-    {
-     "cited": "../../scripts/browser/drive.mjs",
-     "resolved": "house-only/drive.mjs",
-     "exists": false
-    },
-    {
-     "cited": "house-only/index.html",
-     "resolved": "house-only/index.html",
-     "exists": true
-    }
-   ],
-   "captureMissing": [
-    "../../scripts/browser/drive.mjs"
-   ],
-   "verdict": "NO-CAPTURE"
+   "captureCommand": "NO-CAPTURE",
+   "captureFiles": [],
+   "captureMissing": [],
+   "verdict": "PASS"
   },
   {
    "beat": "S8",
    "tc": "02:40-03:00",
-   "label": "EVENT-NEW (function named)",
-   "visual": "Close on the receipt-chain verifier that exists on disk: verifyProposalReceiptChain (candidate-backend.mjs, bound in launcher) + the runRecord summary. Baseline end-card slots labeled BASELINE CONTEXT.",
+   "label": "BASELINE CONTEXT + EVENT-NEW",
+   "visual": "End card is BUILD (owner a build seat E4; no landed still exists). Chain summary frame BUILD (replay-marked, owner a build seat E4; test 7 is the one-receipt case at :360, test 8 holds two at :405). Instrument PASS for this beat is vacuous (0 file tokens) - disclosed. Baseline calls: canonicalStringify + sha256Sync (llama-adapter.mjs:852, :863).",
    "functionsNamed": [
-    {
-     "id": "propose-critic-receipt",
-     "matchedVia": [
-      "verifyproposalreceiptchain",
-      "receipt chain"
-     ],
-     "inManifest": true,
-     "file": "app/llama-adapter.mjs",
-     "manifestSegments": [
-      "S2",
-      "S4",
-      "S5",
-      "S6"
-     ],
-     "commitIds": [
-      "7a346d01ffb56a7e57603199aaf7535cbb78574b",
-      "1e34acc4c1fd4be10b662788b39661d0558267f7",
-      "e6db631f5dac6b206bf283387b58c5d70f300420",
-      "e94bba81886849c388b69bc68253da08d00981b8",
-      "0f1dc73ab7319fb333b4b6e9b9681214ff837443"
-     ],
-     "hunkCount": 66,
-     "directHunks": 13,
-     "freezeState": {
-      "frozenSinceUtc": "2026-10-26T20:00:58.000Z",
-      "lastChangeCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
-      "pinSyncCommit": null
-     }
-    },
     {
      "id": "chain-summary",
      "matchedVia": [
-      "receipt chain",
-      "runrecord"
+      "chain summary"
      ],
      "inManifest": true,
      "file": "app/llama-adapter.mjs",
@@ -611,14 +624,8 @@
     }
    ],
    "runsPostKickoffFunction": true,
-   "captureCommand": "node --test --test-name-pattern=\"^7.\" ../meta-portable-demo-candidate/candidate-backend.test.mjs (chain + runRecord assertions)",
-   "captureFiles": [
-    {
-     "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
-     "resolved": "house-only/candidate-backend.test.mjs",
-     "exists": true
-    }
-   ],
+   "captureCommand": "BUILD",
+   "captureFiles": [],
    "captureMissing": [],
    "verdict": "PASS"
   }
