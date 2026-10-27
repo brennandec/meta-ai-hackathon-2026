@@ -4,6 +4,18 @@
  "inputs": {
   "fixtures": [
    {
+    "path": "fixtures/LIVE-RUN-INTENT.json",
+    "bytes": 357,
+    "sha256": "4c2d9c1c97fed37ec47b27d7fa9834c9213ffb9ba7b9d4e21d0b9d44e7128fbd",
+    "revision": null
+   },
+   {
+    "path": "fixtures/LIVE-RUN-RECEIPT.json",
+    "bytes": 3278,
+    "sha256": "73e66fa1870176793afd64c9940e12fb133fe4172e2af6215b154d17808e611a",
+    "revision": null
+   },
+   {
     "path": "fixtures/faults/fault-case-1-0000.json",
     "bytes": 1526,
     "sha256": "ba3cd95bbd8c8b4a56890b4847c0da044660abd8d350ffe8c1a8dd4640b3ece2",
@@ -56,13 +68,118 @@
   }
  },
  "summary": {
-  "records": 6,
-  "honest": 6,
-  "violating": 0,
+  "records": 8,
+  "honest": 7,
+  "violating": 1,
   "metricComputed": 1,
-  "metricNull": 5
+  "metricNull": 7
  },
  "rows": [
+  {
+   "path": "fixtures/LIVE-RUN-INTENT.json",
+   "bytes": 357,
+   "sha256": "4c2d9c1c97fed37ec47b27d7fa9834c9213ffb9ba7b9d4e21d0b9d44e7128fbd",
+   "honestyPass": true,
+   "honestyViolations": [],
+   "metric": null,
+   "metricReason": "unmeasurable-shape",
+   "label": "recorded",
+   "beatsCited": []
+  },
+  {
+   "path": "fixtures/LIVE-RUN-RECEIPT.json",
+   "bytes": 3278,
+   "sha256": "73e66fa1870176793afd64c9940e12fb133fe4172e2af6215b154d17808e611a",
+   "honestyPass": false,
+   "honestyViolations": [
+    {
+     "path": "$.schema",
+     "rule": "mark-scan",
+     "found": "live-family:live in \"manymoats.meta_portable_demo_candidate.live_run_receipt.v1\""
+    },
+    {
+     "path": "$.runRecord.fixtureMode",
+     "rule": "fixtureMode",
+     "found": "LIVE_META_API"
+    },
+    {
+     "path": "$.runRecord.fixtureMode",
+     "rule": "mark-scan",
+     "found": "live-family:live in \"LIVE_META_API\""
+    },
+    {
+     "path": "$.runRecord.fixtureMode",
+     "rule": "mark-scan",
+     "found": "live-sub:livemetaapi in \"LIVE_META_API\""
+    },
+    {
+     "path": "$.runRecord.providerTrace.fixtureMode",
+     "rule": "fixtureMode",
+     "found": "LIVE_META_API"
+    },
+    {
+     "path": "$.runRecord.providerTrace.keyState",
+     "rule": "keyState",
+     "found": "ready"
+    },
+    {
+     "path": "$.runRecord.providerTrace.liveAttemptsUsed",
+     "rule": "liveAttemptsUsed",
+     "found": 1
+    },
+    {
+     "path": "$.runRecord.providerTrace.fixtureMode",
+     "rule": "mark-scan",
+     "found": "live-family:live in \"LIVE_META_API\""
+    },
+    {
+     "path": "$.runRecord.providerTrace.fixtureMode",
+     "rule": "mark-scan",
+     "found": "live-sub:livemetaapi in \"LIVE_META_API\""
+    }
+   ],
+   "metric": null,
+   "metricReason": "tokens-unknown",
+   "label": "recorded",
+   "beatsCited": [
+    {
+     "beat": "S1",
+     "matchedVia": [
+      "receipt"
+     ]
+    },
+    {
+     "beat": "S2",
+     "matchedVia": [
+      "receipt"
+     ]
+    },
+    {
+     "beat": "S4",
+     "matchedVia": [
+      "receipt"
+     ]
+    },
+    {
+     "beat": "S5",
+     "matchedVia": [
+      "receipt"
+     ]
+    },
+    {
+     "beat": "S6",
+     "matchedVia": [
+      "receipt"
+     ]
+    },
+    {
+     "beat": "S8",
+     "matchedVia": [
+      "receipt"
+     ]
+    }
+   ]
+  },
   {
    "path": "fixtures/faults/fault-case-1-0000.json",
    "bytes": 1526,
