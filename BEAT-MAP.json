@@ -90,7 +90,7 @@
    "captureFiles": [
     {
      "cited": "../meta-portable-demo-candidate/launcher.mjs",
-     "resolved": "house-only/launcher.mjs",
+     "resolved": "launcher.mjs",
      "exists": true
     }
    ],
@@ -192,7 +192,7 @@
    "captureFiles": [
     {
      "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
-     "resolved": "house-only/candidate-backend.test.mjs",
+     "resolved": "candidate-backend.test.mjs",
      "exists": true
     }
    ],
@@ -297,7 +297,7 @@
    "captureFiles": [
     {
      "cited": "../meta-portable-demo-candidate/candidate-backend.mjs",
-     "resolved": "house-only/candidate-backend.mjs",
+     "resolved": "candidate-backend.mjs",
      "exists": true
     }
    ],
@@ -369,7 +369,7 @@
    "captureFiles": [
     {
      "cited": "../meta-portable-demo-candidate/candidate-backend.test.mjs",
-     "resolved": "house-only/candidate-backend.test.mjs",
+     "resolved": "candidate-backend.test.mjs",
      "exists": true
     }
    ],
@@ -474,7 +474,7 @@
    "captureFiles": [
     {
      "cited": "../meta-portable-demo-candidate/launcher.mjs",
-     "resolved": "house-only/launcher.mjs",
+     "resolved": "launcher.mjs",
      "exists": true
     }
    ],
@@ -547,7 +547,7 @@
    "captureFiles": [
     {
      "cited": "../meta-portable-demo-candidate/launcher.mjs",
-     "resolved": "house-only/launcher.mjs",
+     "resolved": "launcher.mjs",
      "exists": true
     }
    ],
