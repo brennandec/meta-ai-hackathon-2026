@@ -1,8 +1,8 @@
 // disclosure-scan.test.mjs - M-NEXT-30 house tool tests. Author: muse.
-// 5 cases, node --test, 0 network. Run: node --test tools/disclosure-scan.test.mjs
+// 6 cases, node --test, 0 network. Run: node --test tools/disclosure-scan.test.mjs
 // Every trippable fixture token is assembled from parts at run time; this
 // source carries no trip token (asserted by the self-scan case).
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -43,6 +43,69 @@ function bearerLine() {
 }
 function tmpdir(prefix) {
   return fs.realpathSync(fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), prefix)));
+}
+// Materialize the 38 scan02 input files at their pinned bytes (disk, else git).
+// Built once per file and shared by T4/T6: one history walk for every drifted
+// path plus one batched blob fetch, instead of a log plus a show-loop per file.
+let mirrorCache = null;
+after(() => { if (mirrorCache) { fs.rmSync(mirrorCache, { recursive: true, force: true }); mirrorCache = null; } });
+function gitBlobsForDrifted(drifted) {
+  const paths = drifted.map((f) => f.path);
+  const log = spawnSync('git', ['-C', REPO, 'log', '--all', '--no-abbrev', '--raw', '--format=COMMIT:%H', '--', ...paths], { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024 });
+  assert.equal(log.status, 0, 'git log failed: ' + String(log.stderr).slice(0, 200));
+  const cands = new Map(paths.map((p) => [p, []]));
+  for (const ln of log.stdout.split('\n')) {
+    if (!ln.startsWith(':')) continue;
+    const m = /^:\d+ \d+ [0-9a-f]+ ([0-9a-f]+) (?:[AMD]|R\d+)\t/.exec(ln);
+    if (!m || m[1].startsWith('0000000')) continue;
+    const p = ln.slice(ln.lastIndexOf('\t') + 1);
+    if (cands.has(p)) cands.get(p).push(m[1]);
+  }
+  const want = [...new Set([...cands.values()].flat())];
+  const r = spawnSync('git', ['-C', REPO, 'cat-file', '--batch'], { input: Buffer.from(want.join('\n') + '\n'), encoding: 'buffer', maxBuffer: 512 * 1024 * 1024 });
+  assert.equal(r.status, 0, 'git cat-file failed');
+  const blobs = new Map();
+  const buf = r.stdout;
+  let at = 0;
+  while (at < buf.length) {
+    const nl = buf.indexOf(0x0a, at);
+    assert.ok(nl > at, 'cat-file parse error');
+    const head = buf.toString('utf8', at, nl).split(' ');
+    if (head[1] === 'missing') { at = nl + 1; continue; }
+    const size = Number(head[2]);
+    blobs.set(head[0], buf.subarray(nl + 1, nl + 1 + size));
+    at = nl + 1 + size + 1;
+  }
+  const out = new Map();
+  for (const f of drifted) {
+    for (const sha of cands.get(f.path)) {
+      const b = blobs.get(sha);
+      if (b && crypto.createHash('sha256').update(b).digest('hex') === f.sha256) { out.set(f.path, Buffer.from(b)); break; }
+    }
+  }
+  return out;
+}
+function pinnedMirror(receipt) {
+  if (mirrorCache) return mirrorCache;
+  const mirror = tmpdir('ds-acc-');
+  const drifted = [];
+  for (const f of receipt.scope.files) {
+    const abs = path.join(REPO, f.path);
+    const bytes = fs.readFileSync(abs);
+    const dest = path.join(mirror, f.path);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    if (crypto.createHash('sha256').update(bytes).digest('hex') === f.sha256) fs.writeFileSync(dest, bytes);
+    else drifted.push(f);
+  }
+  if (drifted.length) {
+    const blobs = gitBlobsForDrifted(drifted);
+    for (const f of drifted) {
+      assert.ok(blobs.has(f.path), 'pinned bytes unavailable for ' + f.path);
+      fs.writeFileSync(path.join(mirror, f.path), blobs.get(f.path));
+    }
+  }
+  mirrorCache = mirror;
+  return mirror;
 }
 
 test('T1 full-route fence: basename route does not exclude, full route does', async () => {
@@ -139,30 +202,47 @@ test('T3 tool and test sources are self-clean; excerpts carry no raw token', asy
     const re = scanText(r.excerpt, rules, scanTextForSecrets(r.excerpt));
     assert.deepEqual(re, []);
   }
+  // Separator-carrying values: MASK_RUN cannot cover these; rev3 value spans must.
+  const hp = '/' + 'Users/' + os.userInfo().username + '/w/sep.txt ';
+  const jwt = 'eyJhbGci' + 'OiJIUzI1NiJ9' + '.' + 'eyJzdWIi' + 'OiIxMjM0' + 'NTY3ODkwIn0' + '.' + 'SflKxwRJ';
+  const aws = 'wJalrXUtnFEMI' + '/K7MDENG' + '/bPxRfiCY' + 'EXAMPLEKEY00';
+  const seed = 'Ab3x' + '/9Q2+mZ8' + 'vL0pqR5s' + 'T7uV1wX4y';
+  const sepLines = [
+    hp + 'tok ' + 'Bearer' + ' ' + jwt,
+    hp + 'key ' + 'aws' + '_secret' + '_access' + '_key' + ' = ' + aws,
+    hp + 'cfg ' + 'sec' + 'ret' + ' = "' + seed + '"',
+  ];
+  for (const ln of sepLines) {
+    const lrows = scanText(ln, rules, scanTextForSecrets(ln));
+    assert.ok(lrows.length >= 2, ln);
+    for (const r of lrows) {
+      for (const frag of ['eyJhbGci', 'eyJzdWIi', 'SflKxwRJ', 'wJalrXUtnFEMI', 'K7MDENG', 'bPxRfiCY', 'EXAMPLEKEY00', 'Ab3x', '9Q2+mZ8vL0pqR5sT7uV1wX4y']) {
+        assert.ok(!r.excerpt.includes(frag), r.class + ' leaks ' + frag + ': ' + r.excerpt);
+      }
+      const re = scanText(r.excerpt, rules, scanTextForSecrets(r.excerpt));
+      assert.deepEqual(re, [], r.class + ' ' + r.excerpt);
+    }
+  }
+  // Shape gate: a weak labelled value is not a secret; it stays in the clear.
+  const weak = hp + 'cfg ' + 'sec' + 'ret' + ' = weak-value-here' + '-000';
+  const wrows = scanText(weak, rules, scanTextForSecrets(weak));
+  assert.ok(wrows.length >= 1);
+  assert.ok(wrows[0].excerpt.includes('weak-value-here-000'), wrows[0].excerpt);
+  // private-jwk finding: full-line mask, geometry kept.
+  const jwk = '{"kt' + 'y":"oc' + 't","k":"Ab3x9Q2mZ8' + 'vL0pqR5sT7u' + 'V1wX4y6z"}';
+  const jrows = scanText(jwk, rules, scanTextForSecrets(jwk));
+  const jt24 = jrows.filter((x) => x.class === C_TOKEN24);
+  assert.equal(jt24.length, 1);
+  assert.ok(!jt24[0].excerpt.includes('kty'), jt24[0].excerpt);
+  assert.ok(!jt24[0].excerpt.includes('Ab3x9Q2'), jt24[0].excerpt);
+  assert.ok(jt24[0].excerpt.includes('[MASK'), jt24[0].excerpt);
+  assert.equal(jt24[0].lineChars, jwk.length);
 });
 
 test('T4 acceptance reproduces scan02 rows, counts, fences and census on pinned inputs', async () => {
   const { receipt, rules, scanTextForSecrets, fence } = await setup();
-  const mirror = tmpdir('ds-acc-');
-  try {
-    for (const f of receipt.scope.files) {
-      const abs = path.join(REPO, f.path);
-      let bytes = fs.readFileSync(abs);
-      if (crypto.createHash('sha256').update(bytes).digest('hex') !== f.sha256) {
-        const commits = spawnSync('git', ['-C', REPO, 'log', '--all', '--format=%H', '--', f.path], { encoding: 'utf8' }).stdout.split('\n').filter(Boolean);
-        let found = null;
-        for (const c of commits) {
-          const r = spawnSync('git', ['-C', REPO, 'show', c + ':' + f.path], { encoding: 'buffer', maxBuffer: 64 * 1024 * 1024 });
-          if (r.status === 0 && crypto.createHash('sha256').update(r.stdout).digest('hex') === f.sha256) { found = r.stdout; break; }
-        }
-        assert.ok(found, 'pinned bytes unavailable for ' + f.path);
-        bytes = found;
-      }
-      const dest = path.join(mirror, f.path);
-      fs.mkdirSync(path.dirname(dest), { recursive: true });
-      fs.writeFileSync(dest, bytes);
-    }
-    const r = await scanInputs({ inputs: ['.'], rules, scanSecrets: scanTextForSecrets, repo: mirror, fence });
+  const mirror = pinnedMirror(receipt);
+  { const r = await scanInputs({ inputs: ['.'], rules, scanSecrets: scanTextForSecrets, repo: mirror, fence });
     assert.equal(r.filesScanned, 38);
     assert.equal(r.rows.length, receipt.rows.length);
     const key = (x) => x.path + ':' + x.line + ':' + x.class;
@@ -185,8 +265,6 @@ test('T4 acceptance reproduces scan02 rows, counts, fences and census on pinned 
     assert.deepEqual(r.countsPerClassInside, Object.fromEntries(clsKeys.map((k, i) => [k, PINNED_INSIDE[i]])));
     assert.deepEqual(r.countsPerClassOutside, Object.fromEntries(clsKeys.map((k, i) => [k, PINNED_OUTSIDE[i]])));
     assert.deepEqual(r.tokenCensus24, { hexOrId24: 1174, identifier24: 1962, camelCaseMixedDigit24: 27, keyShaped24: 0 });
-  } finally {
-    fs.rmSync(mirror, { recursive: true, force: true });
   }
 });
 
@@ -207,4 +285,23 @@ test('T5 24+ class keeps key, secret and placeholder findings with masked excerp
   ]);
   assert.equal(filtered.length, 1);
   assert.deepEqual(filtered[0].tokens, ['[detector a key]', '[detector b secret]']);
+});
+
+test('T6 piped stdout drains fully: large piped run parses and matches in-process rows', async () => {
+  const { receipt, rules, scanTextForSecrets, fence } = await setup();
+  const mirror = pinnedMirror(receipt);
+  { const want = await scanInputs({ inputs: ['.'], rules, scanSecrets: scanTextForSecrets, repo: mirror, fence });
+    const r = spawnSync('node', [path.join(HERE, 'disclosure-scan.mjs'), '--rules', RECEIPT_PATH, mirror], { encoding: 'buffer', maxBuffer: 64 * 1024 * 1024 });
+    assert.equal(r.status, 0, String(r.stderr).slice(0, 500));
+    assert.ok(r.stdout.length > 64 * 1024, 'output too small to exercise drain: ' + r.stdout.length);
+    const got = JSON.parse(r.stdout.toString('utf8'));
+    assert.equal(got.filesScanned, want.filesScanned);
+    assert.equal(got.rows.length, want.rows.length);
+    assert.deepEqual(got.countsPerClass, want.countsPerClass);
+    assert.deepEqual(got.tokenCensus24, want.tokenCensus24);
+    // Paths and fences differ by construction (spawned run resolves repo from
+    // --rules, so mirror files land outside its root); content must not.
+    const sig = (x) => x.line + ':' + x.class + ':' + x.ruleSet + ':' + [...x.tokens].sort().join(',') + ':' + x.lineChars;
+    assert.deepEqual(got.rows.map(sig).sort(), want.rows.map(sig).sort());
+  }
 });
