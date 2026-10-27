@@ -361,8 +361,8 @@ async function main() {
       postConditionLabel: 'Condition a try/catch mint latch'
     }],
     ['stagedReplayHarnessTestPatch', packetObj.stagedReplayHarnessTestPatch, {
-      postConditionBytes: 96668,
-      postConditionSha256: 'e6cbb363c5daaf8449f0d01e206829c1813b4c2133c0dcdcc659b66e3ef4a0d5',
+      postConditionBytes: 96637,
+      postConditionSha256: 'c24427ded3ca600bf1b2ae6779a23e5c3e6ed2c893dfd22105c89123caacbeb6',
       postConditionLabel: 'Condition a (Test 12) + Condition b (Test 13)'
     }],
     ['stagedE4CandidateBackendPatch', packetObj.stagedE4CandidateBackendPatch, {
