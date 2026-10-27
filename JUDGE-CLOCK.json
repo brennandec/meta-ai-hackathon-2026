@@ -1,0 +1,164 @@
+{
+  "clock": "JUDGE-CLOCK",
+  "plateId": "M-NEXT-27",
+  "rev": 3,
+  "tool": "tools/judge-clock.mjs",
+  "startedAtUtc": "2026-10-27T17:57:43.336Z",
+  "endedAtUtc": "2026-10-27T17:57:43.831Z",
+  "barMs": 60000,
+  "mode": "launch",
+  "launch": "node launcher.mjs --serve",
+  "runtime": {
+    "node": "v24.16.0",
+    "launchedNode": "the clock runtime"
+  },
+  "pathsRelativeTo": "candidate root (the folder above tools/)",
+  "isolation": {
+    "home": "mkdtemp, removed after the run",
+    "nodePath": "",
+    "network": "external refused via rehearse.mjs no-network preload (launch children) + loopback-only server gate",
+    "preloadSha256": "763f0cd0c5c7ca7dec1855711d104b60ca1a25b19a266d6f073449937e2a831b"
+  },
+  "contract": {
+    "path": "JUDGE-ACTION-CONTRACT.json",
+    "location": "candidate",
+    "bytes": 44913,
+    "sha256": "207f9ce4147bd99ff975232c920d6cabc07db6d09c9d79f1332106bb8cad5e22",
+    "version": 2,
+    "standardRunMatches": true,
+    "barMatches": true
+  },
+  "serverIdentity": {
+    "path": "launcher.mjs",
+    "location": "candidate",
+    "bytes": 135995,
+    "sha256": "961634f9fa3bb9d977279475d0d9f344b092810413d8d5333b3cbbb7c6ce2a3b"
+  },
+  "fixture": null,
+  "runs": [
+    {
+      "run": 1,
+      "timeToListeningMs": 47,
+      "timeToVerdictMs": 14,
+      "timeToSecondReceiptMs": 15,
+      "verdict": "corrected_after_refusal",
+      "receiptCount": 2,
+      "receiptIds": [
+        "f50bbef945494d46cef628af588df24b4902aedcfaf7f7e355db64b7a6ad07f9",
+        "0f26cef602c0b5eabb6c1af762cc84d5a9545395f0c705f5337c3e78b199401f"
+      ],
+      "receiptShapes": [
+        {
+          "step": 1,
+          "status": "refused",
+          "code": "STRUCTURAL_LIMIT_EXCEEDED",
+          "correctionAttempt": 0
+        },
+        {
+          "step": 1,
+          "status": "accepted",
+          "code": null,
+          "correctionAttempt": 1
+        }
+      ],
+      "byteFlip": {
+        "valid": false,
+        "code": "TAMPER_PAYLOAD_MISMATCH"
+      },
+      "memoryPeakBytes": 65011712,
+      "serverExit": {
+        "code": 0,
+        "signal": null
+      },
+      "pass": true,
+      "wallMs": 226
+    },
+    {
+      "run": 2,
+      "timeToListeningMs": 4,
+      "timeToVerdictMs": 6,
+      "timeToSecondReceiptMs": 6,
+      "verdict": "corrected_after_refusal",
+      "receiptCount": 2,
+      "receiptIds": [
+        "cc02df691404dd726b8adda88d88b686d1cf695b71768083faae16cc09259f2c",
+        "7af61465862dc043c403a5cf52a228315715945da0b85bfb057b939c967820d6"
+      ],
+      "receiptShapes": [
+        {
+          "step": 1,
+          "status": "refused",
+          "code": "STRUCTURAL_LIMIT_EXCEEDED",
+          "correctionAttempt": 0
+        },
+        {
+          "step": 1,
+          "status": "accepted",
+          "code": null,
+          "correctionAttempt": 1
+        }
+      ],
+      "byteFlip": {
+        "valid": false,
+        "code": "TAMPER_PAYLOAD_MISMATCH"
+      },
+      "memoryPeakBytes": 63750144,
+      "serverExit": {
+        "code": 0,
+        "signal": null
+      },
+      "pass": true,
+      "wallMs": 128
+    },
+    {
+      "run": 3,
+      "timeToListeningMs": 4,
+      "timeToVerdictMs": 5,
+      "timeToSecondReceiptMs": 6,
+      "verdict": "corrected_after_refusal",
+      "receiptCount": 2,
+      "receiptIds": [
+        "b867f3eda42ddc0f48a8a19ffbcb52a4e192175b425cde87c8ebfb3d9579fe10",
+        "f577c30d8ca76f0b7284e0c6af15f70094b84e6d6950f522abe40377c932b5c4"
+      ],
+      "receiptShapes": [
+        {
+          "step": 1,
+          "status": "refused",
+          "code": "STRUCTURAL_LIMIT_EXCEEDED",
+          "correctionAttempt": 0
+        },
+        {
+          "step": 1,
+          "status": "accepted",
+          "code": null,
+          "correctionAttempt": 1
+        }
+      ],
+      "byteFlip": {
+        "valid": false,
+        "code": "TAMPER_PAYLOAD_MISMATCH"
+      },
+      "memoryPeakBytes": 63930368,
+      "serverExit": {
+        "code": 0,
+        "signal": null
+      },
+      "pass": true,
+      "wallMs": 127
+    }
+  ],
+  "determinism": {
+    "comparedRuns": 3,
+    "erroredRuns": 0,
+    "verdictsEqual": true,
+    "shapesEqual": true,
+    "countsEqual": true,
+    "match": true
+  },
+  "summary": {
+    "verdict": "PASS",
+    "runs": 3,
+    "pass": 3
+  }
+}
