@@ -1,0 +1,4321 @@
+{
+ "schema": "export-event-new-manifest/2",
+ "generator": "export-generator.mjs rev 2",
+ "boundaryUtc": "2026-10-26T16:01:03Z",
+ "baselineAuthorDateUtc": "2026-10-26T15:51:54Z",
+ "hunkHashRule": "sha256hex(exportCommit LF header LF body); header is one @@ line; body runs header-end to next header; CRLF normalized to LF",
+ "exportDiffRule": "sha256hex of git show --format= --patch <exportCommit> -- <exportPath>",
+ "treeHashRule": "sha256hex over the export tree sorted by path, one line per file: path TAB bytes TAB sha256 LF",
+ "historyRule": "author date = original house commit time (baseline: the pre-event tag commit time; drift layers: the door landing time, origin-unbound); committer date = export time",
+ "layers": [
+  {
+   "n": 0,
+   "kind": "baseline",
+   "exportCommit": "8ea9a05fd21e7b314f73a8cdbcab90bfe0c6e97f",
+   "authorDateUtc": "2026-10-26T15:51:54Z",
+   "houseCommit": "b020edc3daa4f0e9c562f56b27f1dcec0946f329",
+   "originUnbound": false,
+   "files": 22
+  },
+  {
+   "n": 1,
+   "kind": "event",
+   "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+   "authorDateUtc": "2026-10-26T17:29:56Z",
+   "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 2,
+   "kind": "event",
+   "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+   "authorDateUtc": "2026-10-26T17:48:39Z",
+   "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 3,
+   "kind": "event",
+   "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+   "authorDateUtc": "2026-10-26T19:08:45Z",
+   "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 4,
+   "kind": "event",
+   "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+   "authorDateUtc": "2026-10-26T19:35:44Z",
+   "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 5,
+   "kind": "event",
+   "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+   "authorDateUtc": "2026-10-26T20:00:58Z",
+   "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 6,
+   "kind": "event",
+   "exportCommit": "da30a291fa285ad643e85b20d66a33adb0683311",
+   "authorDateUtc": "2026-10-26T20:40:22Z",
+   "houseCommit": "dfcd6d6ab07497197adeb2423ba8d7961bccc85f",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 7,
+   "kind": "event",
+   "exportCommit": "fa061557e71feb00228147214df05463d0cce699",
+   "authorDateUtc": "2026-10-27T04:37:27Z",
+   "houseCommit": "8e715f3303136a8fa4ed7a461e716f43ebe72101",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 8,
+   "kind": "event",
+   "exportCommit": "915166d2216d4f496a9d516a86d66affd46f65c6",
+   "authorDateUtc": "2026-10-27T04:51:54Z",
+   "houseCommit": "a28d73873b23b44ec9bb7eaafcab6df338f2fdb6",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 9,
+   "kind": "event",
+   "exportCommit": "e039d18fd4595265fef5dd084c5b10fbe1ac2286",
+   "authorDateUtc": "2026-10-27T05:15:49Z",
+   "houseCommit": "c0702d3765d2553625abdde2e496ef604c405eb7",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 10,
+   "kind": "event",
+   "exportCommit": "5107537dc3d47aa5f086cb2a253db9341b7eb5a6",
+   "authorDateUtc": "2026-10-27T05:32:55Z",
+   "houseCommit": "6262ad9b2591d6fabf60aa0dde681791ec02c9e1",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 11,
+   "kind": "event",
+   "exportCommit": "cc49ad79ec259fc619685c84598eab6a0ac4afd5",
+   "authorDateUtc": "2026-10-27T05:37:09Z",
+   "houseCommit": "5c6497b9c9eadc87b3317a282a0623b8c6ec739e",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 12,
+   "kind": "event",
+   "exportCommit": "a12496c693c9a22b8001bc977736c02adb69c233",
+   "authorDateUtc": "2026-10-27T05:48:18Z",
+   "houseCommit": "678495e1c1edc726378eaeb5c06615a22f140071",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 13,
+   "kind": "event",
+   "exportCommit": "b1c79f266e1eaf15224aff7ec63ac9a083f6af08",
+   "authorDateUtc": "2026-10-27T05:48:21Z",
+   "houseCommit": "b015c8beb3116c5f9d3864d147e275e2fb664a3d",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 14,
+   "kind": "event",
+   "exportCommit": "c96f01bac18e76fd048e5d6ffafb24c2e09a35bc",
+   "authorDateUtc": "2026-10-27T05:48:25Z",
+   "houseCommit": "e210305b8643230a788014683910bedad36369c2",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 15,
+   "kind": "event",
+   "exportCommit": "e06880616230880159d172533ee56c797859051c",
+   "authorDateUtc": "2026-10-27T05:49:37Z",
+   "houseCommit": "62a5b554620dfebe4e79ab886c47593ad2e59421",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 16,
+   "kind": "event",
+   "exportCommit": "fb0c33d1ba6935191472f15d82924ac1e2955c27",
+   "authorDateUtc": "2026-10-27T06:42:53Z",
+   "houseCommit": "8f9b08ff75c3d41331571fc8ca672ae86a6187de",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 17,
+   "kind": "event",
+   "exportCommit": "f2f7692172c08ced06cb4cbd10f3e370d6fae717",
+   "authorDateUtc": "2026-10-27T06:42:56Z",
+   "houseCommit": "2b169f2974d6031e84d51d6d6e83dcc16baded86",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 18,
+   "kind": "event",
+   "exportCommit": "41dfde8ec590284f36ee3faa6c0ba1dce7276da0",
+   "authorDateUtc": "2026-10-27T07:00:43Z",
+   "houseCommit": "a604de2182b15118b99ac720a1fc423aa2fe9c0c",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 19,
+   "kind": "event",
+   "exportCommit": "89280a3af9b4cf84a403f4bb9d0bb671dee1df60",
+   "authorDateUtc": "2026-10-27T07:01:14Z",
+   "houseCommit": "7bdbb8422a686c522576fe4e876d32bc5fde0dd1",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 20,
+   "kind": "event",
+   "exportCommit": "39fc832c20cb503b4397e1c2eaec3f101cff6cf3",
+   "authorDateUtc": "2026-10-27T07:03:11Z",
+   "houseCommit": "2c84ae741956dde1109266fad5cd2fbb29365c08",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 21,
+   "kind": "event",
+   "exportCommit": "629bd66460789ff7c73eaaa5f082dd017532815d",
+   "authorDateUtc": "2026-10-27T07:04:50Z",
+   "houseCommit": "20da52a4859423fe3fd7d50113037fcf100950e3",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 22,
+   "kind": "event",
+   "exportCommit": "0e3d1cf144b68ce90301bbf19fcfbdfbe2edc09b",
+   "authorDateUtc": "2026-10-27T07:05:43Z",
+   "houseCommit": "2c39a4456b3e214b28b5e85e04ee12cdc0ddf2c7",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 23,
+   "kind": "event",
+   "exportCommit": "d6d1380f6ba48de6efee14a343cb29386975cafd",
+   "authorDateUtc": "2026-10-27T07:06:28Z",
+   "houseCommit": "8354dede3b22f7be37ec11fdbe958b82ed7eb71d",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 24,
+   "kind": "event",
+   "exportCommit": "c660997379a02f09dfc0348aeaf5a9c466357d57",
+   "authorDateUtc": "2026-10-27T07:09:57Z",
+   "houseCommit": "6ffc7f9f42f5cb452b021286ffe2a256ebfd56bc",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 25,
+   "kind": "event",
+   "exportCommit": "e4f85c8a430f92f6ffdca18ef9293b83782cb24d",
+   "authorDateUtc": "2026-10-27T07:10:01Z",
+   "houseCommit": "b68a03a469634db7fd59a86609da57aa339dbcdd",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 26,
+   "kind": "event",
+   "exportCommit": "2dc62f0c38084c5275ce5cbd5940b86388b3ff73",
+   "authorDateUtc": "2026-10-27T07:10:10Z",
+   "houseCommit": "18958bc06e5f097d61efa37aa695d9a37c7583b7",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 27,
+   "kind": "event",
+   "exportCommit": "df1419e162f4f18d0b9a0da5e3f395afcde476b3",
+   "authorDateUtc": "2026-10-27T07:17:37Z",
+   "houseCommit": "28518db93a7ebb747c3159e8e07e3549b1b55f8f",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 28,
+   "kind": "event",
+   "exportCommit": "d465898c1a14ff0ad901ccc5a55d3715016ab73c",
+   "authorDateUtc": "2026-10-27T07:17:41Z",
+   "houseCommit": "6eea704206294146c06eee0fcae52594ca144eea",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 29,
+   "kind": "event",
+   "exportCommit": "c0480b0292d1513becbc4aef6522c584f80af87d",
+   "authorDateUtc": "2026-10-27T07:23:16Z",
+   "houseCommit": "4622fb94c9fa434fb8b67f4dcff6be088a343631",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 30,
+   "kind": "event",
+   "exportCommit": "1c6d8e7a3b25c7b3061d3c0840e0e0bc13431a18",
+   "authorDateUtc": "2026-10-27T07:23:22Z",
+   "houseCommit": "1372d3ed41097d5f38e331845842558dd9f8bb5b",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 31,
+   "kind": "event",
+   "exportCommit": "c3d836bbd53c49eb816c2f91602470843d2b1c6e",
+   "authorDateUtc": "2026-10-27T07:58:50Z",
+   "houseCommit": "877001595109a933d1b46972af69a9e5cf54cd3f",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 32,
+   "kind": "event",
+   "exportCommit": "b377b02495f2794cad1db06b5543fc4669e17842",
+   "authorDateUtc": "2026-10-27T07:58:55Z",
+   "houseCommit": "5d83debee8bc7586a7f760879ce398a402e1e9ce",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 33,
+   "kind": "event",
+   "exportCommit": "0cfb51a54888c1b4ab4a96f46e25a41d4dcaf61f",
+   "authorDateUtc": "2026-10-27T08:05:01Z",
+   "houseCommit": "fd36a532317740dfffededf58cbf1d71fa153694",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 34,
+   "kind": "event",
+   "exportCommit": "2e28406eac2585c321a1df720520d87474de10fa",
+   "authorDateUtc": "2026-10-27T08:22:35Z",
+   "houseCommit": "b9168301fe2ce66b85e1923355c23f234e1e119e",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 35,
+   "kind": "event",
+   "exportCommit": "e5956001c59783cc6eef8680fc9e91edce019044",
+   "authorDateUtc": "2026-10-27T08:23:22Z",
+   "houseCommit": "f21f4711dfe24b1fefacf3107f66ddaae8deee34",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 36,
+   "kind": "event",
+   "exportCommit": "c95b5c9953c65f80ced46663e8f4f49da13f705e",
+   "authorDateUtc": "2026-10-27T08:24:11Z",
+   "houseCommit": "13887fd92e2ce31766f284530527848dd2f1d581",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 37,
+   "kind": "event",
+   "exportCommit": "64aef43ccd65f32fcf7ed68aab626a6e2e2be5ea",
+   "authorDateUtc": "2026-10-27T08:28:00Z",
+   "houseCommit": "691512e3348c12e8193146e9b8eafccb62811eb5",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 38,
+   "kind": "event",
+   "exportCommit": "ad8b27ed0828f28e6d7350e8579e6e35717e22cd",
+   "authorDateUtc": "2026-10-27T08:29:39Z",
+   "houseCommit": "1d2665df4b07350fcf2a614b7ae62c8392736e11",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 39,
+   "kind": "event",
+   "exportCommit": "80ab3bdfc0f1e8c1d6af20f42caa3957eb4fae1f",
+   "authorDateUtc": "2026-10-27T08:31:59Z",
+   "houseCommit": "a10c60b1610b87d7e7a8c5411fbae0d114559b0f",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 40,
+   "kind": "event",
+   "exportCommit": "e39475f31741fa525d2e42d2d283740df9245ff4",
+   "authorDateUtc": "2026-10-27T09:35:31Z",
+   "houseCommit": "8afd2274bc7b40c4ee53bb7fa764bd9f933d539c",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 41,
+   "kind": "event",
+   "exportCommit": "dfbcc18b28f6d6486a54ad829936f3aa4eb57db3",
+   "authorDateUtc": "2026-10-27T09:47:00Z",
+   "houseCommit": "5c01b74d13fce0186a74ae1cd07f738665eef88b",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 42,
+   "kind": "event",
+   "exportCommit": "4cad9024135505a45f0542868a3b0cf88827e675",
+   "authorDateUtc": "2026-10-27T11:32:03Z",
+   "houseCommit": "d01379e9f104663dea567ce5e0db8d8856832610",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 43,
+   "kind": "event",
+   "exportCommit": "2fcb9bb99b8188dc6592897a915ab421639413b4",
+   "authorDateUtc": "2026-10-27T11:45:38Z",
+   "houseCommit": "8c992f6df8bd2d7222275e94cebecd572d74386c",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 44,
+   "kind": "event",
+   "exportCommit": "85ca3b5e8e4716fd57e459042424cc47a8f06325",
+   "authorDateUtc": "2026-10-27T11:47:51Z",
+   "houseCommit": "7bd08eedb8c9eb0dfdca2a0cd2e49069dbca6ed4",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 45,
+   "kind": "event",
+   "exportCommit": "f66eaf1c963d6b3d27a5e56927415d662194d4a9",
+   "authorDateUtc": "2026-10-27T12:05:59Z",
+   "houseCommit": "eaa105d808d3031861bbeb49cd41d29b0249a4be",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 46,
+   "kind": "event",
+   "exportCommit": "6b211fa4bd51cb50e1ca9531a4c692b5bb940b7e",
+   "authorDateUtc": "2026-10-27T12:06:10Z",
+   "houseCommit": "01623ccffaf218eb461f2104d42460f57efb20b7",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 47,
+   "kind": "event",
+   "exportCommit": "0d16a1a1807850318b4c413e4d6b10b48b57c489",
+   "authorDateUtc": "2026-10-27T12:19:25Z",
+   "houseCommit": "689546716f58fe7d7f12e8a8ace0d92d5582610d",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 48,
+   "kind": "event",
+   "exportCommit": "328933701e1b6e2cf46aa78d3c8f3b614a045876",
+   "authorDateUtc": "2026-10-27T12:23:11Z",
+   "houseCommit": "e614a819e9be4ef315094ad07dbe2214b341fd91",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 49,
+   "kind": "event",
+   "exportCommit": "096a19a9a805cd3f88ebe9f62db419685123cd44",
+   "authorDateUtc": "2026-10-27T13:33:12Z",
+   "houseCommit": "591ca822a68102ced1f447a156f2bb6d894c8afa",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 50,
+   "kind": "event",
+   "exportCommit": "1cdf5193808aa898e4554f872066ff1af1f8f97f",
+   "authorDateUtc": "2026-10-27T13:49:43Z",
+   "houseCommit": "b79cca14aae38f0438d45aa7dd0a44dda247bbdb",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 51,
+   "kind": "event",
+   "exportCommit": "b8d930182680b58da8140670bde997ab3b3aea3a",
+   "authorDateUtc": "2026-10-27T13:49:46Z",
+   "houseCommit": "ed8ac265c1ddd46c4be693b25d5fac808b492ea0",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 52,
+   "kind": "event",
+   "exportCommit": "026d938712a9efda0e81d25409ec39f73504bdc8",
+   "authorDateUtc": "2026-10-27T13:50:23Z",
+   "houseCommit": "41d6648f57cf8808e11f8ecd9c0d9e0cfe190b24",
+   "originUnbound": false,
+   "files": 4
+  },
+  {
+   "n": 53,
+   "kind": "event",
+   "exportCommit": "a3c278aad1d1032cef4b55f49c5575db7a5efc42",
+   "authorDateUtc": "2026-10-27T14:39:35Z",
+   "houseCommit": "74ea14bc2c188a6f1f1372c7315772664a4805bb",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 54,
+   "kind": "event",
+   "exportCommit": "495515a4a572759a64be5627a681815ad89566f5",
+   "authorDateUtc": "2026-10-27T14:40:34Z",
+   "houseCommit": "16c8198657398b0f3ccc4db707f29db770313c98",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 55,
+   "kind": "event",
+   "exportCommit": "fe0e80e9592de37f6e8bf8c6f63314241e1a4604",
+   "authorDateUtc": "2026-10-27T14:50:25Z",
+   "houseCommit": "2d5736e5c211ea2a8f03ae6de31a832fc2440668",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 56,
+   "kind": "event",
+   "exportCommit": "42c6fbaf586b1ea49eec8152c1318594d1c705fe",
+   "authorDateUtc": "2026-10-27T14:50:25Z",
+   "houseCommit": "d8bf07507d49903c2f9fb97c1df05f8a225394d8",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 57,
+   "kind": "event",
+   "exportCommit": "d926d0fa3b4eda2bf808cbe693926c761506d642",
+   "authorDateUtc": "2026-10-27T16:17:55Z",
+   "houseCommit": "579d945859dd7a963fdb829f9ad189dd1f1a0f82",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 58,
+   "kind": "event",
+   "exportCommit": "576fe56de0df549e8c2507cf526476df99d98b09",
+   "authorDateUtc": "2026-10-27T18:04:57Z",
+   "houseCommit": "0a1dde5c7c3e7b450a466d0d8356c61becc2d8b7",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 59,
+   "kind": "event",
+   "exportCommit": "b2bf2be8b6e7e41974e45d43e3e2c456c881c7c4",
+   "authorDateUtc": "2026-10-27T18:05:20Z",
+   "houseCommit": "901831f7a2536b6aabf427f8657e54f9dd1885d4",
+   "originUnbound": true,
+   "files": 1
+  },
+  {
+   "n": 60,
+   "kind": "event",
+   "exportCommit": "ff2afe1d29c7ffc15633b7b9e2fa7c7ea162d2d3",
+   "authorDateUtc": "2026-10-27T18:05:21Z",
+   "houseCommit": "b1ea50656ea6b267fc07545b5ed02ee7a536c1ad",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 61,
+   "kind": "event",
+   "exportCommit": "f6eb5d82796a38b34863c17549cf3b4be46668c1",
+   "authorDateUtc": "2026-10-27T18:05:30Z",
+   "houseCommit": "3a01ca147a6c4f9905f92706849277a6116a2dd9",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 62,
+   "kind": "event",
+   "exportCommit": "3e57638394a22650ee9a2b6111e7333386a493ff",
+   "authorDateUtc": "2026-10-27T18:06:10Z",
+   "houseCommit": "deeed5541ab7a06217449b1184204853b02f3c46",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 63,
+   "kind": "event",
+   "exportCommit": "b4d9091025d326037b7e2a4cef32d10ce97b8b12",
+   "authorDateUtc": "2026-10-27T18:06:16Z",
+   "houseCommit": "c3693ca2fb82ad17a020cdd1fa8b8e663086bec4",
+   "originUnbound": false,
+   "files": 1
+  },
+  {
+   "n": 64,
+   "kind": "drift",
+   "exportCommit": "cea457b2c7b2417993e5f9132951ed46607e8bb2",
+   "authorDateUtc": "2026-10-27T22:48:36Z",
+   "houseCommit": null,
+   "originUnbound": true,
+   "files": 7
+  },
+  {
+   "n": 65,
+   "kind": "export-mode",
+   "exportCommit": "938d9b5cea6155d59adcd869ae72bb47f527ee59",
+   "authorDateUtc": "2026-10-27T22:48:36Z",
+   "houseCommit": null,
+   "originUnbound": false,
+   "files": 6
+  }
+ ],
+ "functions": [
+  {
+   "id": "self-check",
+   "segments": [
+    "S1"
+   ],
+   "exportPath": "launcher.mjs",
+   "status": "EXPORTED",
+   "anchors": {
+    "runCandidateSelfCheck": [
+     2586,
+     3591
+    ],
+    "CANDIDATE_LAUNCHER_CHECK_PASS": [
+     3593
+    ]
+   },
+   "hunkCount": 1,
+   "directCount": 1,
+   "hunks": [
+    {
+     "exportCommit": "938d9b5cea6155d59adcd869ae72bb47f527ee59",
+     "layer": 65,
+     "layerKind": "export-mode",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-27T22:48:36Z",
+     "houseCommit": null,
+     "header": "@@ -0,0 +1,3616 @@",
+     "sha256": "cbbcb460ef69ee18cc070f6f906e2d7c310f946bcabc56680e1227634ff47446",
+     "bytes": 140020,
+     "exportDiffSha256": "ff7f183eeeeeaa1153f6df4dccda67e98ca90334cf726350abd88dfac98f9740",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-final",
+      "status": "PARKED"
+     }
+    }
+   ]
+  },
+  {
+   "id": "propose-route",
+   "segments": [
+    "S2",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "exportPath": "candidate-backend.mjs",
+   "status": "EXPORTED",
+   "anchors": {
+    "/api/llama/propose": [
+     763
+    ],
+    "sanitizeCandidateCallProof": [
+     406,
+     475,
+     957
+    ]
+   },
+   "hunkCount": 1,
+   "directCount": 1,
+   "hunks": [
+    {
+     "exportCommit": "938d9b5cea6155d59adcd869ae72bb47f527ee59",
+     "layer": 65,
+     "layerKind": "export-mode",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-27T22:48:36Z",
+     "houseCommit": null,
+     "header": "@@ -0,0 +1,1156 @@",
+     "sha256": "93c59a93d2ef7aa25cbc161354ec877b54cb0d1a3924ec376141f96843d79e5e",
+     "bytes": 47243,
+     "exportDiffSha256": "98973c863d7ab38ce99e0a46cf881c3b0ea84688b4325aed4e43c844d26e4b0d",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-final",
+      "status": "PARKED"
+     }
+    }
+   ]
+  },
+  {
+   "id": "status-fixture-routes",
+   "segments": [
+    "S3"
+   ],
+   "exportPath": "candidate-backend.mjs",
+   "status": "EXPORTED",
+   "anchors": {
+    "/api/candidate/status": [
+     688
+    ],
+    "/api/llama/fixtures": [
+     731
+    ]
+   },
+   "hunkCount": 1,
+   "directCount": 1,
+   "hunks": [
+    {
+     "exportCommit": "938d9b5cea6155d59adcd869ae72bb47f527ee59",
+     "layer": 65,
+     "layerKind": "export-mode",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-27T22:48:36Z",
+     "houseCommit": null,
+     "header": "@@ -0,0 +1,1156 @@",
+     "sha256": "93c59a93d2ef7aa25cbc161354ec877b54cb0d1a3924ec376141f96843d79e5e",
+     "bytes": 47243,
+     "exportDiffSha256": "98973c863d7ab38ce99e0a46cf881c3b0ea84688b4325aed4e43c844d26e4b0d",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-final",
+      "status": "PARKED"
+     }
+    }
+   ]
+  },
+  {
+   "id": "propose-critic-receipt",
+   "segments": [
+    "S2",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "exportPath": "app/llama-adapter.mjs",
+   "status": "EXPORTED",
+   "anchors": {
+    "evaluateAndGateLlamaProposal": [
+     1034
+    ],
+    "generateKinematicProposalReceipt": [
+     676,
+     1060,
+     1112,
+     1249,
+     1439
+    ],
+    "verifyProposalReceiptChain": [
+     774
+    ]
+   },
+   "hunkCount": 67,
+   "directCount": 15,
+   "hunks": [
+    {
+     "exportCommit": "8ea9a05fd21e7b314f73a8cdbcab90bfe0c6e97f",
+     "layer": 0,
+     "layerKind": "baseline",
+     "window": "pre-event baseline",
+     "authorDateUtc": "2026-10-26T15:51:54Z",
+     "houseCommit": "b020edc3daa4f0e9c562f56b27f1dcec0946f329",
+     "header": "@@ -0,0 +1,355 @@",
+     "sha256": "2b8619e3b21a03f364ae774809885b1689890bbef474daa4ab18333c7dd2ec69",
+     "bytes": 11329,
+     "exportDiffSha256": "47b0b8d5cad4b2ca74b97d20080d7ada428323779d3dbbb629f6a916a4c05600",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -291,65 +1437,169 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "c5b9f4c4039de2fbd356b18cd5f9c5ae2e8cef739976460ee884a090fa5759da",
+     "bytes": 5997,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -254,34 +968,466 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "de5d1971dea5c8db1fc5b2765c937669a6ce903dd175a049e006663aee80737f",
+     "bytes": 18041,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -244,9 +958,9 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "c10d745447226578a034b5e7b0e97d1429edacbdbc06863c04f62bedf1da6614",
+     "bytes": 431,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -225,10 +939,10 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "f626e40a41b3f7c796f0283b5dce5659fbeb66b4aff8d35c3da94d482639c187",
+     "bytes": 489,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -205,12 +919,12 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "e85417eb4169b3fd0dd12723823dfc2f6a63fd4e0189509afcaab33afbc083a9",
+     "bytes": 580,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -189,10 +903,10 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "ca78b2ed892dbfbc11d1b67b939a4a269a1c2d2085862b02908af92bced2bb6a",
+     "bytes": 482,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -173,9 +887,9 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "ce5cf063acf7ba4c8e9984bc2ed5fcfa9906c893502c8eec1b541b54bd28639a",
+     "bytes": 394,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -158,8 +347,533 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "2468262bb8bc9ae22183f5bf5517ca979d6935feaa74d4011e55e7507b01d07a",
+     "bytes": 18672,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -145,9 +316,27 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "2358523d5403b8eb9721bed0fda3e8a4ca42cf36ddd084ee876e679c6522349e",
+     "bytes": 998,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -134,7 +305,7 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "6e89abf1e84c9d79a02d23b318749d1df9b07da939d83fc12b58679b5994ec88",
+     "bytes": 352,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -124,7 +268,34 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "7f159d6c47deb11d1a22d6469f38d8d7dd5d4cdc297803d463e354e7778b984f",
+     "bytes": 1322,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -94,7 +239,6 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "a874262c55f9dc1712ebc4167a73440fa35fd04c9d98e5cce3ffb224ae28e099",
+     "bytes": 326,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -76,7 +219,9 @@ export function buildLlamaPhysicsPrompt({ instruction = 'Plan safe stopping dece",
+     "sha256": "7b3fc34cf3d04c4642a207d9c0dda31ce425c89e75341a9d16472f196a98eb5c",
+     "bytes": 621,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -1,41 +1,184 @@",
+     "sha256": "b8c34f468445a5854454e7f0040f757089d41bbedc920e69da647a66fc534c88",
+     "bytes": 7259,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1351,16 +1438,18 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "0a331ac1ee333a22485a00b8c260fa19c30cfa15b07cac4c6ed96afb881aea53",
+     "bytes": 1009,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1341,6 +1426,8 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "484fa20b04bd8b455f0fc57eeb5783e989302bd997acbc57bcf1db6cbfc2a3fa",
+     "bytes": 438,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1300,6 +1375,16 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "439ef3db1a615dd10d3ab7b3460ab26ab88ad5cdd9b1484e4da1b4b4fcef28a4",
+     "bytes": 678,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1289,7 +1355,16 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "03b1806d65697a18b618c894e4cf31ab8a2f38435a91a34af3a32d099a4d0fda",
+     "bytes": 755,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1270,15 +1292,59 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "ba1ae27cbf6c7d815a193591580dc36dd2c6ad9ce5d70f68df86b4b95ae8d3c9",
+     "bytes": 2961,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1251,6 +1272,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "f49caf5b3146a56d1fe363c669963af6bff98032870995ffee8c9765e078dde2",
+     "bytes": 307,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1219,6 +1239,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "6c1ab033dca9202873a581540b50d0dac8ac8ac888dbd8959a746050d6261f65",
+     "bytes": 307,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1105,7 +1112,20 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "e3bf42f42e882ff956dcca0194e1424002b4d1edcda6461204d1c0d208b22585",
+     "bytes": 1290,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1091,6 +1097,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "04f16a048cfd473e6ffb4204fee41e965a64c697c1965237990a344f2d4875a0",
+     "bytes": 328,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1058,6 +1063,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "a0ae9ef6e231cbf3fa91f45b6e2c52da4550834b8b415cc47093fac026aab2d1",
+     "bytes": 278,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1041,6 +1045,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "5a3fb1a1745207fb49ee1fecfe0f927a949668cbfa6018f7e6118dfb9344aaf9",
+     "bytes": 343,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -984,8 +989,7 @@ export function deriveAuthoritativeStateSnapshot(offlineFixture) {",
+     "sha256": "c6fa71e1960db6740a50a5079f05e64da16b41094fd1004eb210a7963d6630a9",
+     "bytes": 832,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -970,6 +974,7 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "6b18f54dd0799c1a76cb4d3f1a3f31ec3c60c176d7f61aa1841b448add532e76",
+     "bytes": 491,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -574,57 +613,22 @@ export function applyBoundedStepCorrection(",
+     "sha256": "d79b78f414e4a1019eb48dc2be755ee1eb86465c82e656f7d04ea87b2e3e2cb6",
+     "bytes": 2974,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -553,20 +586,26 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "bec112fb506cc35e87d531751806401e9f3d35a62292a4037279f6781e7c420b",
+     "bytes": 1547,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -531,20 +561,23 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "0f0009caacb77ae7123416bee4356b2c14bc7de1a499701c2cc2178b574c974c",
+     "bytes": 1290,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -494,7 +518,13 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "f77f2805b95fdd6c5a1da683e439d2c55d1a414f079a6a8b7fc6cbf1bbb624f3",
+     "bytes": 689,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -430,6 +453,7 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "b3e71ffe07de56e80d5b41193932ee7ac2a25e2c95fa6f24ec92d338f3729180",
+     "bytes": 349,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -415,11 +421,28 @@ export function validateAuthoritativeCurrentState(currentState) {",
+     "sha256": "f5bc4e2f6b2d0dae1fe588de85d72d4909558339b3ff0bc830b03bbf33988239",
+     "bytes": 1436,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -44,10 +44,16 @@ export const PLANT_LIMIT_FIELDS = Object.freeze([",
+     "sha256": "598d2526f4cc4c3423d6657977d9016153ab49cc01aca817f5e8e2b1a2285fff",
+     "bytes": 433,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1690,5 +1972,3 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "b84b060009574486b152d6acbc97dc69e976db5f9a28e953be45468b9161ba9f",
+     "bytes": 135,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1676,13 +1927,44 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "d2de386051aeba99aa10297847c20d58b147b37c1de165a5ce4d30977d29749a",
+     "bytes": 1886,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1669,6 +1916,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "a5c3aa9bd49210fa4b0fcb9a8a1fdf186185c54c581c0459d7f239d97feb7fca",
+     "bytes": 357,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1660,6 +1902,11 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "564c020e9c8a9b74c05cabbea1496e3381a7feae26b66e5b4548f1b6ad3b7cc8",
+     "bytes": 364,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1621,34 +1755,142 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "f0bd55dbb94e199776354eaad18bfe53b38e681304de372ca6f5c0267ab4cb46",
+     "bytes": 5472,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1598,19 +1658,93 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "4741baf6a5222aee4305d2d777992dfeb4ba9a7d00f80358587aa3db90b3d98a",
+     "bytes": 3659,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1565,6 +1624,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "dfb72f54681f350547769b43ee0b94515dafa38ec2d0ad8577bf6e1def05c27c",
+     "bytes": 407,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1535,13 +1584,23 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "748cf49f5e882ccc023dcf49a19c761b6385041d0a6260be1634d8779695d04b",
+     "bytes": 842,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1528,6 +1573,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "0648592634e4a26246c1bd38397d1842e033a5192a0b5c31f4411ec7a33d266e",
+     "bytes": 403,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1516,6 +1557,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "fdd14f337f6c99957d8b4a07c9cc4284e74876844d0a216ea5c0b8ace8f63444",
+     "bytes": 423,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1503,6 +1540,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "0b43a24a9bb8fb50d17417a3f2c5811b8bfe105950d358ca0915c047a6709aec",
+     "bytes": 447,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1490,6 +1523,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "e7b3f0b832e13b4b0d99b626098a94701280e092cda879ece3941e34f62c49ac",
+     "bytes": 462,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1482,7 +1514,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "084032d6acd6024a85072668066891d0409bf61163b537e3ef1ded53348680ef",
+     "bytes": 481,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1467,11 +1467,43 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "971c49b980963c88ec533e484fb67dd87a54b9c3693589308013f2218c1a166c",
+     "bytes": 2018,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1941,29 +2087,29 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "3f82d43b1bd0073418c1a1440e22a9861becb4b42f025ad76fc1f2edb6fa7e29",
+     "bytes": 1575,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1924,9 +2071,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "9839e38cd070948dd2856a1ca64fe2a4c7e0fe41f69a1965678e7248d8b3798c",
+     "bytes": 617,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1900,8 +2017,38 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "3f3af112d7b78872d348284b92f9875f8397b4938c31df65a8e7634bb85eaf47",
+     "bytes": 1607,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1891,7 +2008,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "6e9ffee51289b2e294dcbc7b007863bd33c903cbc58d8e6af4bab65dbd043e82",
+     "bytes": 309,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1883,6 +1996,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "04d6e3169bf846beab251ba118d1f4c522c7a2ebef2e8c38022cec6ed5c64a67",
+     "bytes": 601,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1810,7 +1923,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "abd53079200d97f9d1f52d0cc70f039c28d17eefa9c86ff9b1d57c37887315ad",
+     "bytes": 564,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1776,32 +1888,33 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "7c3ed95d65337092b9acf2f85dacb6e110a4fe767bcdfb2c6a245093e6e69fac",
+     "bytes": 2174,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1730,8 +1842,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "236cf26e7b2c429d11b8e00d1a2c61745aca306755c5aaff416e899b7b03d67d",
+     "bytes": 704,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1705,12 +1820,9 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "73b1664241c24860cda35e84f65be94c6578db7ab32845c71fe29a589e7695d8",
+     "bytes": 837,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1694,7 +1805,11 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "8082d64378c368cf7f9925c55cbcc7af6e995e3a433c96d6d1b251bf992104f3",
+     "bytes": 423,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1501,9 +1611,10 @@ function extractProviderRequestIdHeader(headers) {",
+     "sha256": "f7c055ab29567f3196fcb649e6c96824afc13578bbec02ae717e2482181fa021",
+     "bytes": 1109,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1467,6 +1467,116 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "9d546a48b64cc0e4605fced48c2337fba1b84192f0cf27c6909b2cb29184c20e",
+     "bytes": 3761,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -253,14 +253,14 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "952546ee6975990fbca348e870c97268af3899fb44908a7780dd6dad8edba36c",
+     "bytes": 725,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -1995,26 +2028,62 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "000550878baddc0fe75d0a451c7e7d268ecda4fce977986eb55588a572257d7a",
+     "bytes": 3167,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -340,6 +360,19 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "68f95e3454e7b6c0e40ce21804b15956fce9a0cba60f3ac0cf36f3ed8875c21e",
+     "bytes": 668,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -274,13 +278,29 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "3896490f01f3759aa716543e8b5df038757678be21d83ee228cb9afcf280f19a",
+     "bytes": 1874,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -238,6 +238,10 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "820e1af91325e992421cad4f91cb5c3f1ef3affb09ef5ead2a34375a5409a309",
+     "bytes": 394,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -229,7 +229,7 @@ export function buildLlamaPhysicsPrompt({ instruction = 'Plan safe stopping dece",
+     "sha256": "824a1d1fe5692db72d9d6476202732e58c00823d3505c0214b036f525a127986",
+     "bytes": 524,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    }
+   ]
+  },
+  {
+   "id": "attempt-budget",
+   "segments": [
+    "S5"
+   ],
+   "exportPath": "launcher.mjs",
+   "status": "EXPORTED",
+   "anchors": {
+    "SINGLE_ATTEMPT_BUDGET_EXHAUSTED": [
+     2773,
+     2786
+    ]
+   },
+   "hunkCount": 1,
+   "directCount": 1,
+   "hunks": [
+    {
+     "exportCommit": "938d9b5cea6155d59adcd869ae72bb47f527ee59",
+     "layer": 65,
+     "layerKind": "export-mode",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-27T22:48:36Z",
+     "houseCommit": null,
+     "header": "@@ -0,0 +1,3616 @@",
+     "sha256": "cbbcb460ef69ee18cc070f6f906e2d7c310f946bcabc56680e1227634ff47446",
+     "bytes": 140020,
+     "exportDiffSha256": "ff7f183eeeeeaa1153f6df4dccda67e98ca90334cf726350abd88dfac98f9740",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-final",
+      "status": "PARKED"
+     }
+    }
+   ]
+  },
+  {
+   "id": "offline-fixtures",
+   "segments": [
+    "S2",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "exportPath": "app/llama-adapter.mjs",
+   "status": "EXPORTED",
+   "anchors": {
+    "OFFLINE_LLAMA_FIXTURES": [
+     915,
+     1014,
+     1015,
+     1680,
+     1681
+    ],
+    "nominal_warehouse_stop": [
+     916,
+     917,
+     921
+    ],
+    "velocity_drift_skid": [
+     933,
+     934,
+     938
+    ]
+   },
+   "hunkCount": 67,
+   "directCount": 9,
+   "hunks": [
+    {
+     "exportCommit": "8ea9a05fd21e7b314f73a8cdbcab90bfe0c6e97f",
+     "layer": 0,
+     "layerKind": "baseline",
+     "window": "pre-event baseline",
+     "authorDateUtc": "2026-10-26T15:51:54Z",
+     "houseCommit": "b020edc3daa4f0e9c562f56b27f1dcec0946f329",
+     "header": "@@ -0,0 +1,355 @@",
+     "sha256": "2b8619e3b21a03f364ae774809885b1689890bbef474daa4ab18333c7dd2ec69",
+     "bytes": 11329,
+     "exportDiffSha256": "47b0b8d5cad4b2ca74b97d20080d7ada428323779d3dbbb629f6a916a4c05600",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -291,65 +1437,169 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "c5b9f4c4039de2fbd356b18cd5f9c5ae2e8cef739976460ee884a090fa5759da",
+     "bytes": 5997,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -254,34 +968,466 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "de5d1971dea5c8db1fc5b2765c937669a6ce903dd175a049e006663aee80737f",
+     "bytes": 18041,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -244,9 +958,9 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "c10d745447226578a034b5e7b0e97d1429edacbdbc06863c04f62bedf1da6614",
+     "bytes": 431,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -225,10 +939,10 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "f626e40a41b3f7c796f0283b5dce5659fbeb66b4aff8d35c3da94d482639c187",
+     "bytes": 489,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -205,12 +919,12 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "e85417eb4169b3fd0dd12723823dfc2f6a63fd4e0189509afcaab33afbc083a9",
+     "bytes": 580,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -189,10 +903,10 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "ca78b2ed892dbfbc11d1b67b939a4a269a1c2d2085862b02908af92bced2bb6a",
+     "bytes": 482,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -173,9 +887,9 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "ce5cf063acf7ba4c8e9984bc2ed5fcfa9906c893502c8eec1b541b54bd28639a",
+     "bytes": 394,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -158,8 +347,533 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "2468262bb8bc9ae22183f5bf5517ca979d6935feaa74d4011e55e7507b01d07a",
+     "bytes": 18672,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -145,9 +316,27 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "2358523d5403b8eb9721bed0fda3e8a4ca42cf36ddd084ee876e679c6522349e",
+     "bytes": 998,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -134,7 +305,7 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "6e89abf1e84c9d79a02d23b318749d1df9b07da939d83fc12b58679b5994ec88",
+     "bytes": 352,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -124,7 +268,34 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "7f159d6c47deb11d1a22d6469f38d8d7dd5d4cdc297803d463e354e7778b984f",
+     "bytes": 1322,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -94,7 +239,6 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "a874262c55f9dc1712ebc4167a73440fa35fd04c9d98e5cce3ffb224ae28e099",
+     "bytes": 326,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -76,7 +219,9 @@ export function buildLlamaPhysicsPrompt({ instruction = 'Plan safe stopping dece",
+     "sha256": "7b3fc34cf3d04c4642a207d9c0dda31ce425c89e75341a9d16472f196a98eb5c",
+     "bytes": 621,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -1,41 +1,184 @@",
+     "sha256": "b8c34f468445a5854454e7f0040f757089d41bbedc920e69da647a66fc534c88",
+     "bytes": 7259,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1351,16 +1438,18 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "0a331ac1ee333a22485a00b8c260fa19c30cfa15b07cac4c6ed96afb881aea53",
+     "bytes": 1009,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1341,6 +1426,8 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "484fa20b04bd8b455f0fc57eeb5783e989302bd997acbc57bcf1db6cbfc2a3fa",
+     "bytes": 438,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1300,6 +1375,16 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "439ef3db1a615dd10d3ab7b3460ab26ab88ad5cdd9b1484e4da1b4b4fcef28a4",
+     "bytes": 678,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1289,7 +1355,16 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "03b1806d65697a18b618c894e4cf31ab8a2f38435a91a34af3a32d099a4d0fda",
+     "bytes": 755,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1270,15 +1292,59 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "ba1ae27cbf6c7d815a193591580dc36dd2c6ad9ce5d70f68df86b4b95ae8d3c9",
+     "bytes": 2961,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1251,6 +1272,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "f49caf5b3146a56d1fe363c669963af6bff98032870995ffee8c9765e078dde2",
+     "bytes": 307,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1219,6 +1239,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "6c1ab033dca9202873a581540b50d0dac8ac8ac888dbd8959a746050d6261f65",
+     "bytes": 307,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1105,7 +1112,20 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "e3bf42f42e882ff956dcca0194e1424002b4d1edcda6461204d1c0d208b22585",
+     "bytes": 1290,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1091,6 +1097,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "04f16a048cfd473e6ffb4204fee41e965a64c697c1965237990a344f2d4875a0",
+     "bytes": 328,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1058,6 +1063,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "a0ae9ef6e231cbf3fa91f45b6e2c52da4550834b8b415cc47093fac026aab2d1",
+     "bytes": 278,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1041,6 +1045,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "5a3fb1a1745207fb49ee1fecfe0f927a949668cbfa6018f7e6118dfb9344aaf9",
+     "bytes": 343,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -984,8 +989,7 @@ export function deriveAuthoritativeStateSnapshot(offlineFixture) {",
+     "sha256": "c6fa71e1960db6740a50a5079f05e64da16b41094fd1004eb210a7963d6630a9",
+     "bytes": 832,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -970,6 +974,7 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "6b18f54dd0799c1a76cb4d3f1a3f31ec3c60c176d7f61aa1841b448add532e76",
+     "bytes": 491,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -574,57 +613,22 @@ export function applyBoundedStepCorrection(",
+     "sha256": "d79b78f414e4a1019eb48dc2be755ee1eb86465c82e656f7d04ea87b2e3e2cb6",
+     "bytes": 2974,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -553,20 +586,26 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "bec112fb506cc35e87d531751806401e9f3d35a62292a4037279f6781e7c420b",
+     "bytes": 1547,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -531,20 +561,23 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "0f0009caacb77ae7123416bee4356b2c14bc7de1a499701c2cc2178b574c974c",
+     "bytes": 1290,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -494,7 +518,13 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "f77f2805b95fdd6c5a1da683e439d2c55d1a414f079a6a8b7fc6cbf1bbb624f3",
+     "bytes": 689,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -430,6 +453,7 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "b3e71ffe07de56e80d5b41193932ee7ac2a25e2c95fa6f24ec92d338f3729180",
+     "bytes": 349,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -415,11 +421,28 @@ export function validateAuthoritativeCurrentState(currentState) {",
+     "sha256": "f5bc4e2f6b2d0dae1fe588de85d72d4909558339b3ff0bc830b03bbf33988239",
+     "bytes": 1436,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -44,10 +44,16 @@ export const PLANT_LIMIT_FIELDS = Object.freeze([",
+     "sha256": "598d2526f4cc4c3423d6657977d9016153ab49cc01aca817f5e8e2b1a2285fff",
+     "bytes": 433,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1690,5 +1972,3 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "b84b060009574486b152d6acbc97dc69e976db5f9a28e953be45468b9161ba9f",
+     "bytes": 135,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1676,13 +1927,44 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "d2de386051aeba99aa10297847c20d58b147b37c1de165a5ce4d30977d29749a",
+     "bytes": 1886,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1669,6 +1916,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "a5c3aa9bd49210fa4b0fcb9a8a1fdf186185c54c581c0459d7f239d97feb7fca",
+     "bytes": 357,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1660,6 +1902,11 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "564c020e9c8a9b74c05cabbea1496e3381a7feae26b66e5b4548f1b6ad3b7cc8",
+     "bytes": 364,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1621,34 +1755,142 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "f0bd55dbb94e199776354eaad18bfe53b38e681304de372ca6f5c0267ab4cb46",
+     "bytes": 5472,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1598,19 +1658,93 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "4741baf6a5222aee4305d2d777992dfeb4ba9a7d00f80358587aa3db90b3d98a",
+     "bytes": 3659,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1565,6 +1624,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "dfb72f54681f350547769b43ee0b94515dafa38ec2d0ad8577bf6e1def05c27c",
+     "bytes": 407,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1535,13 +1584,23 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "748cf49f5e882ccc023dcf49a19c761b6385041d0a6260be1634d8779695d04b",
+     "bytes": 842,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1528,6 +1573,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "0648592634e4a26246c1bd38397d1842e033a5192a0b5c31f4411ec7a33d266e",
+     "bytes": 403,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1516,6 +1557,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "fdd14f337f6c99957d8b4a07c9cc4284e74876844d0a216ea5c0b8ace8f63444",
+     "bytes": 423,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1503,6 +1540,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "0b43a24a9bb8fb50d17417a3f2c5811b8bfe105950d358ca0915c047a6709aec",
+     "bytes": 447,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1490,6 +1523,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "e7b3f0b832e13b4b0d99b626098a94701280e092cda879ece3941e34f62c49ac",
+     "bytes": 462,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1482,7 +1514,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "084032d6acd6024a85072668066891d0409bf61163b537e3ef1ded53348680ef",
+     "bytes": 481,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1467,11 +1467,43 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "971c49b980963c88ec533e484fb67dd87a54b9c3693589308013f2218c1a166c",
+     "bytes": 2018,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1941,29 +2087,29 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "3f82d43b1bd0073418c1a1440e22a9861becb4b42f025ad76fc1f2edb6fa7e29",
+     "bytes": 1575,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1924,9 +2071,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "9839e38cd070948dd2856a1ca64fe2a4c7e0fe41f69a1965678e7248d8b3798c",
+     "bytes": 617,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1900,8 +2017,38 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "3f3af112d7b78872d348284b92f9875f8397b4938c31df65a8e7634bb85eaf47",
+     "bytes": 1607,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1891,7 +2008,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "6e9ffee51289b2e294dcbc7b007863bd33c903cbc58d8e6af4bab65dbd043e82",
+     "bytes": 309,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1883,6 +1996,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "04d6e3169bf846beab251ba118d1f4c522c7a2ebef2e8c38022cec6ed5c64a67",
+     "bytes": 601,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1810,7 +1923,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "abd53079200d97f9d1f52d0cc70f039c28d17eefa9c86ff9b1d57c37887315ad",
+     "bytes": 564,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1776,32 +1888,33 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "7c3ed95d65337092b9acf2f85dacb6e110a4fe767bcdfb2c6a245093e6e69fac",
+     "bytes": 2174,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1730,8 +1842,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "236cf26e7b2c429d11b8e00d1a2c61745aca306755c5aaff416e899b7b03d67d",
+     "bytes": 704,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1705,12 +1820,9 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "73b1664241c24860cda35e84f65be94c6578db7ab32845c71fe29a589e7695d8",
+     "bytes": 837,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1694,7 +1805,11 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "8082d64378c368cf7f9925c55cbcc7af6e995e3a433c96d6d1b251bf992104f3",
+     "bytes": 423,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1501,9 +1611,10 @@ function extractProviderRequestIdHeader(headers) {",
+     "sha256": "f7c055ab29567f3196fcb649e6c96824afc13578bbec02ae717e2482181fa021",
+     "bytes": 1109,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1467,6 +1467,116 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "9d546a48b64cc0e4605fced48c2337fba1b84192f0cf27c6909b2cb29184c20e",
+     "bytes": 3761,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -253,14 +253,14 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "952546ee6975990fbca348e870c97268af3899fb44908a7780dd6dad8edba36c",
+     "bytes": 725,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -1995,26 +2028,62 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "000550878baddc0fe75d0a451c7e7d268ecda4fce977986eb55588a572257d7a",
+     "bytes": 3167,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -340,6 +360,19 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "68f95e3454e7b6c0e40ce21804b15956fce9a0cba60f3ac0cf36f3ed8875c21e",
+     "bytes": 668,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -274,13 +278,29 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "3896490f01f3759aa716543e8b5df038757678be21d83ee228cb9afcf280f19a",
+     "bytes": 1874,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -238,6 +238,10 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "820e1af91325e992421cad4f91cb5c3f1ef3affb09ef5ead2a34375a5409a309",
+     "bytes": 394,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -229,7 +229,7 @@ export function buildLlamaPhysicsPrompt({ instruction = 'Plan safe stopping dece",
+     "sha256": "824a1d1fe5692db72d9d6476202732e58c00823d3505c0214b036f525a127986",
+     "bytes": 524,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    }
+   ]
+  },
+  {
+   "id": "candidate-ui",
+   "segments": [
+    "S7"
+   ],
+   "exportPath": "ui/index.html",
+   "status": "NOT_EXPORTED",
+   "anchors": {},
+   "hunkCount": 0,
+   "directCount": 0,
+   "hunks": []
+  },
+  {
+   "id": "chain-summary",
+   "segments": [
+    "S8"
+   ],
+   "exportPath": "app/llama-adapter.mjs",
+   "status": "EXPORTED",
+   "anchors": {
+    "verifyProposalReceiptChain": [
+     774
+    ]
+   },
+   "hunkCount": 67,
+   "directCount": 1,
+   "hunks": [
+    {
+     "exportCommit": "8ea9a05fd21e7b314f73a8cdbcab90bfe0c6e97f",
+     "layer": 0,
+     "layerKind": "baseline",
+     "window": "pre-event baseline",
+     "authorDateUtc": "2026-10-26T15:51:54Z",
+     "houseCommit": "b020edc3daa4f0e9c562f56b27f1dcec0946f329",
+     "header": "@@ -0,0 +1,355 @@",
+     "sha256": "2b8619e3b21a03f364ae774809885b1689890bbef474daa4ab18333c7dd2ec69",
+     "bytes": 11329,
+     "exportDiffSha256": "47b0b8d5cad4b2ca74b97d20080d7ada428323779d3dbbb629f6a916a4c05600",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -291,65 +1437,169 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "c5b9f4c4039de2fbd356b18cd5f9c5ae2e8cef739976460ee884a090fa5759da",
+     "bytes": 5997,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -254,34 +968,466 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "de5d1971dea5c8db1fc5b2765c937669a6ce903dd175a049e006663aee80737f",
+     "bytes": 18041,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -244,9 +958,9 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "c10d745447226578a034b5e7b0e97d1429edacbdbc06863c04f62bedf1da6614",
+     "bytes": 431,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -225,10 +939,10 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "f626e40a41b3f7c796f0283b5dce5659fbeb66b4aff8d35c3da94d482639c187",
+     "bytes": 489,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -205,12 +919,12 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "e85417eb4169b3fd0dd12723823dfc2f6a63fd4e0189509afcaab33afbc083a9",
+     "bytes": 580,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -189,10 +903,10 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "ca78b2ed892dbfbc11d1b67b939a4a269a1c2d2085862b02908af92bced2bb6a",
+     "bytes": 482,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -173,9 +887,9 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "ce5cf063acf7ba4c8e9984bc2ed5fcfa9906c893502c8eec1b541b54bd28639a",
+     "bytes": 394,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -158,8 +347,533 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "2468262bb8bc9ae22183f5bf5517ca979d6935feaa74d4011e55e7507b01d07a",
+     "bytes": 18672,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "DIRECT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -145,9 +316,27 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "2358523d5403b8eb9721bed0fda3e8a4ca42cf36ddd084ee876e679c6522349e",
+     "bytes": 998,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -134,7 +305,7 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "6e89abf1e84c9d79a02d23b318749d1df9b07da939d83fc12b58679b5994ec88",
+     "bytes": 352,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -124,7 +268,34 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "7f159d6c47deb11d1a22d6469f38d8d7dd5d4cdc297803d463e354e7778b984f",
+     "bytes": 1322,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -94,7 +239,6 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "a874262c55f9dc1712ebc4167a73440fa35fd04c9d98e5cce3ffb224ae28e099",
+     "bytes": 326,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -76,7 +219,9 @@ export function buildLlamaPhysicsPrompt({ instruction = 'Plan safe stopping dece",
+     "sha256": "7b3fc34cf3d04c4642a207d9c0dda31ce425c89e75341a9d16472f196a98eb5c",
+     "bytes": 621,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "6c1125b9c709545d061776d880727c2798818b1b",
+     "layer": 1,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:29:56Z",
+     "houseCommit": "0f1dc73ab7319fb333b4b6e9b9681214ff837443",
+     "header": "@@ -1,41 +1,184 @@",
+     "sha256": "b8c34f468445a5854454e7f0040f757089d41bbedc920e69da647a66fc534c88",
+     "bytes": 7259,
+     "exportDiffSha256": "5b9ef5c64f5f5f2e36f38004ae2f3e1f65d2bb9c4c4d442df4abaf816dca5c99",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1351,16 +1438,18 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "0a331ac1ee333a22485a00b8c260fa19c30cfa15b07cac4c6ed96afb881aea53",
+     "bytes": 1009,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1341,6 +1426,8 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "484fa20b04bd8b455f0fc57eeb5783e989302bd997acbc57bcf1db6cbfc2a3fa",
+     "bytes": 438,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1300,6 +1375,16 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "439ef3db1a615dd10d3ab7b3460ab26ab88ad5cdd9b1484e4da1b4b4fcef28a4",
+     "bytes": 678,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1289,7 +1355,16 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "03b1806d65697a18b618c894e4cf31ab8a2f38435a91a34af3a32d099a4d0fda",
+     "bytes": 755,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1270,15 +1292,59 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "ba1ae27cbf6c7d815a193591580dc36dd2c6ad9ce5d70f68df86b4b95ae8d3c9",
+     "bytes": 2961,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1251,6 +1272,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "f49caf5b3146a56d1fe363c669963af6bff98032870995ffee8c9765e078dde2",
+     "bytes": 307,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1219,6 +1239,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "6c1ab033dca9202873a581540b50d0dac8ac8ac888dbd8959a746050d6261f65",
+     "bytes": 307,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1105,7 +1112,20 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "e3bf42f42e882ff956dcca0194e1424002b4d1edcda6461204d1c0d208b22585",
+     "bytes": 1290,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1091,6 +1097,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "04f16a048cfd473e6ffb4204fee41e965a64c697c1965237990a344f2d4875a0",
+     "bytes": 328,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1058,6 +1063,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "a0ae9ef6e231cbf3fa91f45b6e2c52da4550834b8b415cc47093fac026aab2d1",
+     "bytes": 278,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -1041,6 +1045,7 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "5a3fb1a1745207fb49ee1fecfe0f927a949668cbfa6018f7e6118dfb9344aaf9",
+     "bytes": 343,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -984,8 +989,7 @@ export function deriveAuthoritativeStateSnapshot(offlineFixture) {",
+     "sha256": "c6fa71e1960db6740a50a5079f05e64da16b41094fd1004eb210a7963d6630a9",
+     "bytes": 832,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -970,6 +974,7 @@ export const OFFLINE_LLAMA_FIXTURES = Object.freeze({",
+     "sha256": "6b18f54dd0799c1a76cb4d3f1a3f31ec3c60c176d7f61aa1841b448add532e76",
+     "bytes": 491,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -574,57 +613,22 @@ export function applyBoundedStepCorrection(",
+     "sha256": "d79b78f414e4a1019eb48dc2be755ee1eb86465c82e656f7d04ea87b2e3e2cb6",
+     "bytes": 2974,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -553,20 +586,26 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "bec112fb506cc35e87d531751806401e9f3d35a62292a4037279f6781e7c420b",
+     "bytes": 1547,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -531,20 +561,23 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "0f0009caacb77ae7123416bee4356b2c14bc7de1a499701c2cc2178b574c974c",
+     "bytes": 1290,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -494,7 +518,13 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "f77f2805b95fdd6c5a1da683e439d2c55d1a414f079a6a8b7fc6cbf1bbb624f3",
+     "bytes": 689,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -430,6 +453,7 @@ export function enforceImmutablePlantLimits(",
+     "sha256": "b3e71ffe07de56e80d5b41193932ee7ac2a25e2c95fa6f24ec92d338f3729180",
+     "bytes": 349,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -415,11 +421,28 @@ export function validateAuthoritativeCurrentState(currentState) {",
+     "sha256": "f5bc4e2f6b2d0dae1fe588de85d72d4909558339b3ff0bc830b03bbf33988239",
+     "bytes": 1436,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "2e168a1f8ed791ca62b14ca7f7b6c6b9f6743edd",
+     "layer": 2,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T17:48:39Z",
+     "houseCommit": "e94bba81886849c388b69bc68253da08d00981b8",
+     "header": "@@ -44,10 +44,16 @@ export const PLANT_LIMIT_FIELDS = Object.freeze([",
+     "sha256": "598d2526f4cc4c3423d6657977d9016153ab49cc01aca817f5e8e2b1a2285fff",
+     "bytes": 433,
+     "exportDiffSha256": "7eb0d732c640eb9e14663d9d03afe59d1dfd89d0017089387f0b9cd2b6a93a3f",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1690,5 +1972,3 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "b84b060009574486b152d6acbc97dc69e976db5f9a28e953be45468b9161ba9f",
+     "bytes": 135,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1676,13 +1927,44 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "d2de386051aeba99aa10297847c20d58b147b37c1de165a5ce4d30977d29749a",
+     "bytes": 1886,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1669,6 +1916,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "a5c3aa9bd49210fa4b0fcb9a8a1fdf186185c54c581c0459d7f239d97feb7fca",
+     "bytes": 357,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1660,6 +1902,11 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "564c020e9c8a9b74c05cabbea1496e3381a7feae26b66e5b4548f1b6ad3b7cc8",
+     "bytes": 364,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1621,34 +1755,142 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "f0bd55dbb94e199776354eaad18bfe53b38e681304de372ca6f5c0267ab4cb46",
+     "bytes": 5472,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1598,19 +1658,93 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "4741baf6a5222aee4305d2d777992dfeb4ba9a7d00f80358587aa3db90b3d98a",
+     "bytes": 3659,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1565,6 +1624,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "dfb72f54681f350547769b43ee0b94515dafa38ec2d0ad8577bf6e1def05c27c",
+     "bytes": 407,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1535,13 +1584,23 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "748cf49f5e882ccc023dcf49a19c761b6385041d0a6260be1634d8779695d04b",
+     "bytes": 842,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1528,6 +1573,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "0648592634e4a26246c1bd38397d1842e033a5192a0b5c31f4411ec7a33d266e",
+     "bytes": 403,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1516,6 +1557,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "fdd14f337f6c99957d8b4a07c9cc4284e74876844d0a216ea5c0b8ace8f63444",
+     "bytes": 423,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1503,6 +1540,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "0b43a24a9bb8fb50d17417a3f2c5811b8bfe105950d358ca0915c047a6709aec",
+     "bytes": 447,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1490,6 +1523,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "e7b3f0b832e13b4b0d99b626098a94701280e092cda879ece3941e34f62c49ac",
+     "bytes": 462,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1482,7 +1514,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "084032d6acd6024a85072668066891d0409bf61163b537e3ef1ded53348680ef",
+     "bytes": 481,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "b44419e05288c378f5df31987e7c92b72bd350f2",
+     "layer": 3,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:08:45Z",
+     "houseCommit": "e6db631f5dac6b206bf283387b58c5d70f300420",
+     "header": "@@ -1467,11 +1467,43 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "971c49b980963c88ec533e484fb67dd87a54b9c3693589308013f2218c1a166c",
+     "bytes": 2018,
+     "exportDiffSha256": "c4969c7c2441f4cafaf16939bb843414dcd48f42c601d54f582406ed924953c9",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1941,29 +2087,29 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "3f82d43b1bd0073418c1a1440e22a9861becb4b42f025ad76fc1f2edb6fa7e29",
+     "bytes": 1575,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1924,9 +2071,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "9839e38cd070948dd2856a1ca64fe2a4c7e0fe41f69a1965678e7248d8b3798c",
+     "bytes": 617,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1900,8 +2017,38 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "3f3af112d7b78872d348284b92f9875f8397b4938c31df65a8e7634bb85eaf47",
+     "bytes": 1607,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1891,7 +2008,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "6e9ffee51289b2e294dcbc7b007863bd33c903cbc58d8e6af4bab65dbd043e82",
+     "bytes": 309,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1883,6 +1996,10 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "04d6e3169bf846beab251ba118d1f4c522c7a2ebef2e8c38022cec6ed5c64a67",
+     "bytes": 601,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1810,7 +1923,7 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "abd53079200d97f9d1f52d0cc70f039c28d17eefa9c86ff9b1d57c37887315ad",
+     "bytes": 564,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1776,32 +1888,33 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "7c3ed95d65337092b9acf2f85dacb6e110a4fe767bcdfb2c6a245093e6e69fac",
+     "bytes": 2174,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1730,8 +1842,8 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "236cf26e7b2c429d11b8e00d1a2c61745aca306755c5aaff416e899b7b03d67d",
+     "bytes": 704,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1705,12 +1820,9 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "73b1664241c24860cda35e84f65be94c6578db7ab32845c71fe29a589e7695d8",
+     "bytes": 837,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1694,7 +1805,11 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "8082d64378c368cf7f9925c55cbcc7af6e995e3a433c96d6d1b251bf992104f3",
+     "bytes": 423,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1501,9 +1611,10 @@ function extractProviderRequestIdHeader(headers) {",
+     "sha256": "f7c055ab29567f3196fcb649e6c96824afc13578bbec02ae717e2482181fa021",
+     "bytes": 1109,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -1467,6 +1467,116 @@ export function evaluateAndGateLlamaProposal({",
+     "sha256": "9d546a48b64cc0e4605fced48c2337fba1b84192f0cf27c6909b2cb29184c20e",
+     "bytes": 3761,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "c2eb864390aed899a040224eb56ee2586a86decb",
+     "layer": 4,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T19:35:44Z",
+     "houseCommit": "1e34acc4c1fd4be10b662788b39661d0558267f7",
+     "header": "@@ -253,14 +253,14 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "952546ee6975990fbca348e870c97268af3899fb44908a7780dd6dad8edba36c",
+     "bytes": 725,
+     "exportDiffSha256": "7ad2452ec83480ad6a8f948a666b45e7258cc2f3b67a37192faebbb9a100841d",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -1995,26 +2028,62 @@ export async function requestLlamaPhysicsProposal({",
+     "sha256": "000550878baddc0fe75d0a451c7e7d268ecda4fce977986eb55588a572257d7a",
+     "bytes": 3167,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -340,6 +360,19 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "68f95e3454e7b6c0e40ce21804b15956fce9a0cba60f3ac0cf36f3ed8875c21e",
+     "bytes": 668,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -274,13 +278,29 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "3896490f01f3759aa716543e8b5df038757678be21d83ee228cb9afcf280f19a",
+     "bytes": 1874,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -238,6 +238,10 @@ export function extractPhysicsProposal(content) {",
+     "sha256": "820e1af91325e992421cad4f91cb5c3f1ef3affb09ef5ead2a34375a5409a309",
+     "bytes": 394,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    },
+    {
+     "exportCommit": "9c867d33ce1ee4da1c57ed36191c1b9d3545b2ed",
+     "layer": 5,
+     "layerKind": "event",
+     "window": "event-new",
+     "authorDateUtc": "2026-10-26T20:00:58Z",
+     "houseCommit": "7a346d01ffb56a7e57603199aaf7535cbb78574b",
+     "header": "@@ -229,7 +229,7 @@ export function buildLlamaPhysicsPrompt({ instruction = 'Plan safe stopping dece",
+     "sha256": "824a1d1fe5692db72d9d6476202732e58c00823d3505c0214b036f525a127986",
+     "bytes": 524,
+     "exportDiffSha256": "303a94a9176912b671d3216d974624b9fb5f018b32294f6375c121f45620b7cb",
+     "attribution": "FILE_CONTEXT",
+     "tokenRef": {
+      "anchorId": "anchor-2026-10-26",
+      "status": "PARKED"
+     }
+    }
+   ]
+  }
+ ],
+ "anchors": [
+  {
+   "id": "anchor-2026-10-26",
+   "day": "2026-10-26",
+   "exportCommit": "da30a291fa285ad643e85b20d66a33adb0683311",
+   "fileCount": 22,
+   "treeSha256": "6d31e6579e22bebf2e8764c260d60aa14c0813a1f050ef358e8fe86273df9cf6",
+   "tsa": {
+    "status": "PARKED",
+    "mode": "digest-only",
+    "requestDerSha256": "c319cb8279df95e2e6eb4b355f45f343767bf39856c158085a53abf17acbe2d3",
+    "requestDerBytes": 59,
+    "reason": "the live timestamp path is parked; the digest-only request is prepared and not sent; a token proves existed-by, never made-after"
+   }
+  },
+  {
+   "id": "anchor-2026-10-27",
+   "day": "2026-10-27",
+   "exportCommit": "cea457b2c7b2417993e5f9132951ed46607e8bb2",
+   "fileCount": 35,
+   "treeSha256": "06c8a73c4880a5c6d70cc79536b907d06d3ebdad8ac60e9f24f4093f624f9878",
+   "tsa": {
+    "status": "PARKED",
+    "mode": "digest-only",
+    "requestDerSha256": "44529f62561e3b351dc18743d57c6bece718adb9bc5c574a8eeb653e0fe218e0",
+    "requestDerBytes": 59,
+    "reason": "the live timestamp path is parked; the digest-only request is prepared and not sent; a token proves existed-by, never made-after"
+   }
+  },
+  {
+   "id": "anchor-final",
+   "day": "final",
+   "exportCommit": "938d9b5cea6155d59adcd869ae72bb47f527ee59",
+   "fileCount": 41,
+   "treeSha256": "c4b17fabdf50f1495badc252f6a62a10f57209c2010bd3ab05c9efb38b1e0ed1",
+   "tsa": {
+    "status": "PARKED",
+    "mode": "digest-only",
+    "requestDerSha256": "c9eb1dd5f002bbd96019160f25665fe22530a03998378ff52c6a62d28349468f",
+    "requestDerBytes": 59,
+    "reason": "the live timestamp path is parked; the digest-only request is prepared and not sent; a token proves existed-by, never made-after"
+   }
+  }
+ ],
+ "mediaProvenance": {
+  "c2pa": "signed with a development certificate",
+  "trustList": "not on a C2PA trust list",
+  "status": "NO_MEDIA_IN_THIS_EXPORT",
+  "binds": "the demo video, when cut, carries a C2PA manifest signed with a development certificate"
+ },
+ "reproduce": "every hash above is recomputed from this clone alone: node tools/export-generator.mjs --verify-export ."
+}
