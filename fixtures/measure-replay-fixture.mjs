@@ -58,28 +58,44 @@ function lookupLatestDoorReceiptMap(targetStats) {
     return map;
   }
   const targetByAbs = new Map(targetStats.map((s) => [s.absPath, s]));
+  const openRcptByRel = new Map();
+  const wardenByOpenRcpt = new Map();
   const lines = fs.readFileSync(ledgerAbs, 'utf8').split('\n');
   for (let i = lines.length - 1; i >= 0; i -= 1) {
     const line = lines[i].trim();
     if (!line) continue;
     try {
       const row = JSON.parse(line);
-      const refs = Array.isArray(row.refs) ? row.refs : (Array.isArray(row.scope) ? row.scope : []);
-      const rowSha = row.content_sha256 || row.sha256 || null;
-      for (const ref of refs) {
-        const refAbs = path.resolve(REPO_ROOT, ref);
-        const st = targetByAbs.get(refAbs);
-        if (st && !map.has(st.relPath) && (!rowSha || rowSha === st.sha256)) {
-          map.set(st.relPath, {
-            rcptId: row.id || null,
-            woId: row.wo || row.work_order_id || null
-          });
+      const refs = Array.isArray(row.refs) ? row.refs : [];
+      if (row.author === 'door-verifier' && refs.length >= 2) {
+        const woRef = refs.find((r) => typeof r === 'string' && r.startsWith('wo_'));
+        const rcptRef = refs.find((r) => typeof r === 'string' && r.startsWith('rcpt_'));
+        if (woRef && rcptRef && !wardenByOpenRcpt.has(rcptRef)) {
+          wardenByOpenRcpt.set(rcptRef, { woId: woRef, verifiedRcptId: row.id });
         }
       }
-      if (map.size === targetStats.length) break;
+      for (const ref of refs) {
+        if (typeof ref !== 'string' || ref.startsWith('wo_') || ref.startsWith('rcpt_')) continue;
+        const refAbs = path.resolve(REPO_ROOT, ref);
+        const st = targetByAbs.get(refAbs);
+        if (st && !openRcptByRel.has(st.relPath)) {
+          openRcptByRel.set(st.relPath, row.id);
+        }
+      }
+      if (openRcptByRel.size === targetStats.length) {
+        const allResolved = [...openRcptByRel.values()].every((id) => wardenByOpenRcpt.has(id));
+        if (allResolved) break;
+      }
     } catch {
       // ignore malformed line
     }
+  }
+  for (const [relPath, openRcptId] of openRcptByRel.entries()) {
+    const w = wardenByOpenRcpt.get(openRcptId);
+    map.set(relPath, {
+      woId: w ? w.woId : null,
+      rcptId: w ? w.verifiedRcptId : openRcptId
+    });
   }
   return map;
 }
