@@ -282,6 +282,7 @@ async function main() {
     const requiredRelFiles = [
       ...Object.values(localLauncher.BOUND_LOCAL_OWNER_MODULES || {}).map((m) => m.repoRelativePath),
       ...Object.values(localLauncher.CANDIDATE_PRIVATE_OWNER_MOUNT_ALLOWLIST || {}).map((r) => r.repoRelativePath),
+      'house-only/READINESS-MANIFEST.json',
       'house-only/meta-hackathon-route.mjs',
       DEFAULT_PNG_REL,
       MOTION_OFF_PNG_REL
