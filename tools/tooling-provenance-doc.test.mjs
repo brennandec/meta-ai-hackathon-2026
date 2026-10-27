@@ -27,7 +27,7 @@ const REPO = findRepo();
 const MUSE = join(REPO, 'house-only/MUSE-TOOLING-PROVENANCE-01.json');
 const HOUSE = join(REPO, 'house-only/META-AI-TOOLING-PROVENANCE-LEDGER.json');
 const SCAN = join(REPO, 'house-only/Build-seat-DISCLOSURE-SCAN-02.json');
-const BUS = join(REPO, 'house-only/house log.md');
+const LEDGER = join(REPO, 'house-only/receipts.jsonl');
 const WO = join(REPO, 'house-only/meta-hackathon-product-v1.md');
 const TOOL = join(TESTDIR, 'tooling-provenance-doc.mjs');
 
@@ -45,15 +45,15 @@ test('generator is deterministic: two runs byte-identical', () => {
   assert.equal(readFileSync(a, 'utf8'), readFileSync(b, 'utf8'));
 });
 
-test('every cited wo_ exists in the receipt log', () => {
+test('every cited wo_ exists in the ledger receipts', () => {
   const dir = realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'tpd-wo-')));
   const out = join(dir, 'doc.md');
   assert.equal(runDoc(out).status, 0);
   const md = readFileSync(out, 'utf8');
   const ids = [...new Set([...md.matchAll(/\bwo_[0-9a-f]{16}\b/g)].map((m) => m[0]))];
   assert.ok(ids.length >= 20, 'expected 20+ wo_ ids, got ' + ids.length);
-  const bus = readFileSync(BUS, 'utf8');
-  const missing = ids.filter((id) => !bus.includes(id));
+  const ledger = readFileSync(LEDGER, 'utf8');
+  const missing = ids.filter((id) => !ledger.includes(id));
   assert.deepEqual(missing, []);
 });
 
