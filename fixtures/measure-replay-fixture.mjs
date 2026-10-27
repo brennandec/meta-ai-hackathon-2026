@@ -6,7 +6,7 @@
  * Reads only landed files and the unfreeze packet. Copies the candidate folder into a fresh mkdtemp
  * (note removed for export)
  * Checks every packet diff at 0 fuzz against base bytes read from git, checks every post-condition file
- * against the packet rev 7.1 section by sha256, and prints every number from disk or live subprocess output.
+ * against the packet parts23PostCondition section by sha256, and prints every number from disk or live subprocess output.
  * Exit code 0 only when every check in the printed table passes.
  */
 
@@ -26,6 +26,7 @@ const CAND_REL = '.';
 const LAUNCHER_REL = `${CAND_REL}/launcher.mjs`;
 const BACKEND_REL = `${CAND_REL}/candidate-backend.mjs`;
 const BACKEND_TEST_REL = `${CAND_REL}/candidate-backend.test.mjs`;
+const SERVE_TEST_REL = `${CAND_REL}/launcher-serve.test.mjs`;
 const FIXTURE_REL = `${CAND_REL}/fixtures/synthetic-transport-run-record.json`;
 const HARNESS_REL = `${CAND_REL}/fixtures/replay-rigs.test.mjs`;
 const MEASURE_REL = `${CAND_REL}/fixtures/measure-replay-fixture.mjs`;
@@ -37,7 +38,7 @@ const DEFAULT_PNG_REL =
 const MOTION_OFF_PNG_REL =
   'house-only/synthetic-replay-marker-motion-off.png';
 
-const RUNTIME_LATCH_BASENAMES = new Set(['LIVE-RUN-INTENT.json', 'LIVE-RUN-RECEIPT.json', 'LIVE-RUN-ATTEMPT-LATCH.json']);
+const RUNTIME_LATCH_BASENAMES = new Set(['LIVE-RUN-INTENT.json', 'LIVE-RUN-RECEIPT.json', 'LIVE-RUN-ATTEMPT-LATCH.json', 'LIVE-RUN-RESETS.jsonl']);
 
 const WORKSPACE_COPIES = Object.freeze([
   'app',
@@ -569,6 +570,10 @@ async function main() {
   if (!rev7 || rev7.revision !== '7.1' || !packetObj.rev7PostCondition || packetObj.rev7PostCondition.revision !== 7) {
     throw new Error('Packet has no rev7_1PostCondition section with revision 7.1 beside the rev 7 record');
   }
+  const latest = packetObj.parts23PostCondition;
+  if (!latest || latest.revision !== '7.2' || !Array.isArray(latest.postConditionFiles)) {
+    throw new Error('Packet has no parts23PostCondition section with revision 7.2 beside the rev 7.1 record');
+  }
   let gitBase;
   try {
     gitBase = resolveBaseGitDir(packetObj);
@@ -586,9 +591,15 @@ async function main() {
   const priorRecordsIdentical =
     sha256Buf(priorPrefix) === prior.prefixSha256 && priorRebuilt.length === prior.bytes && sha256Buf(priorRebuilt) === prior.sha256;
   if (!priorRecordsIdentical) failures.push('packet rev 6 and rev 7 records');
+  const prior71 = latest.priorPacket || {};
+  const prior71Prefix = packetStat.buf.subarray(0, prior71.prefixBytes || 0);
+  const prior71Rebuilt = Buffer.concat([prior71Prefix, Buffer.from(String(prior71.closingText || ''), 'utf8')]);
+  const prior71RecordsIdentical =
+    sha256Buf(prior71Prefix) === prior71.prefixSha256 && prior71Rebuilt.length === prior71.bytes && sha256Buf(prior71Rebuilt) === prior71.sha256;
+  if (!prior71RecordsIdentical) failures.push('packet rev 7.1 records');
 
-  const landed = [LAUNCHER_REL, BACKEND_REL, BACKEND_TEST_REL, HARNESS_REL, MEASURE_REL, FIXTURE_REL].map((rel) => statArtifact(rel));
-  const rev7ByPath = new Map(rev7.postConditionFiles.map((row) => [row.path, row]));
+  const landed = [LAUNCHER_REL, BACKEND_REL, BACKEND_TEST_REL, HARNESS_REL, MEASURE_REL, FIXTURE_REL, SERVE_TEST_REL].map((rel) => statArtifact(rel));
+  const rev7ByPath = new Map(latest.postConditionFiles.map((row) => [row.path, row]));
   const postRows = landed.map((s) => {
     const row = rev7ByPath.get(s.relPath);
     const match = Boolean(row) && row.bytes === s.bytes && row.sha256 === s.sha256;
@@ -697,13 +708,14 @@ async function main() {
     .filter((l) => /^(ok |not ok |1\.\.|# tests |# pass |# fail |# skipped )/.test(l));
 
   const lines = [
-    `E4 part 1 rev 7.1 measurement · candidate-launcher-unfreeze-e4-v1 · packet rev7_1PostCondition generatedAt ${rev7.generatedAt}`,
+    `E4 rev 7.2 measurement (parts 2-3 post-condition) · candidate-launcher-unfreeze-e4-v1 · packet parts23PostCondition generatedAt ${latest.generatedAt} · rev7_1PostCondition generatedAt ${rev7.generatedAt}`,
     `root: ${REPO_ROOT} (inside os.tmpdir(): ${REPO_ROOT === realTmp || REPO_ROOT.startsWith(realTmp + path.sep)}) · base bytes git dir: ${gitDir} (${gitBase.source})`,
     '',
-    '1. Post-condition files (disk vs packet rev7_1PostCondition, by bytes and sha256):',
+    '1. Post-condition files (disk vs packet parts23PostCondition, by bytes and sha256):',
     ...postRows.map((p) => `   - ${mark(p.match)} \`${p.stat.relPath}\`: ${p.stat.bytes} B · sha256 \`${p.stat.sha256}\` · packet ${p.row ? `${p.row.bytes} B \`${p.row.sha256}\`` : 'no row'}${fmtRcpt(p.stat.relPath)}`),
-    `   - \`${PACKET_REL}\`: ${packetStat.bytes} B · sha256 \`${packetStat.sha256}\` (schema \`${packetObj.schema}\`, rev ${packetObj.revision}, rev7PostCondition ${packetObj.rev7PostCondition.revision}, rev7_1PostCondition ${rev7.revision})${fmtRcpt(PACKET_REL)}`,
+    `   - \`${PACKET_REL}\`: ${packetStat.bytes} B · sha256 \`${packetStat.sha256}\` (schema \`${packetObj.schema}\`, rev ${packetObj.revision}, rev7PostCondition ${packetObj.rev7PostCondition.revision}, rev7_1PostCondition ${rev7.revision}, parts23PostCondition ${latest.revision})${fmtRcpt(PACKET_REL)}`,
     `   - ${mark(priorRecordsIdentical)} rev 6 and rev 7 records byte-identical: first ${prior.prefixBytes} B sha256 \`${sha256Buf(priorPrefix)}\` · rebuilt rev 7 packet ${priorRebuilt.length} B sha256 \`${sha256Buf(priorRebuilt)}\``,
+    `   - ${mark(prior71RecordsIdentical)} rev 6, rev 7 and rev 7.1 records byte-identical: first ${prior71.prefixBytes} B sha256 \`${sha256Buf(prior71Prefix)}\` · rebuilt rev 7.1 packet ${prior71Rebuilt.length} B sha256 \`${sha256Buf(prior71Rebuilt)}\``,
     `   - \`${HONESTY_VALIDATOR_REL}\`: ${validatorStat.bytes} B · sha256 \`${validatorStat.sha256}\`${fmtRcpt(HONESTY_VALIDATOR_REL)}`,
     `   - \`${DEFAULT_PNG_REL}\`: ${defaultPngStat.bytes} B · sha256 \`${defaultPngStat.sha256}\` · IHDR ${defaultIhdr.width}x${defaultIhdr.height}`,
     `   - \`${MOTION_OFF_PNG_REL}\`: ${motionOffPngStat.bytes} B · sha256 \`${motionOffPngStat.sha256}\` · IHDR ${motionOffIhdr.width}x${motionOffIhdr.height}`,
