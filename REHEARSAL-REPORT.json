@@ -3,14 +3,14 @@
   "plateId": "M-NEXT-25",
   "wo": "muse-rehearsal-runner-01",
   "author": "muse",
-  "startedAtUtc": "2026-10-27T05:15:26.987Z",
-  "endedAtUtc": "2026-10-27T05:15:30.481Z",
+  "startedAtUtc": "2026-10-27T05:36:50.387Z",
+  "endedAtUtc": "2026-10-27T05:36:56.440Z",
   "candidateDir": ".",
   "repoRoot": "house-only/manymoats-demo",
   "isolation": {
-    "home": "house-only/home-asgxXG",
+    "home": "house-only/home-oJQUTU",
     "homeIsTemp": true,
-    "tmpdir": "house-only/home-asgxXG",
+    "tmpdir": "house-only/home-oJQUTU",
     "nodePath": "",
     "nodeVersion": "v22.23.2",
     "network": "external refused via NODE_OPTIONS --import no-network preload",
@@ -27,7 +27,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 156,
+      "durationMs": 204,
       "inputHashes": {
         "launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380"
       },
@@ -49,7 +49,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 85,
+      "durationMs": 115,
       "inputHashes": {
         "tools/accepted-engineering-metric.test.mjs": "6c6d5d50fa94ddcc2565602c71a6120690dbde00c283eb3676034d811a37673e",
         "tools/accepted-engineering-metric.mjs": "1c9af20677f0a5ba0aca0238129ad3dc69588ef286199bf6cf1a824103548de0"
@@ -63,7 +63,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 53.455042"
+          "# duration_ms 73.435334"
         ],
         "stderrTail": []
       }
@@ -77,7 +77,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 91,
+      "durationMs": 122,
       "inputHashes": {
         "tools/beat-map.test.mjs": "9eb586f565c0b153ead3cb6eed6ff94046ba148570457298f2014b8db90946b8",
         "tools/beat-map.mjs": "68bf75a854d75a32584fe03f6147f6a3a5ef573dedcbd8da2b03b2ea1c1ad637"
@@ -91,7 +91,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 60.376375"
+          "# duration_ms 79.669375"
         ],
         "stderrTail": []
       }
@@ -105,7 +105,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 92,
+      "durationMs": 118,
       "inputHashes": {
         "tools/capture-slate.test.mjs": "78ed068a368d1de062b86f705ffdd1b7e1eda4acc1672d28d8b8c78f44ece2ef",
         "tools/capture-slate.mjs": "7ddf085d706ebd959d7d4fbbf300c54cfe7fd037f55c3794b57b4e3d5fe17944"
@@ -119,7 +119,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 59.978584"
+          "# duration_ms 78.076542"
         ],
         "stderrTail": []
       }
@@ -133,7 +133,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 86,
+      "durationMs": 105,
       "inputHashes": {
         "tools/event-new-manifest.test.mjs": "1e315b705a0b4cfb3c33b4debc9f430b9b32136c942120a80d1bd3f09ac1a561",
         "tools/event-new-manifest.mjs": "d40e6c4f02b7ca68333ac79d2dde6eb057c0836634444e533c1206e1aef427ec"
@@ -147,7 +147,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 54.947583"
+          "# duration_ms 66.1915"
         ],
         "stderrTail": []
       }
@@ -161,7 +161,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 106,
+      "durationMs": 127,
       "inputHashes": {
         "tools/fault-injector.test.mjs": "38c2661fc1529724f2621d3480e10efde944145e4a750d7c4149de965cb8f8b5",
         "tools/fault-injector.mjs": "da8d1374b6397cdbab10fd55efcf2f4a341ee398c121df268d24be97c529ee43"
@@ -175,7 +175,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 74.444959"
+          "# duration_ms 90.573625"
         ],
         "stderrTail": []
       }
@@ -189,7 +189,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 106,
+      "durationMs": 141,
       "inputHashes": {
         "tools/fixture-ledger.test.mjs": "6579c1125121682f1c4fd15b5e2de75d52e7bc8b39609542c92fbbd90ee9c43e",
         "tools/fixture-ledger.mjs": "8aecf785b1c91a00b7ef0e7c49a907e94f076dd1e97a69dd01a972010010c5c7"
@@ -203,7 +203,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 75.104125"
+          "# duration_ms 87.66375"
         ],
         "stderrTail": []
       }
@@ -217,7 +217,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 97,
+      "durationMs": 112,
       "inputHashes": {
         "tools/frame-test.test.mjs": "291046fa3dcf8ae8245a9f3ee03cd6dccfa2c529255c793cbef05262129da47b",
         "tools/frame-test.mjs": "63c08107acbef449b94502f462f4f7e6824027b69740fa61678d45d011fba51b"
@@ -231,7 +231,7 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 61.839625"
+          "# duration_ms 71.862625"
         ],
         "stderrTail": []
       }
@@ -245,7 +245,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 86,
+      "durationMs": 97,
       "inputHashes": {
         "tools/honesty-validator.test.mjs": "2188208266eecae25a2c936482f1b0419aba1ffe534edda02adbeaed9642f918",
         "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1"
@@ -259,7 +259,35 @@
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 52.084583"
+          "# duration_ms 60.621125"
+        ],
+        "stderrTail": []
+      }
+    },
+    {
+      "id": "tools-test:judge-clock.test.mjs",
+      "command": [
+        "node",
+        "--test",
+        "house-only/judge-clock.test.mjs"
+      ],
+      "cwd": "house-only/meta-portable-demo-candidate",
+      "exit": 0,
+      "durationMs": 2315,
+      "inputHashes": {
+        "tools/judge-clock.test.mjs": "05a48074038be2f9cd3b675c47a8d333dd23786e1bd18a41614748cdaf5d406d",
+        "tools/judge-clock.mjs": "ea656c71b5eaca5665b752a86a84683c02b707b15d0c53931cea3f331a974e32"
+      },
+      "verdict": "PASS",
+      "reason": "exit 0",
+      "detail": {
+        "stdoutTail": [
+          "# pass 5",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 2279.234791"
         ],
         "stderrTail": []
       }
@@ -273,21 +301,21 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 1559,
+      "durationMs": 1553,
       "inputHashes": {
-        "tools/rehearse.test.mjs": "1c3ece9fe5ea01362cbffc2de898d536d3bee77f1bbcda3dcc23736d2c9342c5",
-        "tools/rehearse.mjs": "49f53fdc4feed293f54f8816c49375ae25a57ec5abd055aed4fb1b7f29437223"
+        "tools/rehearse.test.mjs": "c0a248f2ba9980aee33f0a1b044a2c1b822b4dd64ce30590219c83be0b854ace",
+        "tools/rehearse.mjs": "45860ba2080eac1b47321b2f9ea933ba4e20a879d4e7ef07395d5ece10a7c735"
       },
       "verdict": "PASS",
       "reason": "exit 0",
       "detail": {
         "stdoutTail": [
-          "# pass 5",
+          "# pass 6",
           "# fail 0",
           "# cancelled 0",
           "# skipped 0",
           "# todo 0",
-          "# duration_ms 1526.141"
+          "# duration_ms 1513.775375"
         ],
         "stderrTail": []
       }
@@ -301,7 +329,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 42,
+      "durationMs": 36,
       "inputHashes": {
         "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
         "fixtures/faults/fault-case-1-0000.json": "ba3cd95bbd8c8b4a56890b4847c0da044660abd8d350ffe8c1a8dd4640b3ece2"
@@ -324,7 +352,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 40,
+      "durationMs": 35,
       "inputHashes": {
         "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
         "fixtures/faults/fault-case-1-0001.json": "159ff7cbfde454e650fdb757c81e4a30cf2be3941f252236887e1606e1ce49b8"
@@ -347,7 +375,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 44,
+      "durationMs": 35,
       "inputHashes": {
         "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
         "fixtures/faults/fault-case-1-0002.json": "e544d17083be9b4a2068b04e405f26259219ef9c7135e7e2fa5dc38c1a5d1634"
@@ -370,7 +398,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 38,
+      "durationMs": 40,
       "inputHashes": {
         "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
         "fixtures/faults/fault-case-1-0003.json": "0a7bf0ff4184ff8bc19f187607bc6c179eb1ab4e4a90bbeefdbe776953ce2988"
@@ -393,7 +421,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 43,
+      "durationMs": 66,
       "inputHashes": {
         "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
         "fixtures/faults/index.json": "4692989ba4443720244a9e7e2c0d31d2bdbd051c776c81221ded4173d1537b87"
@@ -416,7 +444,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 47,
+      "durationMs": 70,
       "inputHashes": {
         "tools/honesty-validator.mjs": "3102a4dda3ff83f235df1e8b458df6233b2de2c4adfc5360fbcdd4cec365a0c1",
         "fixtures/synthetic-transport-run-record.json": "a51f2b37d8653e1cbcd5156e8127f329ff19be8b7c53362f25e5226cb01c4df0"
@@ -444,21 +472,21 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 49,
+      "durationMs": 56,
       "inputHashes": {
         "tools/beat-map.mjs": "68bf75a854d75a32584fe03f6147f6a3a5ef573dedcbd8da2b03b2ea1c1ad637",
-        "../../hackathon-command-desk/MUSE-FILM-SCRIPT-V3-01.md": "6c0c9617654f2e6cf0ea5d51c00233479562c69e1c1b3a6203ed32dd1b483846",
+        "../../hackathon-command-desk/MUSE-FILM-SCRIPT-V3-01.md": "4422f3ca5e5c7228352e5682f414eb17ed2c9db683ecf0807b0bb520749c1186",
         "EVENT-NEW-MANIFEST.json": "0ee4a122fad5b266e1dccf39b58fc1b19e46bf1a789310a9474df5efc54e9105"
       },
       "verdict": "PASS",
       "reason": "exit 0; regenerated map differs from landed BEAT-MAP.json (inputs moved on)",
       "detail": {
         "stdoutTail": [
-          "BEAT-MAP WROTE house-only/BEAT-MAP.regen.json pass=0 baseline-only=2 no-capture=6"
+          "BEAT-MAP WROTE house-only/BEAT-MAP.regen.json pass=7 baseline-only=0 no-capture=1"
         ],
         "stderrTail": [],
         "outputMatchesLanded": false,
-        "regenBytes": 16823,
+        "regenBytes": 19543,
         "landedBytes": 21016
       }
     },
@@ -476,7 +504,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 56,
+      "durationMs": 39,
       "inputHashes": {
         "tools/fixture-ledger.mjs": "8aecf785b1c91a00b7ef0e7c49a907e94f076dd1e97a69dd01a972010010c5c7",
         "BEAT-MAP.json": "b2ca5f0a16cb905528b83beb0c78c0696554dc901360bbc6cb226f4358f52853"
@@ -514,7 +542,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 0,
-      "durationMs": 198,
+      "durationMs": 225,
       "inputHashes": {
         "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380"
       },
@@ -536,7 +564,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 1,
-      "durationMs": 57,
+      "durationMs": 68,
       "inputHashes": {
         "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
         "stage:ui owner uid.mjs": "36e8f78ce9bf9ba8a237a2ddefc03890cc6f6d83d3ce01ffde76e807d5f5ba0c",
@@ -562,7 +590,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 1,
-      "durationMs": 76,
+      "durationMs": 57,
       "inputHashes": {
         "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
         "stage:ui owner uid.mjs": "9f76fb359e8c4606b3dd4fa782739752fc0895cb233833f6345863daa8b879f4",
@@ -588,7 +616,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 1,
-      "durationMs": 86,
+      "durationMs": 51,
       "inputHashes": {
         "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
         "stage:ui owner uid.mjs": "aa51c7e4f072ff11eb472238ab6f3fe0cd851661e3240f7e9f3d2a4fa211ce78",
@@ -614,7 +642,7 @@
       ],
       "cwd": "house-only/meta-portable-demo-candidate",
       "exit": 1,
-      "durationMs": 70,
+      "durationMs": 75,
       "inputHashes": {
         "stage:launcher.mjs": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
         "stage:ui owner uid.mjs": "681b78b75a441ed04fa5ea0e55c3b0e6d29f7d2f0a45556217da6ff733450b6c",
@@ -634,8 +662,8 @@
   ],
   "summary": {
     "verdict": "PASS",
-    "total": 24,
-    "pass": 23,
+    "total": 25,
+    "pass": 24,
     "fail": 0,
     "skipped": 1
   }
