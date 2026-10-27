@@ -326,13 +326,15 @@ async function main() {
     );
     backendUnfrozenCounts = parseTapCounts(backendTap);
 
-    const checkJson = JSON.parse(
-      execFileSync(process.execPath, [path.join(candDst, 'launcher.mjs'), '--check'], {
+    const checkStdout = execFileSync(
+      process.execPath,
+      [path.join(candDst, 'launcher.mjs'), '--check'],
+      {
         cwd: REPO_ROOT,
         encoding: 'utf8'
-      })
-    );
-    launcherCheckStatus = checkJson.status;
+      }
+    ).trim();
+    launcherCheckStatus = checkStdout.split(/[:\s]/)[0];
 
     const launcherGradeRes = gradeFile(
       'launcher.mjs',
