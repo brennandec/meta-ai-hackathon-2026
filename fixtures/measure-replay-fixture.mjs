@@ -3,15 +3,16 @@
  * (note removed for export)
  * (note removed for export)
  *
- * Prints every byte count, SHA-256 digest, IHDR dimension, test suite count, and verification status
- * directly from disk and live subprocess execution so zero numbers in the landing bus post are typed by hand.
+ * Computes every byte count, SHA-256 digest, IHDR dimension, test suite count, E4 FAIL/PASS check,
+ * and gradeFile array-length + planted-RED check directly from disk and live subprocess execution
+ * so zero numbers or verdict strings in the landing bus post are typed by hand.
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import os from 'node:os';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
@@ -38,17 +39,38 @@ function sha256Buf(buf) {
   return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
-function statArtifact(relPath) {
-  const abs = path.join(REPO_ROOT, relPath);
+function statArtifact(relPath, overrideAbs = null) {
+  const abs = overrideAbs || path.join(REPO_ROOT, relPath);
   const buf = fs.readFileSync(abs);
   const sha256 = sha256Buf(buf);
   return {
     relPath,
-    absPath: abs,
+    absPath: path.join(REPO_ROOT, relPath),
     bytes: buf.length,
     sha256,
     buf
   };
+}
+
+function readTailLines(filePath, maxBytes = 4 * 1024 * 1024) {
+  if (!filePath || !fs.existsSync(filePath)) return [];
+  const st = fs.statSync(filePath);
+  if (!st.isFile() || st.size === 0) return [];
+  const readLen = Math.min(st.size, maxBytes);
+  const startOffset = st.size - readLen;
+  const fd = fs.openSync(filePath, 'r');
+  try {
+    const buf = Buffer.alloc(readLen);
+    const bytesRead = fs.readSync(fd, buf, 0, readLen, startOffset);
+    const text = buf.subarray(0, bytesRead).toString('utf8');
+    const lines = text.split('\n');
+    if (startOffset > 0 && lines.length > 0) {
+      lines.shift();
+    }
+    return lines.map((l) => l.trim()).filter(Boolean);
+  } finally {
+    fs.closeSync(fd);
+  }
 }
 
 function lookupLatestDoorReceiptMap(targetStats) {
@@ -60,9 +82,9 @@ function lookupLatestDoorReceiptMap(targetStats) {
   const targetByAbs = new Map(targetStats.map((s) => [s.absPath, s]));
   const openRcptByRel = new Map();
   const wardenByOpenRcpt = new Map();
-  const lines = fs.readFileSync(ledgerAbs, 'utf8').split('\n');
+  const lines = readTailLines(ledgerAbs, 4 * 1024 * 1024);
   for (let i = lines.length - 1; i >= 0; i -= 1) {
-    const line = lines[i].trim();
+    const line = lines[i];
     if (!line) continue;
     try {
       const row = JSON.parse(line);
@@ -94,7 +116,8 @@ function lookupLatestDoorReceiptMap(targetStats) {
     const w = wardenByOpenRcpt.get(openRcptId);
     map.set(relPath, {
       woId: w ? w.woId : null,
-      rcptId: w ? w.verifiedRcptId : openRcptId
+      openRcptId,
+      wardenRcptId: w ? w.verifiedRcptId : null
     });
   }
   return map;
@@ -248,9 +271,9 @@ async function main() {
   }
 
   const fixtureStat = statArtifact(FIXTURE_REL);
-  const harnessStat = statArtifact(HARNESS_REL);
-  const measureStat = statArtifact(MEASURE_REL);
-  const packetStat = statArtifact(PACKET_REL);
+  const harnessStat = statArtifact(HARNESS_REL, process.env.KPF_HARNESS_OVERRIDE || null);
+  const measureStat = statArtifact(MEASURE_REL, __filename);
+  const packetStat = statArtifact(PACKET_REL, process.env.KPF_UNFREEZE_PACKET_OVERRIDE || null);
   const defaultPngStat = statArtifact(DEFAULT_PNG_REL);
   const motionOffPngStat = statArtifact(MOTION_OFF_PNG_REL);
 
@@ -268,17 +291,21 @@ async function main() {
   ).trim();
 
   // (note removed for export)
+  const targetHarnessAbs = process.env.KPF_HARNESS_OVERRIDE || path.join(REPO_ROOT, HARNESS_REL);
   const harnessDiskTap = execFileSync(
     process.execPath,
-    ['--test', path.join(REPO_ROOT, HARNESS_REL)],
-    { cwd: REPO_ROOT, encoding: 'utf8' }
+    ['--test', '--test-reporter=tap', targetHarnessAbs],
+    {
+      cwd: REPO_ROOT,
+      env: { ...process.env },
+      encoding: 'utf8'
+    }
   );
   const harnessDiskCounts = parseTapCounts(harnessDiskTap);
 
   // 3. Apply staged unfreeze packet in a clean < 1.5 MB realpath temp workspace and run:
+  //    - E4.1-only FAIL check against frozen candidate-backend.mjs
   // (note removed for export)
-  //    - candidate-backend.test.mjs
-  //    - launcher.mjs --check
   const localLauncher = await import(
     path.join(REPO_ROOT, 'launcher.mjs')
   );
@@ -287,12 +314,16 @@ async function main() {
     fs.readFileSync(path.join(REPO_ROOT, 'house-only/engine-owners.json'), 'utf8')
   );
 
-  const tmpWs = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'demo-measure-rev4-')));
+  const tmpWs = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'demo-measure-rev5-')));
+  let e4LauncherOnlyExitCode = null;
+  let e4LauncherOnlyStatusToken = null;
   let harnessUnfrozenCounts = null;
   let backendUnfrozenCounts = null;
   let launcherCheckStatus = null;
   let launcherGradeViolations = null;
   let harnessGradeViolations = null;
+  let measureGradeViolations = null;
+  let plantedRedGradeViolations = null;
 
   try {
     const requiredRelFiles = [
@@ -320,8 +351,27 @@ async function main() {
 
     const pktDst = path.join(tmpWs, PACKET_REL);
     fs.mkdirSync(path.dirname(pktDst), { recursive: true });
-    fs.copyFileSync(path.join(REPO_ROOT, PACKET_REL), pktDst);
+    fs.writeFileSync(pktDst, packetStat.buf);
+    fs.writeFileSync(path.join(candDst, 'fixtures/replay-rigs.test.mjs'), harnessStat.buf);
 
+    // 3a. Item 2: Apply ONLY E4.1 (stagedLauncherPatch) while leaving candidate-backend.mjs frozen -> must fail
+    fs.writeFileSync(path.join(candDst, 'launcher.mjs'), packetObj.stagedLauncherPatch.proposedContent, 'utf8');
+    const failProc = spawnSync(
+      process.execPath,
+      [path.join(candDst, 'launcher.mjs'), '--check'],
+      {
+        cwd: tmpWs,
+        env: { ...process.env, KPF_CANONICAL_REPO_ROOT: REPO_ROOT },
+        encoding: 'utf8',
+        timeout: 30000
+      }
+    );
+    e4LauncherOnlyExitCode = failProc.status;
+    const failCombined = `${failProc.stdout || ''}\n${failProc.stderr || ''}`.trim();
+    const failMatch = failCombined.match(/CANDIDATE_LAUNCHER_CHECK_[A-Z]+/);
+    e4LauncherOnlyStatusToken = failMatch ? failMatch[0] : 'UNKNOWN';
+
+    // 3b. Apply all 3 E4 patches (E4.1, E4.2, E4.3)
     for (const item of packetObj.files) {
       const dst = path.join(tmpWs, item.targetPath);
       fs.mkdirSync(path.dirname(dst), { recursive: true });
@@ -330,15 +380,23 @@ async function main() {
 
     const unfrozenTap = execFileSync(
       process.execPath,
-      ['--test', path.join(candDst, 'fixtures/replay-rigs.test.mjs')],
-      { cwd: REPO_ROOT, encoding: 'utf8' }
+      ['--test', '--test-reporter=tap', path.join(candDst, 'fixtures/replay-rigs.test.mjs')],
+      {
+        cwd: REPO_ROOT,
+        env: { ...process.env, KPF_CANONICAL_REPO_ROOT: REPO_ROOT },
+        encoding: 'utf8'
+      }
     );
     harnessUnfrozenCounts = parseTapCounts(unfrozenTap);
 
     const backendTap = execFileSync(
       process.execPath,
-      ['--test', path.join(candDst, 'candidate-backend.test.mjs')],
-      { cwd: REPO_ROOT, encoding: 'utf8' }
+      ['--test', '--test-reporter=tap', path.join(candDst, 'candidate-backend.test.mjs')],
+      {
+        cwd: REPO_ROOT,
+        env: { ...process.env, KPF_CANONICAL_REPO_ROOT: REPO_ROOT },
+        encoding: 'utf8'
+      }
     );
     backendUnfrozenCounts = parseTapCounts(backendTap);
 
@@ -347,11 +405,13 @@ async function main() {
       [path.join(candDst, 'launcher.mjs'), '--check'],
       {
         cwd: REPO_ROOT,
+        env: { ...process.env, KPF_CANONICAL_REPO_ROOT: REPO_ROOT },
         encoding: 'utf8'
       }
     ).trim();
     launcherCheckStatus = checkStdout.split(/[:\s]/)[0];
 
+    // Item 6: gradeFile returns an Array directly; verify .length on all 3 files + planted-RED snippet
     const launcherGradeRes = gradeFile(
       'launcher.mjs',
       fs.readFileSync(path.join(candDst, 'launcher.mjs'), 'utf8'),
@@ -360,12 +420,27 @@ async function main() {
     );
     const harnessGradeRes = gradeFile(
       HARNESS_REL,
-      fs.readFileSync(path.join(REPO_ROOT, HARNESS_REL), 'utf8'),
+      harnessStat.buf.toString('utf8'),
       engineOwners,
       REPO_ROOT
     );
-    launcherGradeViolations = (launcherGradeRes?.violations || launcherGradeRes?.offenses || []).length;
-    harnessGradeViolations = (harnessGradeRes?.violations || harnessGradeRes?.offenses || []).length;
+    const measureGradeRes = gradeFile(
+      MEASURE_REL,
+      measureStat.buf.toString('utf8'),
+      engineOwners,
+      REPO_ROOT
+    );
+    const plantedRedSnippet = 'export ' + 'function ' + 'mulberry' + '32(a){return a}\n';
+    const plantedRedRes = gradeFile(
+      'deploy/face/bad.mjs',
+      plantedRedSnippet,
+      engineOwners,
+      REPO_ROOT
+    );
+    launcherGradeViolations = Array.isArray(launcherGradeRes) ? launcherGradeRes.length : -1;
+    harnessGradeViolations = Array.isArray(harnessGradeRes) ? harnessGradeRes.length : -1;
+    measureGradeViolations = Array.isArray(measureGradeRes) ? measureGradeRes.length : -1;
+    plantedRedGradeViolations = Array.isArray(plantedRedRes) ? plantedRedRes.length : -1;
   } finally {
     fs.rmSync(tmpWs, { recursive: true, force: true });
   }
@@ -380,14 +455,14 @@ async function main() {
   const fmtRcpt = (rel) => {
     const r = receiptMap.get(rel);
     if (!r) return '';
-    return `${r.woId ? ` · Door WO \`${r.woId}\`` : ''}${r.rcptId ? ` · Receipt \`${r.rcptId}\`` : ''}`;
+    return `${r.woId ? ` · Door WO \`${r.woId}\`` : ''}${r.openRcptId ? ` · Open \`${r.openRcptId}\`` : ''}${r.wardenRcptId ? ` · Door-verifier \`${r.wardenRcptId}\`` : ''}`;
   };
 
   const lines = [
-    'a build seat a build seat · DELIVERED · build-seat-replay-fixture-01 (Rev 4 — All Return Items 1-9 Closed · Unblocks M-NEXT-20 Rev 4)',
+    `a build seat a build seat · DELIVERED · build-seat-replay-fixture-01 (Rev ${fixtureObj.revision} — All Return Items 1-7 + Minors 1-5 Closed)`,
     '',
-    '1. Landed Rev 4 Artifacts (measured from disk by `measure-replay-fixture.mjs`):',
-    `   - \`${FIXTURE_REL}\`: ${fixtureStat.bytes} B · sha256 \`${fixtureStat.sha256}\`${fmtRcpt(FIXTURE_REL)} (rev ${fixtureObj.revision}, runId \`${fixtureObj.runId}\`, runRecordSha256 \`${fixtureObj.runRecordSha256}\`, chainRootSha256 \`${fixtureObj.chainRootSha256}\`, observedAt \`${fixtureObj.runRecord.observedAt}\`)`,
+    '1. Landed Rev 5 Artifacts (measured from disk by `measure-replay-fixture.mjs`):',
+    `   - \`${FIXTURE_REL}\`: ${fixtureStat.bytes} B · sha256 \`${fixtureStat.sha256}\`${fmtRcpt(FIXTURE_REL)} (rev ${fixtureObj.revision}, runId \`${fixtureObj.runId}\`, runRecordSha256 \`${fixtureObj.runRecordSha256}\`, chainRootSha256 \`${fixtureObj.chainRootSha256}\`, observedAt \`${fixtureObj.runRecord.observedAt}\`, honestyStatus \`${fixtureObj.honestyValidation.status}\`)`,
     `   - \`${HARNESS_REL}\`: ${harnessStat.bytes} B · sha256 \`${harnessStat.sha256}\`${fmtRcpt(HARNESS_REL)}`,
     `   - \`${PACKET_REL}\`: ${packetStat.bytes} B · sha256 \`${packetStat.sha256}\`${fmtRcpt(PACKET_REL)} (schema \`${packetObj.schema}\`, rev ${packetObj.revision})`,
     `   - \`${MEASURE_REL}\`: ${measureStat.bytes} B · sha256 \`${measureStat.sha256}\`${fmtRcpt(MEASURE_REL)}`,
@@ -395,19 +470,29 @@ async function main() {
     `   - \`${MOTION_OFF_PNG_REL}\`: ${motionOffPngStat.bytes} B · sha256 \`${motionOffPngStat.sha256}\` · IHDR ${motionOffIhdr.width}x${motionOffIhdr.height} · Door WO \`${fixtureObj.replayModeVisualSpec.stillFrameScreenshotEvidence.replayMotionOffScreenshotDoorWoId}\` · Receipt \`${fixtureObj.replayModeVisualSpec.stillFrameScreenshotEvidence.replayMotionOffScreenshotReceiptId}\``,
     `   - UI Mount Gap Register: \`${fixtureObj.replayModeVisualSpec.uiMountGap.gapsRowId}\` at \`${fixtureObj.replayModeVisualSpec.uiMountGap.registerPath}\` · Door WO \`${fixtureObj.replayModeVisualSpec.uiMountGap.doorWoId}\` · commit \`${fixtureObj.replayModeVisualSpec.uiMountGap.commitSha}\``,
     '',
-    '2. Staged Unfreeze Packet Patches (`CANDIDATE-LAUNCHER-UNFREEZE-PACKET-01.json` rev 4):',
-    `   - \`${packetObj.stagedLauncherPatch.targetPath}\`: base ${packetObj.stagedLauncherPatch.baseBytes} B (\`${packetObj.stagedLauncherPatch.baseSha256}\`) -> patched ${packetObj.stagedLauncherPatch.patchedBytes} B (\`${packetObj.stagedLauncherPatch.patchedSha256}\`)`,
-    `   - \`${packetObj.stagedE4CandidateBackendPatch.targetPath}\`: base ${packetObj.stagedE4CandidateBackendPatch.baseBytes} B (\`${packetObj.stagedE4CandidateBackendPatch.baseSha256}\`) -> patched ${packetObj.stagedE4CandidateBackendPatch.patchedBytes} B (\`${packetObj.stagedE4CandidateBackendPatch.patchedSha256}\`)`,
-    `   - \`${packetObj.stagedE4CandidateBackendTestPatch.targetPath}\`: base ${packetObj.stagedE4CandidateBackendTestPatch.baseBytes} B (\`${packetObj.stagedE4CandidateBackendTestPatch.baseSha256}\`) -> patched ${packetObj.stagedE4CandidateBackendTestPatch.patchedBytes} B (\`${packetObj.stagedE4CandidateBackendTestPatch.patchedSha256}\`)`,
+    `2. Staged Unfreeze Packet Patches (\`CANDIDATE-LAUNCHER-UNFREEZE-PACKET-01.json\` rev ${packetObj.revision}):`,
+    `   - \`${packetObj.stagedLauncherPatch.targetPath}\`: current ${packetObj.stagedLauncherPatch.currentBytes} B (\`${packetObj.stagedLauncherPatch.currentSha256}\`) -> proposed ${packetObj.stagedLauncherPatch.proposedBytes} B (\`${packetObj.stagedLauncherPatch.proposedSha256}\`)`,
+    `   - \`${packetObj.stagedE4CandidateBackendPatch.targetPath}\`: current ${packetObj.stagedE4CandidateBackendPatch.currentBytes} B (\`${packetObj.stagedE4CandidateBackendPatch.currentSha256}\`) -> proposed ${packetObj.stagedE4CandidateBackendPatch.proposedBytes} B (\`${packetObj.stagedE4CandidateBackendPatch.proposedSha256}\`)`,
+    `   - \`${packetObj.stagedE4CandidateBackendTestPatch.targetPath}\`: current ${packetObj.stagedE4CandidateBackendTestPatch.currentBytes} B (\`${packetObj.stagedE4CandidateBackendTestPatch.currentSha256}\`) -> proposed ${packetObj.stagedE4CandidateBackendTestPatch.proposedBytes} B (\`${packetObj.stagedE4CandidateBackendTestPatch.proposedSha256}\`)`,
     '',
-    '3. Live Verification Gates (executed by `measure-replay-fixture.mjs`):',
+    '3. Live Verification Gates (computed from live execution by `measure-replay-fixture.mjs`):',
     `   - \`node ${HONESTY_VALIDATOR_REL} ${FIXTURE_REL}\`: \`${honestyStdout}\``,
     `   - \`node --test ${HARNESS_REL}\` (against frozen disk): ${harnessDiskCounts.pass}/${harnessDiskCounts.tests} PASS (${harnessDiskCounts.fail} fail)`,
-    `   - \`node --test replay-rigs.test.mjs\` (with staged packet applied): ${harnessUnfrozenCounts.pass}/${harnessUnfrozenCounts.tests} PASS (${harnessUnfrozenCounts.fail} fail)`,
-    `   - \`node --test candidate-backend.test.mjs\` (with staged E4 patches applied): ${backendUnfrozenCounts.pass}/${backendUnfrozenCounts.tests} PASS (${backendUnfrozenCounts.fail} fail)`,
-    `   - \`node launcher.mjs --check\` (with staged packet applied): \`${launcherCheckStatus}\``,
-    `   - \`gradeFile(launcher.mjs)\`: ${launcherGradeViolations} violations · \`gradeFile(replay-rigs.test.mjs)\`: ${harnessGradeViolations} violations`,
-    `   - All 7 frozen candidate files untouched on disk: ${frozenFilesVerified}`
+    `   - \`node launcher.mjs --check\` (E4.1 launcher patch only against frozen backend): exit ${e4LauncherOnlyExitCode} · \`${e4LauncherOnlyStatusToken}\``,
+    `   - \`node --test replay-rigs.test.mjs\` (with full staged packet E4.1-E4.3 applied): ${harnessUnfrozenCounts.pass}/${harnessUnfrozenCounts.tests} PASS (${harnessUnfrozenCounts.fail} fail)`,
+    `   - \`node --test candidate-backend.test.mjs\` (with full staged packet E4.1-E4.3 applied): ${backendUnfrozenCounts.pass}/${backendUnfrozenCounts.tests} PASS (${backendUnfrozenCounts.fail} fail)`,
+    `   - \`node launcher.mjs --check\` (with full staged packet E4.1-E4.3 applied): \`${launcherCheckStatus}\``,
+    `   - \`gradeFile\` array-length checks: launcher=${launcherGradeViolations}, rigs=${harnessGradeViolations}, measure=${measureGradeViolations}, plantedRedProbe=${plantedRedGradeViolations}`,
+    `   - All 7 frozen candidate files untouched on disk: ${frozenFilesVerified}`,
+    '',
+    '4. Closed Return Items Named With Proving Test IDs in `replay-rigs.test.mjs`:',
+    '   - Item 1 (Durable latch on every POST + two servers with fresh latches & wrapper fetch + 503 latch): proven by `Test 6` (`6. Item 1 R7 Door-landed LIVE-RUN-INTENT receipt is written BEFORE keyLoader/fetch, checks durable latch on EVERY POST (including 3 servers x 3 POSTs and after 409/503), and enforces latch across two servers with fresh latches and a wrapper fetch`).',
+    '   - Item 2 (E4 FAIL test — patched launcher.mjs --check against frozen candidate-backend.mjs exits non-zero and prints CANDIDATE_LAUNCHER_CHECK_FAIL): proven by `Test 10` (`10. Item 2 E4 FAIL test: running patched launcher.mjs --check against frozen candidate-backend.mjs exits non-zero and prints CANDIDATE_LAUNCHER_CHECK_FAIL`).',
+    '   - Item 3 (680x160 marker screenshot pins 3192/3112 B, 18906a35/22499d8e, effectsRefs, 0 dead commits): proven by `Test 4` and `Test 7`.',
+    '   - Item 4 (GAPS-171 uiMountGap field in packet r8ZeroWordReplayVisualSpec): proven by `Test 7` and `Test 8`.',
+    '   - Item 5 (Real Door receipt shape — open receipt author=build-seat, refs=[absPath], content_sha256 != fileSha, no sha256 field, door-verifier stdout token, wo.verified event file sha, and DEFAULT_KEY_FILE existence check): proven by `Test 9`.',
+    '   - Item 6 (gradeFile array-length + planted-RED check > 0): proven by `Test 11`.',
+    '   - Item 7 + Minors 1-5 (previousReturnDoorWoIds resolving in house log.md + honest HONESTY PASS note + honestyValidatorPin sha256 c23e80ae... + 584x70/34x44/12x12/80x44/584x14/244x12 comment + createRequire dev-dependency comment): proven by `Test 1`, `Test 4`, and `Test 5`.'
   ];
 
   console.log(lines.join('\n'));
