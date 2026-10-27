@@ -1,6 +1,6 @@
 {
   "contract": "JUDGE-ACTION-CONTRACT",
-  "version": 1,
+  "version": 2,
   "plateId": "M-NEXT-27",
   "wo": "muse-judge-action-contract-01",
   "author": "muse",
@@ -16,12 +16,12 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 584,
+          "line": 655,
           "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 599,
+          "line": 672,
           "quote": "| fault → request | candidate-backend route + guard | OFFLINE_LLAMA_FIXTURES |"
         }
       ]
@@ -32,12 +32,12 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 584,
+          "line": 655,
           "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 600,
+          "line": 673,
           "quote": "| proposal checked | PROPOSAL_SCHEMA · extractMutableControlProposal · enforceImmutablePlantLimits | buildLlamaPhysicsPrompt |"
         }
       ]
@@ -48,12 +48,12 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 584,
+          "line": 655,
           "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 601,
+          "line": 674,
           "quote": "| verdict | evaluateAndGateLlamaProposal · deriveAuthoritativeStateSnapshot | evaluatePhysicsProposal · swarm-verifier critics, interlock, quorum |"
         }
       ]
@@ -64,12 +64,12 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 584,
+          "line": 655,
           "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 602,
+          "line": 675,
           "quote": "| correction | applyBoundedStepCorrection · MAX_BOUNDED_CORRECTIONS | — |"
         }
       ]
@@ -80,12 +80,12 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 584,
+          "line": 655,
           "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 603,
+          "line": 676,
           "quote": "| receipts, tamper | generateKinematicProposalReceipt · verifyProposalReceiptChain | sha256Sync |"
         }
       ]
@@ -96,17 +96,17 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 584,
+          "line": 655,
           "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 603,
+          "line": 676,
           "quote": "| receipts, tamper | generateKinematicProposalReceipt · verifyProposalReceiptChain | sha256Sync |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 589,
+          "line": 662,
           "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
         }
       ]
@@ -131,7 +131,7 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 599,
+          "line": 672,
           "quote": "| fault → request | candidate-backend route + guard | OFFLINE_LLAMA_FIXTURES |"
         },
         {
@@ -172,12 +172,12 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 600,
+          "line": 673,
           "quote": "| proposal checked | PROPOSAL_SCHEMA · extractMutableControlProposal · enforceImmutablePlantLimits | buildLlamaPhysicsPrompt |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 601,
+          "line": 674,
           "quote": "| verdict | evaluateAndGateLlamaProposal · deriveAuthoritativeStateSnapshot | evaluatePhysicsProposal · swarm-verifier critics, interlock, quorum |"
         },
         {
@@ -207,7 +207,7 @@
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 589,
+          "line": 662,
           "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
         }
       ]
@@ -229,7 +229,7 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 602,
+          "line": 675,
           "quote": "| correction | applyBoundedStepCorrection · MAX_BOUNDED_CORRECTIONS | — |"
         },
         {
@@ -277,7 +277,7 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 603,
+          "line": 676,
           "quote": "| receipts, tamper | generateKinematicProposalReceipt · verifyProposalReceiptChain | sha256Sync |"
         },
         {
@@ -306,12 +306,12 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 603,
+          "line": 676,
           "quote": "| receipts, tamper | generateKinematicProposalReceipt · verifyProposalReceiptChain | sha256Sync |"
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 589,
+          "line": 662,
           "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
         },
         {
@@ -518,7 +518,7 @@
     },
     {
       "file": "house-only/meta-hackathon-product-v1.md",
-      "line": 584,
+      "line": 655,
       "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
     },
     {
@@ -546,7 +546,7 @@
     },
     {
       "file": "house-only/meta-hackathon-product-v1.md",
-      "line": 587,
+      "line": 658,
       "quote": "| live/replay mark | fixture and replay visibly distinct from live, 0 words (LEGAL/EVENT-NEW-ACCEPTANCE-CONTRACT.json:16-17); no success fixture stands in for remote proof; widgets badge or component-request · test: a record without a real provider response id (absent, or synthetic-*) cannot carry the live/P1 mark |"
     },
     {
@@ -604,7 +604,7 @@
       },
       {
         "file": "house-only/meta-hackathon-product-v1.md",
-        "line": 604,
+        "line": 677,
         "quote": "| one attempt | backend single-attempt + E4 latch | — |"
       }
     ],
@@ -636,7 +636,7 @@
       },
       {
         "file": "house-only/meta-hackathon-product-v1.md",
-        "line": 584,
+        "line": 655,
         "quote": "| feature | fault → one Meta proposal (P1 live, or replay of its record) → strict schema → server-owned limits (friction 0.8 · brake 5,000 N · structural 10,000 N; APP/llama-adapter.mjs:32-36) → verdict → ≤1 correction → 2 linked receipts → byte flip → refusal. State input CUT (R8) |"
       },
       {
@@ -654,7 +654,7 @@
       "sources": [
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 589,
+          "line": 662,
           "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
         },
         {
@@ -691,7 +691,7 @@
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 589,
+          "line": 662,
           "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
         }
       ]
@@ -708,7 +708,7 @@
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 589,
+          "line": 662,
           "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
         }
       ]
@@ -764,7 +764,7 @@
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 589,
+          "line": 662,
           "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
         }
       ]
@@ -781,7 +781,7 @@
         },
         {
           "file": "house-only/meta-hackathon-product-v1.md",
-          "line": 589,
+          "line": 662,
           "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
         }
       ]
@@ -833,8 +833,8 @@
   "timingSources": [
     {
       "file": "house-only/meta-hackathon-product-v1.md",
-      "line": 591,
-      "quote": "| acceptance | first result ≤60,000 ms (Gate A) · taught sentence gone ≤8,000 ms (Gate B, text-gate :26) · 0 product-authored words · 0 console errors · 0 non-loopback requests · keyboard path · controls ≥44 px · 375 px no overflow · 18/18 + new · 44/44 · 12/12 · --check PASS · every beat runs ≥1 post-kickoff function, baseline calls listed · human first-use without reading |"
+      "line": 664,
+      "quote": "| acceptance | first result ≤60,000 ms (Gate A) · taught sentence gone ≤8,000 ms (Gate B, law/text-gate.mjs:26) · 0 product-authored words · 0 console errors · 0 non-loopback requests · keyboard path · controls ≥44 px · 375 px no overflow · 18/18 + new · 44/44 · 12/12 · --check PASS · every beat runs ≥1 post-kickoff function, baseline calls listed · human first-use without reading |"
     }
   ],
   "standardJudgeRun": {
@@ -871,7 +871,7 @@
       },
       {
         "file": "house-only/meta-hackathon-product-v1.md",
-        "line": 587,
+        "line": 658,
         "quote": "| live/replay mark | fixture and replay visibly distinct from live, 0 words (LEGAL/EVENT-NEW-ACCEPTANCE-CONTRACT.json:16-17); no success fixture stands in for remote proof; widgets badge or component-request · test: a record without a real provider response id (absent, or synthetic-*) cannot carry the live/P1 mark |"
       }
     ]
@@ -891,5 +891,78 @@
       "quote": "    if (req.method === 'POST' && pathname === '/api/llama/propose') {"
     }
   ],
-  "citationCount": 110
+  "citationCount": 114,
+  "revisionNote": "rev 2: re-pinned 32 WO citations to amendment-2 lines (31 verbatim, timingSources quote refreshed); bytes+sha256 per cited file; failure-mode rows; replay-only scope.",
+  "failureModes": [
+    {
+      "id": "server-stopped",
+      "expectation": "run fails, no result recorded; prior result cleared",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 662,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        }
+      ]
+    },
+    {
+      "id": "non-loopback-request",
+      "expectation": "refused before any connection (RED in fixture/replay)",
+      "sources": [
+        {
+          "file": "house-only/meta-hackathon-product-v1.md",
+          "line": 662,
+          "quote": "| failure tests | caller overrides limits/state → ignored or 422 STATE_SNAPSHOT_MISMATCH · byte flip → chain invalid on screen · server stopped → unavailable, prior result cleared · schema-invalid output → coded refusal, ≤1 correction · mislabeled pre-event hunk → manifest RED · non-loopback request in fixture/replay → RED · replay without its mark → RED · fixture-sourced record shown with the live mark → RED |"
+        }
+      ]
+    }
+  ],
+  "scope": {
+    "certifies": "replay mode only",
+    "detail": "conformance status-mark requires fixtureMode MOCK_OFFLINE_FIXTURE, so a live-mode server fails it by design; conformance cannot certify a live server",
+    "sources": [
+      {
+        "file": "house-only/meta-hackathon-product-v1.md",
+        "line": 658,
+        "quote": "| live/replay mark | fixture and replay visibly distinct from live, 0 words (LEGAL/EVENT-NEW-ACCEPTANCE-CONTRACT.json:16-17); no success fixture stands in for remote proof; widgets badge or component-request · test: a record without a real provider response id (absent, or synthetic-*) cannot carry the live/P1 mark |"
+      },
+      {
+        "file": "house-only/EVENT-NEW-ACCEPTANCE-CONTRACT.json",
+        "line": 17,
+        "quote": "    \"Realcall proof records actualmodel/endpoint/requestresponsehash/usage/time without secrets; fixturemode visiblydistinct\","
+      }
+    ]
+  },
+  "sourceFiles": {
+    "app/llama-adapter.mjs": {
+      "bytes": 76337,
+      "sha256": "ae5b51fc1b98915bf77ee2ed2bc07acb23f52120eb89999b6bc65a1c641edc51",
+      "lines": 2190
+    },
+    "app/meta-physics-agent.mjs": {
+      "bytes": 23626,
+      "sha256": "8f357327bae3845d3ee7acc41a9fc5f24ad4ca004c41e3c40befea15541753a5",
+      "lines": 618
+    },
+    "house-only/meta-hackathon-product-v1.md": {
+      "bytes": 169982,
+      "sha256": "50856b2bf4b4c127e64bb312e99708e302d48b790e7204abfbe051dae5a93c66",
+      "lines": 1042
+    },
+    "house-only/EVENT-NEW-ACCEPTANCE-CONTRACT.json": {
+      "bytes": 1719,
+      "sha256": "7c31e181bf4b27dbda162f6a7ed219150936715c23840594353b34fa352598d9",
+      "lines": 23
+    },
+    "candidate-backend.mjs": {
+      "bytes": 43562,
+      "sha256": "442b1bd8d97d1d310791ce41c27f28999c0ce3f3f22edca322b3bb5202470d5a",
+      "lines": 1116
+    },
+    "launcher.mjs": {
+      "bytes": 36515,
+      "sha256": "e2f70e8c20502f671f34b28f246453b07a3f9f987e29255062ee4388c4456380",
+      "lines": 967
+    }
+  }
 }
