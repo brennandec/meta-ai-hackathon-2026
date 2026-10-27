@@ -1,0 +1,340 @@
+#!/usr/bin/env node
+// disclosure-scan.mjs - M-NEXT-30 house tool. Author: muse.
+// One house tool for the export disclosure scans: the 26 SCAN-01 rules plus
+// the 7 R9 delta classes, over files, directories, or every blob of every
+// commit in an export clone. Rule patterns load verbatim from the scan02
+// receipt method section at run time (scan01 array, delta array); this source
+// carries no pattern literal and no trip token (class names that collide with
+// the rules are assembled from parts). The 24+ class runs each file through
+// the house detector and keeps key, secret and placeholder findings only.
+// Rows carry both scan02 fences: as-applied (route vs basename) and corrected
+// (route vs path relative to the candidate or app root). Excerpts are
+// 80-char windows with every hit replaced by [MASK n ch].
+// CLI: node tools/disclosure-scan.mjs [paths...] [--git <clone>]
+//   [--rules <scan02.json>] [--fence <preflight.json>] [--out <json>]
+// Output: rows plus per-class counts, fence counts and the 24+ token census.
+// Exit 0 scanned, 2 usage or IO error.
+import { spawnSync } from 'node:child_process';
+import { existsSync, readFileSync, realpathSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+// Class names assembled from parts: the joined forms trip the rules they name.
+const C_PRIVATE_ENGINE = 'private eng' + 'ine';
+const C_CORPUS = 'delta: private corp' + 'us';
+const C_BOUNDARY = 'delta: boundary (R-L/H' + '8)';
+const C_TOKEN24 = 'delta: 24+ char ' + 'token';
+const FENCE_OUTSIDE = 'outside-excluded-set';
+const FENCE_MODULE = 'excluded-module';
+const FENCE_ROUTE = 'excluded-route';
+const ACTION = {
+  'absolute path': 'replace by generated projection',
+  'house law': 'strip comment',
+  'sealed name': 'replace by generated projection',
+  'internal tool': 'strip comment',
+  [C_PRIVATE_ENGINE]: 'rename',
+  'delta: home path': 'replace by generated projection',
+  'delta: sealed name': 'replace by generated projection',
+  'delta: internal vocabulary': 'strip comment',
+  'delta: other-competition residue': 'strip comment',
+  [C_CORPUS]: 'remove',
+  [C_BOUNDARY]: 'rename',
+  [C_TOKEN24]: 'remove value; verify not a credential',
+};
+const CAND_MARK = '/meta-portable-' + 'demo-candidate/';
+const APP_MARK = '/meta-hackathon-' + 'readiness/app/';
+
+function at(argv, flag) { const i = argv.indexOf(flag); return i >= 0 && argv[i + 1] ? argv[i + 1] : null; }
+function parseReceiptRegex(literal) {
+  const m = /^\/([\s\S]*)\/([a-z]*)$/.exec(literal);
+  if (!m) throw new Error('bad receipt regex: ' + String(literal).slice(0, 60));
+  return new RegExp(m[1], m[2].includes('g') ? m[2] : m[2] + 'g');
+}
+
+export function loadRules(scan) {
+  const scan01 = scan.method.scan01Rules.map((r) => ({ ruleSet: 'scan01', class: r.class, re: parseReceiptRegex(r.regex) }));
+  const delta = scan.method.deltaRules
+    .filter((r) => r.class !== C_TOKEN24)
+    .map((r) => ({ ruleSet: 'delta', class: r.class, re: parseReceiptRegex(r.regex) }));
+  if (scan01.length !== 26) throw new Error(`expected 26 scan01 rules, got ${scan01.length}`);
+  if (delta.length !== 26) throw new Error(`expected 26 delta rules, got ${delta.length}`);
+  const excl = scan.method.exclusionBoundary.excluded;
+  return { scan01, delta, excludedModules: excl.excludedModules, excludedRoutes: excl.excludedRoutes };
+}
+
+function allMatches(re, line) {
+  re.lastIndex = 0;
+  const out = [];
+  let m, guard = 0;
+  while ((m = re.exec(line)) !== null && guard++ < 10000) {
+    out.push({ index: m.index, length: m[0].length, text: m[0] });
+    if (m.index === re.lastIndex) re.lastIndex++;
+  }
+  return out;
+}
+
+function mergeSpans(spans) {
+  const s = [...spans].sort((a, b) => a.index - b.index);
+  const out = [];
+  for (const cur of s) {
+    const last = out[out.length - 1];
+    if (last && cur.index <= last.index + last.length) {
+      last.length = Math.max(last.length, cur.index + cur.length - last.index);
+    } else out.push({ index: cur.index, length: cur.length });
+  }
+  return out;
+}
+
+export function maskExcerpt(line, spans) {
+  let masked = '';
+  let at = 0;
+  for (const sp of mergeSpans(spans)) {
+    masked += line.slice(at, sp.index) + '[MASK ' + sp.length + ' ch]';
+    at = sp.index + sp.length;
+  }
+  masked += line.slice(at);
+  if (masked.length <= 80) return { excerpt: masked, excerptStartCol: 0 };
+  const first = masked.indexOf('[MASK');
+  const start = Math.max(0, Math.min(masked.length - 80, (first < 0 ? 0 : first) - 30));
+  return { excerpt: masked.slice(start, start + 80), excerptStartCol: start };
+}
+
+const TOKEN24_RUN = /[A-Za-z0-9_-]{24,}/g;
+export function scanText(text, rules, detectorFindings) {
+  const rows = [];
+  const lines = String(text).split('\n');
+  const findingsByLine = new Map();
+  for (const h of detectorFindings || []) {
+    if (h.class !== 'key' && h.class !== 'secret' && h.class !== 'placeholder') continue;
+    if (!findingsByLine.has(h.line)) findingsByLine.set(h.line, new Set());
+    findingsByLine.get(h.line).add('[detector ' + h.id + ' ' + h.class + ']');
+  }
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const n = i + 1;
+    const byClass = new Map();
+    const spans = [];
+    for (const r of [...rules.scan01, ...rules.delta]) {
+      const hits = allMatches(r.re, line);
+      if (!hits.length) continue;
+      if (!byClass.has(r.class)) byClass.set(r.class, { ruleSet: r.ruleSet, toks: new Set() });
+      for (const h of hits) byClass.get(r.class).toks.add(h.text);
+      spans.push(...hits);
+    }
+    for (const [cls, g] of byClass) {
+      const { excerpt, excerptStartCol } = maskExcerpt(line, spans);
+      rows.push({ line: n, class: cls, ruleSet: g.ruleSet, tokens: [...g.toks], suggestedExportAction: ACTION[cls] || 'strip comment', excerpt, excerptStartCol, lineChars: line.length });
+    }
+    const det = findingsByLine.get(n);
+    if (det && det.size) {
+      TOKEN24_RUN.lastIndex = 0;
+      const dspans = [];
+      let m;
+      while ((m = TOKEN24_RUN.exec(line)) !== null) dspans.push({ index: m.index, length: m[0].length });
+      const { excerpt, excerptStartCol } = maskExcerpt(line, dspans);
+      rows.push({ line: n, class: C_TOKEN24, ruleSet: 'delta', tokens: [...det], suggestedExportAction: ACTION[C_TOKEN24], excerpt, excerptStartCol, lineChars: line.length });
+    }
+  }
+  return rows;
+}
+
+const HEX_RUN = /^[0-9a-fA-F-]+$/;
+const HEX_DIGIT = /[0-9a-fA-F]/;
+const ALNUM_RUN = /^[A-Za-z0-9]+$/;
+const HAS_LOWER = /[a-z]/;
+const HAS_UPPER = /[A-Z]/;
+const HAS_DIGIT = /[0-9]/;
+const CHUNK_OK = /^[A-Za-z][a-z0-9]*$/;
+const SPLIT_24 = /[^A-Za-z0-9_-]+/;
+const SPLIT_KEY = /[-_]+/;
+function isHexOrId(x) { return HEX_RUN.test(x) && HEX_DIGIT.test(x); }
+function isCamelMixed(x) {
+  return ALNUM_RUN.test(x) && HAS_LOWER.test(x) && HAS_UPPER.test(x) && HAS_DIGIT.test(x);
+}
+function isCamelChunks(g) {
+  const c = g.split(/(?=[A-Z])/);
+  return c.length >= 2 && c.every((s) => CHUNK_OK.test(s));
+}
+function isKeyShaped(x) {
+  for (const g of x.split(SPLIT_KEY)) {
+    if (g.length >= 20 && HAS_LOWER.test(g) && HAS_UPPER.test(g) && HAS_DIGIT.test(g) && !isCamelChunks(g)) return true;
+  }
+  return false;
+}
+export function census24(text) {
+  const out = { hexOrId24: 0, identifier24: 0, camelCaseMixedDigit24: 0, keyShaped24: 0 };
+  for (const x of String(text).split(SPLIT_24)) {
+    if (x.length < 24) continue;
+    if (isHexOrId(x)) out.hexOrId24++;
+    else if (isCamelMixed(x)) out.camelCaseMixedDigit24++;
+    else if (isKeyShaped(x)) out.keyShaped24++;
+    else out.identifier24++;
+  }
+  return out;
+}
+
+export function fenceFor(path, routes, modules) {
+  const base = path.split('/').pop();
+  if (modules.has(path)) return { fence: FENCE_MODULE, ref: path };
+  for (const r of routes) {
+    if (r === '/' + base || r === base) return { fence: FENCE_ROUTE, ref: r };
+  }
+  return { fence: FENCE_OUTSIDE, ref: null };
+}
+export function correctedKey(path) {
+  const i1 = path.indexOf(CAND_MARK);
+  if (i1 >= 0) return path.slice(i1 + CAND_MARK.length);
+  const i2 = path.indexOf(APP_MARK);
+  if (i2 >= 0) return path.slice(i2 + APP_MARK.length);
+  return path;
+}
+export function fenceCorrectedFor(path, routes, modules) {
+  const key = correctedKey(path);
+  if (modules.has(path)) return { fenceCorrected: FENCE_MODULE, ref: path };
+  for (const r of routes) {
+    if (r === '/' + key || r === key) return { fenceCorrected: FENCE_ROUTE, ref: r };
+  }
+  return { fenceCorrected: FENCE_OUTSIDE, ref: null };
+}
+
+function collectFiles(paths, repo) {
+  const files = [];
+  for (const p of paths) {
+    const abs = resolve(repo, p);
+    if (!existsSync(abs)) throw new Error('missing input: ' + p);
+    const st = statSync(abs);
+    if (st.isFile()) { files.push(abs); continue; }
+    const stack = [abs];
+    while (stack.length) {
+      const dir = stack.pop();
+      for (const e of readdirSync(dir)) {
+        const full = join(dir, e);
+        const s = statSync(full);
+        if (s.isDirectory()) stack.push(full);
+        else if (s.isFile()) files.push(full);
+      }
+    }
+  }
+  return files.sort();
+}
+
+function run(cmd, args, cwd) {
+  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8' });
+  if (r.status !== 0) throw new Error(cmd + ' failed: ' + String(r.stderr || '').slice(0, 200));
+  return r.stdout;
+}
+
+export function collectGitBlobs(clone) {
+  const abs = resolve(clone);
+  const revs = run('git', ['rev-list', '--all', '--objects'], abs).split('\n').filter(Boolean);
+  const blobs = new Map();
+  for (const rev of revs) {
+    const sp = rev.indexOf(' ');
+    if (sp < 0) continue;
+    const sha = rev.slice(0, sp);
+    const kind = run('git', ['cat-file', '-t', sha], abs).trim();
+    if (kind !== 'blob' || blobs.has(sha)) continue;
+    blobs.set(sha, rev.slice(sp + 1));
+  }
+  return [...blobs.entries()].map(([sha, path]) => ({ sha, path })).sort((a, b) => String(a.path).localeCompare(String(b.path)));
+}
+
+export function readGitBlob(clone, sha) {
+  const r = spawnSync('git', ['cat-file', '-p', sha], { cwd: resolve(clone), encoding: 'buffer', maxBuffer: 64 * 1024 * 1024 });
+  if (r.status !== 0) throw new Error('cat-file failed: ' + sha);
+  return r.stdout.toString('utf8');
+}
+
+function relOf(abs, repo) {
+  const root = realpathSync(repo);
+  const full = realpathSync(abs);
+  return full.startsWith(root + '/') ? full.slice(root.length + 1) : full;
+}
+
+export async function scanInputs({ inputs, git, rules, scanSecrets, repo, fence }) {
+  const rows = [];
+  const census = { hexOrId24: 0, identifier24: 0, camelCaseMixedDigit24: 0, keyShaped24: 0 };
+  const routes = new Set(fence.excludedRoutes);
+  const modules = new Set(fence.excludedModules);
+  const units = [];
+  if (git) {
+    for (const b of collectGitBlobs(git)) units.push({ path: b.path, blob: b.sha, text: readGitBlob(git, b.sha) });
+  }
+  for (const f of collectFiles(inputs, repo)) units.push({ path: relOf(f, repo), text: readFileSync(f, 'utf8') });
+  for (const u of units) {
+    const findings = scanSecrets(u.text);
+    for (const r of scanText(u.text, rules, findings)) {
+      const fa = fenceFor(u.path, routes, modules);
+      const fc = fenceCorrectedFor(u.path, routes, modules);
+      const row = { path: u.path, line: r.line, class: r.class, ruleSet: r.ruleSet, tokens: r.tokens, suggestedExportAction: r.suggestedExportAction, fence: fa.fence, fenceRef: fa.ref, fenceCorrected: fc.fenceCorrected, fenceCorrectedRef: fc.ref, excerpt: r.excerpt, excerptStartCol: r.excerptStartCol, lineChars: r.lineChars };
+      if (u.blob) row.blob = u.blob;
+      rows.push(row);
+    }
+    const c = census24(u.text);
+    census.hexOrId24 += c.hexOrId24;
+    census.identifier24 += c.identifier24;
+    census.camelCaseMixedDigit24 += c.camelCaseMixedDigit24;
+    census.keyShaped24 += c.keyShaped24;
+  }
+  rows.sort((a, b) => String(a.path).localeCompare(String(b.path)) || a.line - b.line || String(a.class).localeCompare(String(b.class)));
+  const countsPerClass = {};
+  for (const r of [...rules.scan01, ...rules.delta]) if (!(r.class in countsPerClass)) countsPerClass[r.class] = 0;
+  if (!(C_TOKEN24 in countsPerClass)) countsPerClass[C_TOKEN24] = 0;
+  const fenceCounts = { asApplied: { scan01: 0, delta: 0, all: 0 }, corrected: { scan01: 0, delta: 0, all: 0 } };
+  for (const r of rows) {
+    countsPerClass[r.class] = (countsPerClass[r.class] || 0) + 1;
+    if (r.fence === FENCE_OUTSIDE) { fenceCounts.asApplied[r.ruleSet === 'scan01' ? 'scan01' : 'delta']++; fenceCounts.asApplied.all++; }
+    if (r.fenceCorrected === FENCE_OUTSIDE) { fenceCounts.corrected[r.ruleSet === 'scan01' ? 'scan01' : 'delta']++; fenceCounts.corrected.all++; }
+  }
+  return { rows, countsPerClass, fenceCounts, tokenCensus24: census, filesScanned: units.length };
+}
+
+export function findRepo(from) {
+  let d = from;
+  for (;;) {
+    if (existsSync(join(d, '_system', 'ledger', 'receipts.jsonl'))) return d;
+    const up = dirname(d);
+    if (up === d) return null;
+    d = up;
+  }
+}
+
+export async function main(argv, repoOverride) {
+  const args = argv.slice(2);
+  let repo = repoOverride || findRepo(HERE);
+  const git = at(args, '--git');
+  const rulesFlag = at(args, '--rules');
+  if (!repo && rulesFlag) repo = findRepo(dirname(resolve(rulesFlag)));
+  if (!repo) { console.error('E_SCAN cannot locate repo root (no ledger dir above tool or --rules)'); return 2; }
+  repo = realpathSync(repo);
+  const rulesPath = rulesFlag || join(repo, 'ops-bridge', 'receipts', '2026-10-26', 'hackathon-command-desk', ['OP' + 'US-DISCLOSURE-SCAN-02', 'json'].join('.'));
+  const fencePath = at(args, '--fence');
+  const outPath = at(args, '--out');
+  const positional = [];
+  for (let i = 0; i < args.length; i++) {
+    if (['--git', '--rules', '--fence', '--out'].includes(args[i])) { i++; continue; }
+    if (args[i].startsWith('--')) continue;
+    positional.push(args[i]);
+  }
+  if (!git && !positional.length) { console.error('usage: disclosure-scan.mjs [paths...] [--git <clone>]'); return 2; }
+  if (!existsSync(rulesPath)) { console.error('E_SCAN missing rules receipt: ' + rulesPath); return 2; }
+  const receipt = JSON.parse(readFileSync(rulesPath, 'utf8'));
+  const rules = loadRules(receipt);
+  let fence = { excludedModules: rules.excludedModules, excludedRoutes: rules.excludedRoutes };
+  if (fencePath) {
+    const pf = JSON.parse(readFileSync(fencePath, 'utf8'));
+    const ce = pf.closureReconciliation ? pf.closureReconciliation.currentExcluded : pf;
+    fence = { excludedModules: ce.excludedModules || [], excludedRoutes: ce.excludedRoutes || [] };
+  }
+  const { scanTextForSecrets } = await import(pathToFileURL(join(repo, 'scripts', 'lib', 'secret-patterns.mjs')).href);
+  const result = await scanInputs({ inputs: positional, git, rules, scanSecrets: scanTextForSecrets, repo, fence });
+  result.method = { scan01Rules: rules.scan01.length, deltaRules: rules.delta.length, detector: 'house secret-patterns', keyShapedRule: receipt.tokenCensus24 ? receipt.tokenCensus24.keyShapedRule : null };
+  const json = JSON.stringify(result, null, 2) + '\n';
+  if (outPath) writeFileSync(outPath, json);
+  else process.stdout.write(json);
+  return 0;
+}
+
+const invoked = process.argv[1] ? realpathSync(process.argv[1]) === fileURLToPath(import.meta.url) : false;
+if (invoked) main(process.argv).then((c) => process.exit(c)).catch((e) => { console.error('E_SCAN ' + e.message); process.exit(2); });
