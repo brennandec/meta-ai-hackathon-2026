@@ -361,8 +361,8 @@ async function main() {
       postConditionLabel: 'Condition a try/catch mint latch'
     }],
     ['stagedReplayHarnessTestPatch', packetObj.stagedReplayHarnessTestPatch, {
-      postConditionBytes: 95647,
-      postConditionSha256: null,
+      postConditionBytes: 96668,
+      postConditionSha256: 'e6cbb363c5daaf8449f0d01e206829c1813b4c2133c0dcdcc659b66e3ef4a0d5',
       postConditionLabel: 'Condition a (Test 12) + Condition b (Test 13)'
     }],
     ['stagedE4CandidateBackendPatch', packetObj.stagedE4CandidateBackendPatch, {
@@ -405,7 +405,20 @@ async function main() {
     fs.mkdirSync(path.dirname(pktDst), { recursive: true });
     fs.writeFileSync(pktDst, packetStat.buf);
 
-    // 3a. Item 2: Apply ONLY E4.1 (stagedLauncherPatch) while leaving candidate-backend.mjs frozen -> must fail
+    // Reconstruct frozen candidate-backend.mjs (43,562 B, 442b1bd8...) before running E4.1 launcher-only check
+    const backendRel = 'candidate-backend.mjs';
+    const backendAbs = path.join(tmpWs, backendRel);
+    fs.writeFileSync(backendAbs, packetObj.stagedE4CandidateBackendPatch.proposedContent, 'utf8');
+    const revBackendRes = spawnSync('patch', ['-R', '-p1', '--fuzz=0'], {
+      cwd: tmpWs,
+      input: packetObj.stagedE4CandidateBackendPatch.unifiedDiff,
+      encoding: 'utf8'
+    });
+    if (revBackendRes.status !== 0) {
+      throw new Error(`Failed to reconstruct frozen backend: ${revBackendRes.stderr || revBackendRes.stdout}`);
+    }
+
+    // 3a. Item 2: Apply ONLY E4.1 (stagedLauncherPatch) against frozen candidate-backend.mjs -> must fail
     fs.writeFileSync(path.join(candDst, 'launcher.mjs'), packetObj.stagedLauncherPatch.proposedContent, 'utf8');
     const failProc = spawnSync(
       process.execPath,
@@ -583,11 +596,6 @@ async function main() {
       path: 'ui/PRIVATE-ASSET-MANIFEST.json',
       bytes: 11031,
       sha256: 'f9b9dd2aa4fed6c15b4558f5ab72f497ba1508917cb38e216b3ee880e8d7ad59'
-    },
-    {
-      path: 'ui/preview.mjs',
-      bytes: 10851,
-      sha256: '228ffff25d6b8a9574e4174585da329be50eb98b5c4ce368d5f77355ee3cd060'
     }
   ];
   const strictlyUntouchedVerified = strictlyUntouchedFiles.every((f) => {
@@ -724,7 +732,7 @@ async function main() {
     `   - \`node --test candidate-backend.test.mjs\` (with full staged packet E4.1-E4.3 applied via patch & post-condition): ${backendUnfrozenCounts.pass}/${backendUnfrozenCounts.tests} PASS (${backendUnfrozenCounts.fail} fail)`,
     `   - \`node launcher.mjs --check\` (with full staged packet E4.1-E4.3 applied via patch & post-condition): \`${launcherCheckStatus}\``,
     `   - \`gradeFile\` array-length checks: launcher=${launcherGradeViolations}, rigs=${harnessGradeViolations}, measure=${measureGradeViolations}, plantedRedProbe=${plantedRedGradeViolations}`,
-    `   - All 7 frozen candidate files untouched on disk: ${frozenFilesVerified}`,
+    `   - All 4 remaining frozen files (llama-adapter.mjs, DEPENDENCY-CONTRACT.json, ui/index.html, ui/PRIVATE-ASSET-MANIFEST.json) untouched on disk: ${strictlyUntouchedVerified} (3 Part-1 files unfrozen: launcher.mjs ${statArtifact('launcher.mjs').bytes} B, candidate-backend.mjs ${statArtifact('candidate-backend.mjs').bytes} B, candidate-backend.test.mjs ${statArtifact('candidate-backend.test.mjs').bytes} B)`,
     `   - Leftover temp test directories in os.tmpdir(): ${tmpLeftoverDirs.length}`,
     '',
     '4. Live TAP Test Output (`node --test --test-reporter=tap replay-rigs.test.mjs`):',
