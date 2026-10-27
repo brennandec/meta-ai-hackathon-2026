@@ -1,6 +1,9 @@
 // disclosure-scan.test.mjs - M-NEXT-30 house tool tests. Author: muse; rev 4 tooling batch A.
 // 10 cases, node --test, 0 network. Run from a mkdtemp cwd with GIT_DIR unset: node --test <repo>/.../tools/disclosure-scan.test.mjs
-// T2 refuses to run when a GIT_* repo variable is set or the cwd sits in the house repo (it runs git init, add and commit).
+// T2 refuses to run when a GIT_* repo variable is set, or when the cwd or a GIT_* path resolves into the house repo (it runs git init, add and commit).
+// Rev 5 (tooling batch C): the 38 acceptance inputs rebuild from the desk pin pack alone (no git history); the T2
+// guard finds the house by its repository markers, never by HOME; T6 spawns the running node; T9 accepts every
+// early-close code the tool maps (EPIPE, ENOTCONN, ECONNRESET); the case count prints.
 // Every trippable fixture token is assembled from parts at run time; this
 // source carries no trip token (asserted by the self-scan case).
 import test, { after } from 'node:test';
@@ -11,13 +14,13 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { inflateRawSync } from 'node:zlib';
 import { loadRules, scanText, scanInputs, census24, findRepo, objectEndLine } from './disclosure-scan.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = findRepo(HERE) || path.join(os.homedir(), 'Documents', 'manymoats-k' + 'pf');
 const RECEIPT_PATH = path.join(REPO, 'ops-bridge', 'receipts', '2026-10-26', 'hackathon-command-desk', ['OP' + 'US-DISCLOSURE-SCAN-02', 'json'].join('.'));
 const C_TOKEN24 = 'delta: 24+ char ' + 'token';
-const HOUSE = path.join(os.homedir(), 'Documents', 'manymoats-k' + 'pf');
 const PIN_PACK = path.join(REPO, 'ops-bridge', 'receipts', '2026-10-26', 'hackathon-command-desk', 'DISCLOSURE-SCAN-02-PINNED-UNTRACKED-INPUTS.json');
 const GIT_REPO_VARS = ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_COMMON_DIR', 'GIT_OBJECT_DIRECTORY', 'GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_NAMESPACE', 'GIT_CEILING_DIRECTORIES'];
 const sha256 = (b) => crypto.createHash('sha256').update(b).digest('hex');
@@ -49,74 +52,37 @@ function bearerLine() {
 function tmpdir(prefix) {
   return fs.realpathSync(fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), prefix)));
 }
-// Materialize the 38 scan02 input files at their pinned bytes (disk, else git).
-// Built once per file and shared by T4/T6: one history walk for every drifted
-// path plus one batched blob fetch, instead of a log plus a show-loop per file.
 let mirrorCache = null;
 after(() => { if (mirrorCache) { fs.rmSync(mirrorCache, { recursive: true, force: true }); mirrorCache = null; } });
-function gitBlobsForDrifted(drifted) {
-  const paths = drifted.map((f) => f.path);
-  const log = spawnSync('git', ['-C', REPO, 'log', '--all', '--no-abbrev', '--raw', '--format=COMMIT:%H', '--', ...paths], { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024 });
-  if (log.status !== 0) return new Map();
-  const cands = new Map(paths.map((p) => [p, []]));
-  for (const ln of log.stdout.split('\n')) {
-    if (!ln.startsWith(':')) continue;
-    const m = /^:\d+ \d+ [0-9a-f]+ ([0-9a-f]+) (?:[AMD]|R\d+)\t/.exec(ln);
-    if (!m || m[1].startsWith('0000000')) continue;
-    const p = ln.slice(ln.lastIndexOf('\t') + 1);
-    if (cands.has(p)) cands.get(p).push(m[1]);
-  }
-  const want = [...new Set([...cands.values()].flat())];
-  const r = spawnSync('git', ['-C', REPO, 'cat-file', '--batch'], { input: Buffer.from(want.join('\n') + '\n'), encoding: 'buffer', maxBuffer: 512 * 1024 * 1024 });
-  assert.equal(r.status, 0, 'git cat-file failed');
-  const blobs = new Map();
-  const buf = r.stdout;
-  let at = 0;
-  while (at < buf.length) {
-    const nl = buf.indexOf(0x0a, at);
-    assert.ok(nl > at, 'cat-file parse error');
-    const head = buf.toString('utf8', at, nl).split(' ');
-    if (head[1] === 'missing') { at = nl + 1; continue; }
-    const size = Number(head[2]);
-    blobs.set(head[0], buf.subarray(nl + 1, nl + 1 + size));
-    at = nl + 1 + size + 1;
-  }
-  const out = new Map();
-  for (const f of drifted) {
-    for (const sha of cands.get(f.path)) {
-      const b = blobs.get(sha);
-      if (b && crypto.createHash('sha256').update(b).digest('hex') === f.sha256) { out.set(f.path, Buffer.from(b)); break; }
-    }
-  }
-  return out;
-}
+after(() => {
+  const cases = fs.readFileSync(fileURLToPath(import.meta.url), 'utf8').match(/^test\('/gm).length;
+  console.log('disclosure-scan suite: ' + cases + ' cases');
+});
 function readPinPack(file = PIN_PACK) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return { files: [] }; }
 }
 function packBytes(f, pack) {
-  const e = (pack.files || []).find((x) => x && x.path === f.path);
-  if (!e || !Array.isArray(e.base64Lines)) return null;
-  const b = Buffer.from(e.base64Lines.join(''), 'base64');
+  const e = (pack.files || []).find((x) => x && x.sha256 === f.sha256);
+  if (!e || !Array.isArray(e.hexLines)) return null;
+  let b;
+  try { b = inflateRawSync(Buffer.from(e.hexLines.join(''), 'hex')); } catch { return null; }
   return b.length === f.bytes && sha256(b) === f.sha256 ? b : null;
 }
 function buildMirror(receipt, { hideDisk = new Set(), pack = readPinPack() } = {}) {
   const mirror = tmpdir('ds-acc-');
-  const drifted = [];
   const source = {};
   for (const f of receipt.scope.files) {
-    const abs = path.join(REPO, f.path);
     const dest = path.join(mirror, f.path);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
-    const bytes = !hideDisk.has(f.path) && fs.existsSync(abs) ? fs.readFileSync(abs) : null;
-    if (bytes && sha256(bytes) === f.sha256) { fs.writeFileSync(dest, bytes); source[f.path] = 'disk'; }
-    else drifted.push(f);
-  }
-  const blobs = drifted.length ? gitBlobsForDrifted(drifted) : new Map();
-  for (const f of drifted) {
-    const b = blobs.get(f.path) || packBytes(f, pack);
-    source[f.path] = blobs.has(f.path) ? 'git' : b ? 'pin-pack' : 'missing';
+    let b = packBytes(f, pack);
+    if (b) source[f.path] = 'pin-pack';
+    else {
+      const abs = path.join(REPO, f.path);
+      const disk = !hideDisk.has(f.path) && fs.existsSync(abs) ? fs.readFileSync(abs) : null;
+      if (disk && sha256(disk) === f.sha256) { b = disk; source[f.path] = 'disk'; }
+    }
     if (!b) { fs.rmSync(mirror, { recursive: true, force: true }); assert.fail('pinned bytes unavailable for ' + f.path); }
-    fs.writeFileSync(path.join(mirror, f.path), b);
+    fs.writeFileSync(dest, b);
   }
   return { mirror, source };
 }
@@ -131,17 +97,53 @@ function cleanGitEnv(env = process.env) {
   return out;
 }
 function realOrNull(p) { try { return fs.realpathSync(p); } catch { return null; } }
-function within(p, root) { return !!p && !!root && (p === root || p.startsWith(root + path.sep)); }
-function gitGuard({ env = process.env, cwd = process.cwd(), house = HOUSE } = {}) {
+const SOCK_PATH = ['', 'usr', 'local', 'k' + 'pf', 'run', 'k' + 'pfd.sock'].join('/');
+const HOUSE_MARKERS = [
+  { rel: ['_sys' + 'tem', 'folder-' + 'registry.json'], names: null },
+  { rel: ['scr' + 'ipts', 'lib', 'k' + 'pf-door-put.mjs'], names: SOCK_PATH },
+];
+function nearestExisting(p) {
+  let d = path.resolve(p);
+  while (!fs.existsSync(d)) {
+    const up = path.dirname(d);
+    if (up === d) break;
+    d = up;
+  }
+  return realOrNull(d) || d;
+}
+function isHouseRoot(d) {
+  for (const m of HOUSE_MARKERS) {
+    const f = path.join(d, ...m.rel);
+    if (!fs.existsSync(f)) continue;
+    if (!m.names) return true;
+    try { if (fs.readFileSync(f, 'utf8').includes(m.names)) return true; } catch {}
+  }
+  return false;
+}
+function houseRootOf(p, base = process.cwd()) {
+  if (!p) return null;
+  let d = nearestExisting(path.resolve(base, p));
+  for (;;) {
+    if (isHouseRoot(d)) return d;
+    const up = path.dirname(d);
+    if (up === d) return null;
+    d = up;
+  }
+}
+const GIT_PATH_VARS = ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_COMMON_DIR', 'GIT_OBJECT_DIRECTORY'];
+const GIT_LIST_VARS = ['GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_CEILING_DIRECTORIES'];
+function gitGuard({ env = process.env, cwd = process.cwd() } = {}) {
+  const here = realOrNull(cwd) || path.resolve(cwd);
+  for (const k of GIT_PATH_VARS) if (env[k] && houseRootOf(env[k], here)) return k + ' resolves to the house repo';
+  for (const k of GIT_LIST_VARS) {
+    for (const v of String(env[k] || '').split(path.delimiter).filter(Boolean)) if (houseRootOf(v, here)) return k + ' resolves to the house repo';
+  }
   const set = GIT_REPO_VARS.filter((k) => env[k]);
   if (set.length) return 'environment sets ' + set.join(', ');
-  const here = realOrNull(cwd) || path.resolve(cwd);
-  const houseRoot = realOrNull(house);
-  if (within(here, houseRoot)) return 'cwd is inside the house repo';
+  if (houseRootOf(here)) return 'cwd is inside the house repo';
   const g = spawnSync('git', ['-C', here, 'rev-parse', '--absolute-git-dir'], { encoding: 'utf8', env: { ...cleanGitEnv(env), GIT_OPTIONAL_LOCKS: '0' } });
   const gd = g.status === 0 ? realOrNull(g.stdout.trim()) : null;
-  const houseGit = houseRoot ? realOrNull(path.join(houseRoot, '.git')) : null;
-  if (within(gd, houseGit)) return 'cwd resolves to the house git directory';
+  if (gd && houseRootOf(gd)) return 'cwd resolves to the house git directory';
   return null;
 }
 
@@ -186,7 +188,7 @@ test('T2 git mode scans every blob of every commit at every path', async () => {
   const { rules, scanTextForSecrets } = await setup();
   const dir = tmpdir('ds-git-');
   try {
-    assert.equal(within(dir, realOrNull(HOUSE)), false, 'T2 refuses: temp dir inside the house repo');
+    assert.equal(houseRootOf(dir), null, 'T2 refuses: temp dir inside the house repo');
     const env = cleanGitEnv();
     const git = (...a) => spawnSync('git', ['-C', dir, ...a], { encoding: 'utf8', cwd: dir, env });
     assert.equal(git('init', '-q', '-b', 'main').status, 0);
@@ -332,7 +334,7 @@ test('T6 piped stdout drains fully: large piped run parses and matches in-proces
   const { receipt, rules, scanTextForSecrets, fence } = await setup();
   const mirror = pinnedMirror(receipt);
   { const want = await scanInputs({ inputs: ['.'], rules, scanSecrets: scanTextForSecrets, repo: mirror, fence });
-    const r = spawnSync('node', [path.join(HERE, 'disclosure-scan.mjs'), '--rules', RECEIPT_PATH, mirror], { encoding: 'buffer', maxBuffer: 64 * 1024 * 1024 });
+    const r = spawnSync(process.execPath, [path.join(HERE, 'disclosure-scan.mjs'), '--rules', RECEIPT_PATH, mirror], { encoding: 'buffer', maxBuffer: 64 * 1024 * 1024 });
     assert.equal(r.status, 0, String(r.stderr).slice(0, 500));
     assert.ok(r.stdout.length > 64 * 1024, 'output too small to exercise drain: ' + r.stdout.length);
     const got = JSON.parse(r.stdout.toString('utf8'));
@@ -347,26 +349,35 @@ test('T6 piped stdout drains fully: large piped run parses and matches in-proces
   }
 });
 
-test('T7 acceptance inputs never need the untracked scratch file: the tracked pin pack supplies it, sha-checked', async () => {
+test('T7 the desk pin pack alone supplies all 38 acceptance inputs, sha-checked, with no git history and no disk copy', async () => {
   const { receipt } = await setup();
-  const untracked = receipt.scope.files.filter((f) => f.lastCommit === 'UNTRACKED');
-  assert.ok(untracked.length >= 1);
   const pack = readPinPack();
-  for (const f of untracked) {
+  assert.equal(receipt.scope.files.length, 38);
+  assert.equal(pack.fileCount, 38);
+  assert.equal(pack.files.length, 38);
+  for (const f of receipt.scope.files) {
     const b = packBytes(f, pack);
     assert.ok(b, 'pin pack lacks ' + f.path);
     assert.equal(sha256(b), f.sha256);
   }
-  const tampered = { files: pack.files.map((x) => ({ ...x, base64Lines: [Buffer.from('tampered').toString('base64')] })) };
-  assert.equal(packBytes(untracked[0], tampered), null);
-  const { mirror, source } = buildMirror(receipt, { hideDisk: new Set(untracked.map((f) => f.path)) });
+  assert.ok(receipt.scope.files.some((f) => f.lastCommit === 'UNTRACKED'), 'the untracked input stays covered');
+  const first = pack.files[0];
+  const flip = first.hexLines[0][0] === '0' ? '1' : '0';
+  const tampered = { files: [{ ...first, hexLines: [flip + first.hexLines[0].slice(1), ...first.hexLines.slice(1)] }] };
+  assert.equal(packBytes({ sha256: first.sha256, bytes: first.bytes }, tampered), null);
+  assert.equal(packBytes({ sha256: first.sha256, bytes: first.bytes }, { files: [{ ...first, hexLines: ['zz'] }] }), null);
+  const everyPath = new Set(receipt.scope.files.map((f) => f.path));
+  const { mirror, source } = buildMirror(receipt, { hideDisk: everyPath });
   try {
-    for (const f of untracked) assert.equal(source[f.path], 'pin-pack', f.path);
-    for (const f of receipt.scope.files) assert.equal(sha256(fs.readFileSync(path.join(mirror, f.path))), f.sha256, f.path);
     assert.equal(Object.keys(source).length, 38);
+    for (const f of receipt.scope.files) {
+      assert.equal(source[f.path], 'pin-pack', f.path);
+      assert.equal(sha256(fs.readFileSync(path.join(mirror, f.path))), f.sha256, f.path);
+    }
   } finally {
     fs.rmSync(mirror, { recursive: true, force: true });
   }
+  assert.throws(() => buildMirror(receipt, { hideDisk: everyPath, pack: { files: [] } }), /pinned bytes unavailable/);
 });
 
 test('T8 a multi-line private JWK is masked on every line of its document', async () => {
@@ -408,7 +419,7 @@ test('T9 a stdout consumer that closes early gets exit 2 and one stderr line, no
     child.stdout.on('data', (d) => { got += d.length; if (got >= 100) child.stdout.destroy(); });
     const code = await new Promise((res) => child.on('close', res));
     assert.equal(code, 2, err);
-    assert.match(err, /EPIPE/);
+    assert.match(err, /stdout closed early \((?:EPIPE|ENOTCONN|ECONNRESET)\): output truncated/);
     assert.equal(err.trim().split('\n').length, 1, err);
     assert.ok(!/\n\s+at /.test(err), err);
     const full = spawnSync(process.execPath, [path.join(HERE, 'disclosure-scan.mjs'), '--rules', RECEIPT_PATH, dir, '--out', path.join(dir, 'out.json')], { encoding: 'utf8' });
@@ -419,28 +430,40 @@ test('T9 a stdout consumer that closes early gets exit 2 and one stderr line, no
   }
 });
 
-test('T10 the T2 guard refuses GIT_* repo variables and a cwd in the house repo', () => {
+test('T10 the T2 guard finds the house by its repository markers, never by HOME, and refuses a cwd or GIT_* path inside it', () => {
   const free = tmpdir('ds-guard-');
+  const houses = [tmpdir('ds-guard-reg-'), tmpdir('ds-guard-sock-')];
+  const decoy = tmpdir('ds-guard-decoy-');
   try {
+    const put = (root, rel, text) => { const p = path.join(root, ...rel); fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, text); };
+    put(houses[0], HOUSE_MARKERS[0].rel, '{}\n');
+    put(houses[1], HOUSE_MARKERS[1].rel, "const SOCK = '" + SOCK_PATH + "';\n");
+    put(decoy, HOUSE_MARKERS[1].rel, "const SOCK = 'elsewhere';\n");
     assert.equal(gitGuard({ env: {}, cwd: free }), null);
-    assert.match(gitGuard({ env: { GIT_DIR: path.join(free, '.git') }, cwd: free }), /GIT_DIR/);
-    assert.match(gitGuard({ env: { GIT_WORK_TREE: free }, cwd: free }), /GIT_WORK_TREE/);
-    assert.match(gitGuard({ env: { GIT_INDEX_FILE: path.join(free, 'i') }, cwd: free }), /GIT_INDEX_FILE/);
-    assert.match(gitGuard({ env: {}, cwd: free, house: free }), /inside the house repo/);
-    fs.mkdirSync(path.join(free, 'sub'));
-    assert.match(gitGuard({ env: {}, cwd: path.join(free, 'sub'), house: free }), /inside the house repo/);
-    if (realOrNull(HOUSE)) assert.match(gitGuard({ env: {}, cwd: HOUSE }), /inside the house repo/);
-    const other = tmpdir('ds-guard-house-');
-    try {
-      assert.equal(spawnSync('git', ['-C', other, 'init', '-q'], { env: cleanGitEnv() }).status, 0);
-      const linked = path.join(free, 'linked');
-      fs.mkdirSync(linked);
-      fs.writeFileSync(path.join(linked, '.git'), 'gitdir: ' + path.join(other, '.git') + '\n');
-      assert.match(gitGuard({ env: {}, cwd: linked, house: other }), /house git directory/);
-    } finally {
-      fs.rmSync(other, { recursive: true, force: true });
+    assert.equal(gitGuard({ env: {}, cwd: decoy }), null, 'a door script that names another socket is not the house');
+    assert.match(gitGuard({ env: { GIT_DIR: path.join(free, '.git') }, cwd: free }), /environment sets GIT_DIR/);
+    assert.match(gitGuard({ env: { GIT_WORK_TREE: free }, cwd: free }), /environment sets GIT_WORK_TREE/);
+    assert.match(gitGuard({ env: { GIT_INDEX_FILE: path.join(free, 'i') }, cwd: free }), /environment sets GIT_INDEX_FILE/);
+    for (const h of houses) {
+      fs.mkdirSync(path.join(h, 'sub', 'deep'), { recursive: true });
+      assert.equal(houseRootOf(path.join(h, 'sub', 'deep', 'not-yet')), h);
+      for (const home of [free, h, undefined]) {
+        assert.match(gitGuard({ env: { HOME: home }, cwd: h }), /cwd is inside the house repo/);
+        assert.match(gitGuard({ env: { HOME: home }, cwd: path.join(h, 'sub', 'deep') }), /cwd is inside the house repo/);
+        assert.equal(gitGuard({ env: { HOME: home }, cwd: free }), null, 'HOME never makes a free cwd the house');
+      }
+      assert.match(gitGuard({ env: { HOME: free, GIT_DIR: path.join(h, '.git') }, cwd: free }), /GIT_DIR resolves to the house repo/);
+      assert.match(gitGuard({ env: { GIT_DIR: path.relative(free, path.join(h, '.git')) }, cwd: free }), /GIT_DIR resolves to the house repo/);
+      assert.match(gitGuard({ env: { GIT_WORK_TREE: path.join(h, 'sub') }, cwd: free }), /GIT_WORK_TREE resolves to the house repo/);
+      assert.match(gitGuard({ env: { GIT_INDEX_FILE: path.join(h, '.git', 'index') }, cwd: free }), /GIT_INDEX_FILE resolves to the house repo/);
+      assert.match(gitGuard({ env: { GIT_ALTERNATE_OBJECT_DIRECTORIES: free + path.delimiter + path.join(h, '.git', 'objects') }, cwd: free }), /GIT_ALTERNATE_OBJECT_DIRECTORIES resolves to the house repo/);
     }
+    assert.equal(spawnSync('git', ['-C', houses[0], 'init', '-q'], { env: cleanGitEnv() }).status, 0);
+    const linked = path.join(free, 'linked');
+    fs.mkdirSync(linked);
+    fs.writeFileSync(path.join(linked, '.git'), 'gitdir: ' + path.join(houses[0], '.git') + '\n');
+    assert.match(gitGuard({ env: {}, cwd: linked }), /house git directory/);
   } finally {
-    fs.rmSync(free, { recursive: true, force: true });
+    for (const d of [free, decoy, ...houses]) fs.rmSync(d, { recursive: true, force: true });
   }
 });
